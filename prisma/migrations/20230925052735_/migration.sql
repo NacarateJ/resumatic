@@ -17,7 +17,7 @@ CREATE TABLE "Resume" (
     "resume_description" TEXT,
     "full_name" VARCHAR(255) NOT NULL,
     "job_title" VARCHAR(255),
-    "email" VARCHAR(255) NOT NULL,
+    "email" VARCHAR(255),
     "profile_description" TEXT,
     "phone_number" VARCHAR(20),
     "address" TEXT,

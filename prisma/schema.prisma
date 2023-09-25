@@ -27,7 +27,7 @@ model Resume {
   resume_description String?   @db.Text                                       // Optional
   full_name          String    @db.VarChar(255)                               // Required
   job_title          String?   @db.VarChar(255)                               // Optional
-  email              String?    @db.VarChar(255)                               // Required
+  email              String?    @db.VarChar(255)                               // Optional
   profile_description String?   @db.Text                                       // Optional
   phone_number       String?   @db.VarChar(20)                                // Optional
   address            String?   @db.Text                                       // Optional
