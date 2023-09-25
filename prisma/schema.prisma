@@ -1,0 +1,113 @@
+// Define the Prisma generator for generating the Prisma client.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Define the Prisma data source, which connects to a PostgreSQL database.
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Use the DATABASE_URL environment variable to set the database URL.
+}
+
+// Define the User model, which represents user information.
+model User {
+  user_id    Int       @id @default(autoincrement()) @map("user_id")  // Primary Key
+  first_name String    @db.VarChar(255)                             // Required
+  last_name  String    @db.VarChar(255)                             // Required
+  email      String    @unique @db.Text                              // Required
+  password   String    @db.VarChar(255)                             // Required (hashed)
+  resumes    Resume[]  // One-to-Many relationship with Resume
+}
+
+// Define the Resume model, which represents user resumes.
+model Resume {
+  resume_id          Int       @id @default(autoincrement()) @map("resume_id")  // Primary Key
+  user_id            Int                                                      // Foreign Key
+  resume_title       String    @db.VarChar(255)                               // Required
+  resume_description String?   @db.Text                                       // Optional
+  full_name          String    @db.VarChar(255)                               // Required
+  job_title          String?   @db.VarChar(255)                               // Optional
+  email              String    @db.VarChar(255)                               // Required
+  profile_description String?   @db.Text                                       // Optional
+  phone_number       String?   @db.VarChar(20)                                // Optional
+  address            String?   @db.Text                                       // Optional
+  website_link       String?   @db.Text                                       // Optional
+  linkedin_link      String?   @db.Text                                       // Optional
+  github_link        String?   @db.Text                                       // Optional
+  created_at         DateTime  @default(now())                                // Auto-generated timestamp
+  last_modified_at   DateTime  @updatedAt                                     // Auto-updated timestamp
+  user               User      @relation(fields: [user_id], references: [user_id]) // One-to-Many relationship with User
+  projects           Project[] // One-to-Many relationship with Project
+  education          Education[] // One-to-Many relationship with Education
+  skills             Skill[] // One-to-Many relationship with Skill
+  work_experience    WorkExperience[] // One-to-Many relationship with WorkExperience
+  languages          Language[] // One-to-Many relationship with Language
+}
+
+// Define the Project model, which represents user projects.
+model Project {
+  project_id         Int       @id @default(autoincrement()) @map("project_id")  // Primary Key
+  resume_id          Int                                                        // Foreign Key
+  project_title      String    @db.VarChar(255)                               // Required
+  project_subtitle   String?   @db.Text                                       // Optional
+  project_description String?   @db.Text                                       // Optional
+  start_date         DateTime?                                                 // Optional
+  end_date           DateTime?                                                 // Optional
+  project_link       String?   @db.Text                                       // Optional
+  is_current         Boolean?                                                  // Optional
+  last_modified_at   DateTime  @updatedAt                                       // Auto-updated timestamp
+  resume             Resume    @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resume
+}
+
+// Define the Education model, which represents user education.
+model Education {
+  education_id         Int       @id @default(autoincrement()) @map("education_id") // Primary Key
+  resume_id            Int                                                        // Foreign Key
+  school_name          String    @db.VarChar(255)                               // Required
+  city                 String?   @db.VarChar(255)                               // Optional
+  country              String?   @db.VarChar(255)                               // Optional
+  degree               String?   @db.VarChar(255)                               // Optional
+  education_description String?   @db.Text                                       // Optional
+  start_date           DateTime?                                                 // Optional
+  end_date             DateTime?                                                 // Optional
+  gpa                  Float?                                                    // Optional
+  is_current           Boolean?                                                  // Optional
+  last_modified_at     DateTime  @updatedAt                                       // Auto-updated timestamp
+  resume               Resume    @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resume
+}
+
+// Define the Skill model, which represents user skills.
+model Skill {
+  skill_id         Int       @id @default(autoincrement()) @map("skill_id")  // Primary Key
+  resume_id        Int                                                      // Foreign Key
+  skill_name       String    @db.VarChar(255)                               // Required
+  skill_description String?   @db.Text                                       // Optional
+  last_modified_at DateTime  @updatedAt                                       // Auto-updated timestamp
+  resume           Resume    @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resume
+}
+
+// Define the WorkExperience model, which represents user work experience.
+model WorkExperience {
+  experience_id         Int       @id @default(autoincrement()) @map("experience_id") // Primary Key
+  resume_id             Int                                                         // Foreign Key
+  job_title             String    @db.VarChar(255)                                 // Required
+  employer              String?   @db.VarChar(255)                                 // Optional
+  city                  String?   @db.VarChar(255)                                 // Optional
+  country               String?   @db.VarChar(255)                                 // Optional
+  start_date            DateTime?                                                 // Optional
+  end_date              DateTime?                                                 // Optional
+  is_current            Boolean?                                                  // Optional
+  experience_description String?   @db.Text                                         // Optional
+  last_modified_at      DateTime  @updatedAt                                       // Auto-updated timestamp
+  resume                Resume    @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resume
+}
+
+// Define the Language model, which represents user languages.
+model Language {
+  language_id    Int       @id @default(autoincrement()) @map("language_id")  // Primary Key
+  resume_id      Int                                                        // Foreign Key
+  language_name  String    @db.VarChar(255)                               // Required
+  language_level String?   @db.VarChar(255)                               // Optional
+  last_modified_at DateTime  @updatedAt                                       // Auto-updated timestamp
+  resume         Resume    @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resume
+}
