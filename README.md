@@ -72,6 +72,12 @@ If there are database migrations provided in the `prisma/migrations` folder, app
 npx prisma db push
 ```
 
+### Seed Database
+
+```bash
+node prisma/seed.js
+```
+
 ### Start Prisma Studio
 
 To interact with your database using Prisma Studio, run the following command:
