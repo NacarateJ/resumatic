@@ -11,3 +11,7 @@ export default function Home() {
     </main>
   );
 }
+
+
+// pages/api/index.js
+export { default as dbTest } from './api/db-test';
