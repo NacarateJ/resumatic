@@ -78,6 +78,12 @@ npx prisma db push
 node prisma/seed.js
 ```
 
+### Reset Database
+
+```bash
+npx prisma migrate reset  
+```
+
 ### Start Prisma Studio
 
 To interact with your database using Prisma Studio, run the following command:
