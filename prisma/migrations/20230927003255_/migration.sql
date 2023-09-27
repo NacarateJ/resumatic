@@ -1,16 +1,16 @@
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "Users" (
     "user_id" SERIAL NOT NULL,
     "first_name" VARCHAR(255) NOT NULL,
     "last_name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
     "password" VARCHAR(255) NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("user_id")
+    CONSTRAINT "Users_pkey" PRIMARY KEY ("user_id")
 );
 
 -- CreateTable
-CREATE TABLE "Resume" (
+CREATE TABLE "Resumes" (
     "resume_id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "resume_title" VARCHAR(255) NOT NULL,
@@ -27,11 +27,11 @@ CREATE TABLE "Resume" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Resume_pkey" PRIMARY KEY ("resume_id")
+    CONSTRAINT "Resumes_pkey" PRIMARY KEY ("resume_id")
 );
 
 -- CreateTable
-CREATE TABLE "Project" (
+CREATE TABLE "Projects" (
     "project_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
     "project_title" VARCHAR(255) NOT NULL,
@@ -43,11 +43,11 @@ CREATE TABLE "Project" (
     "is_current" BOOLEAN,
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Project_pkey" PRIMARY KEY ("project_id")
+    CONSTRAINT "Projects_pkey" PRIMARY KEY ("project_id")
 );
 
 -- CreateTable
-CREATE TABLE "Education" (
+CREATE TABLE "Educations" (
     "education_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
     "school_name" VARCHAR(255) NOT NULL,
@@ -61,22 +61,22 @@ CREATE TABLE "Education" (
     "is_current" BOOLEAN,
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Education_pkey" PRIMARY KEY ("education_id")
+    CONSTRAINT "Educations_pkey" PRIMARY KEY ("education_id")
 );
 
 -- CreateTable
-CREATE TABLE "Skill" (
+CREATE TABLE "Skills" (
     "skill_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
     "skill_name" VARCHAR(255) NOT NULL,
     "skill_description" TEXT,
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Skill_pkey" PRIMARY KEY ("skill_id")
+    CONSTRAINT "Skills_pkey" PRIMARY KEY ("skill_id")
 );
 
 -- CreateTable
-CREATE TABLE "WorkExperience" (
+CREATE TABLE "WorkExperiences" (
     "experience_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
     "job_title" VARCHAR(255) NOT NULL,
@@ -89,37 +89,37 @@ CREATE TABLE "WorkExperience" (
     "experience_description" TEXT,
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "WorkExperience_pkey" PRIMARY KEY ("experience_id")
+    CONSTRAINT "WorkExperiences_pkey" PRIMARY KEY ("experience_id")
 );
 
 -- CreateTable
-CREATE TABLE "Language" (
+CREATE TABLE "Languages" (
     "language_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
     "language_name" VARCHAR(255) NOT NULL,
     "language_level" VARCHAR(255),
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Language_pkey" PRIMARY KEY ("language_id")
+    CONSTRAINT "Languages_pkey" PRIMARY KEY ("language_id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- AddForeignKey
-ALTER TABLE "Resume" ADD CONSTRAINT "Resume_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Resumes" ADD CONSTRAINT "Resumes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "Users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resume"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Projects" ADD CONSTRAINT "Projects_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resumes"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Education" ADD CONSTRAINT "Education_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resume"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Educations" ADD CONSTRAINT "Educations_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resumes"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Skill" ADD CONSTRAINT "Skill_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resume"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Skills" ADD CONSTRAINT "Skills_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resumes"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "WorkExperience" ADD CONSTRAINT "WorkExperience_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resume"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "WorkExperiences" ADD CONSTRAINT "WorkExperiences_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resumes"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Language" ADD CONSTRAINT "Language_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resume"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Languages" ADD CONSTRAINT "Languages_resume_id_fkey" FOREIGN KEY ("resume_id") REFERENCES "Resumes"("resume_id") ON DELETE RESTRICT ON UPDATE CASCADE;
