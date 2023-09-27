@@ -1,6 +1,6 @@
 import prisma from '@/utils/prisma';
 
-export default function Profile({ resumes, err }) {
+export default function Profile({ user, resumes, err }) {
   if (err) {
     return (
       <div>
@@ -18,17 +18,23 @@ export default function Profile({ resumes, err }) {
    }
   return (
     <div>
-      <h1>Profile</h1>
+      <h1>Welcome, {user.first_name}!</h1>
     </div>
   );
 }
 
 export async function getServerSideProps() {
   try {
+    const user = await prisma.users.findUnique({
+      where: {
+        user_id: 3, // Use the user's ID or some other identifier here
+      },
+    });
+
     const resumes = await prisma.resumes.findMany({
       where: {
         user: {
-          user_id: 2, // change it later when we have user  autho working
+          user_id: user.user_id,
         },
       },
       // Include other related data like projects, education, skills, etc.
@@ -43,6 +49,7 @@ export async function getServerSideProps() {
 
     return {
       props: {
+        user,
         resumes: JSON.parse(JSON.stringify(resumes)),
         error:null,
       },
