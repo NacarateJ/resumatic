@@ -115,8 +115,8 @@ const seedDatabase = async () => {
         country: 'Example Country',
         degree: 'Bachelor of Science in Computer Science',
         education_description: 'Graduated with honors.',
-        start_date: new Date('2018-09-01').toISOString(),
-        end_date: new Date('2022-05-31').toISOString(),
+        start_date: new Date('2018-09-01'),
+        end_date: new Date('2022-05-31'),
         gpa: 3.8,
         is_current: false,
         resume_id: 1,
@@ -127,8 +127,8 @@ const seedDatabase = async () => {
         country: 'Tech Country',
         degree: 'Master of Science in Web Development',
         education_description: 'Specialized in front-end development.',
-        start_date: new Date('2022-09-01').toISOString(),
-        end_date: new Date('2023-05-31').toISOString(),
+        start_date: new Date('2022-09-01'),
+        end_date: new Date('2023-05-31'),
         gpa: 4.0,
         is_current: false,
         resume_id: 2,
@@ -139,8 +139,8 @@ const seedDatabase = async () => {
         country: 'Data Science Country',
         degree: 'Ph.D. in Machine Learning',
         education_description: 'Published several research papers.',
-        start_date: new Date('2023-09-01').toISOString(),
-        end_date: new Date('2027-05-31').toISOString(),
+        start_date: new Date('2023-09-01'),
+        end_date: new Date('2027-05-31'),
         gpa: 4.0,
         is_current: false,
         resume_id: 3,
@@ -223,12 +223,41 @@ const seedDatabase = async () => {
     console.log('Education Data:', educationData);
 
     await prisma.users.createMany({ data: usersData });
-    await prisma.resumes.createMany({ data: resumesData });
-    await prisma.projects.createMany({ data: projectsData });
-    await prisma.educations.createMany({ data: educationData });
-    await prisma.skills.createMany({ data: skillsData });
-    await prisma.workExperiences.createMany({ data: workExperienceData });
-    await prisma.languages.createMany({ data: languagesData });
+
+    await Promise.all(resumesData.map(async (resume) => {
+      const createdResume = await prisma.resumes.create({
+        data: {
+          ...resume,
+          // Remove the resume_id from the related records
+          projects: {
+            createMany: {
+              data: projectsData.filter(project => project.resume_id === resume.user_id).map(({ resume_id, ...rest }) => rest)
+            }
+          },
+          education: {
+            createMany: {
+              data: educationData.filter(education => education.resume_id === resume.user_id).map(({ resume_id, ...rest }) => rest)
+            }
+          },
+          skills: {
+            createMany: {
+              data: skillsData.filter(skill => skill.resume_id === resume.user_id).map(({ resume_id, ...rest }) => rest)
+            }
+          },
+          work_experience: {
+            createMany: {
+              data: workExperienceData.filter(experience => experience.resume_id === resume.user_id).map(({ resume_id, ...rest }) => rest)
+            }
+          },
+          languages: {
+            createMany: {
+              data: languagesData.filter(language => language.resume_id === resume.user_id).map(({ resume_id, ...rest }) => rest)
+            }
+          },
+        },
+      });
+      return createdResume;
+    }));
 
     console.log('Data seeded successfully for users, resumes, projects, education, skills, work experience, and languages.');
   } catch (error) {
