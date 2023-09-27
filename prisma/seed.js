@@ -228,7 +228,6 @@ const seedDatabase = async () => {
       const createdResume = await prisma.resumes.create({
         data: {
           ...resume,
-          // Remove the resume_id from the related records
           projects: {
             createMany: {
               data: projectsData.filter(project => project.resume_id === resume.user_id).map(({ resume_id, ...rest }) => rest)
