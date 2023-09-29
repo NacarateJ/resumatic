@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import prisma from '@/utils/prisma';
 import { useRouter } from 'next/router';
 import {
-  Box,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   Paper,
@@ -15,6 +13,7 @@ import {
   ListItemIcon,
   ListItemText,
   CardHeader,
+  // CardActionArea,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -30,6 +29,7 @@ export default function Profile({ user, resumes, err }) {
   const [selectedResume, setSelectedResume] = useState(null);
 
   const handleMenuOpen = (event, resume) => {
+    event.stopPropagation(); // Prevent card click when kebab menu is clicked
     setMenuOpen(event.currentTarget);
     setSelectedResume(resume);
   };
@@ -38,23 +38,31 @@ export default function Profile({ user, resumes, err }) {
     setMenuOpen(null);
   };
 
-  const handleMakeCopy = (resume) => {
+  const handleMakeCopy = (event, resume) => {
     // TO DO: Implement logic to make a copy of the resume
+    // event.stopPropagation();
     console.log('Make a copy clicked for resume:', resume);
     handleMenuClose();
   };
 
-  const handleDownload = (resume) => {
+  const handleDownload = (event, resume) => {
     // TO DO: Implement logic to download the resume
+    // event.stopPropagation();
     console.log('Download clicked for resume:', resume);
     handleMenuClose();
   };
 
-  const handleShare = (resume) => {
+  const handleShare = (event, resume) => {
     // TO DO: Implement logic to share the resume
+    // event.stopPropagation();
     console.log('Share clicked for resume:', resume);
     handleMenuClose();
   };
+
+  // TO DO: uncomment function and cardActionArea
+  // const handleCardClick = (resumeId) => {
+    // router.push(`/resumes/${resumeId}`);
+  // };
 
   if (err) {
     return (
@@ -109,79 +117,81 @@ export default function Profile({ user, resumes, err }) {
         {resumes.map((resume) => (
           <div key={resume.resume_id} style={{ margin: '10px' }}>
             <Card style={{ width: '300px', height: '300px' }}>
-              <CardHeader
-                title={resume.resume_title}
-                action={
-                  <IconButton
-                    aria-label='menu'
-                    aria-controls={`kebab-menu-${resume.resume_id}`}
-                    aria-haspopup='true'
-                    onClick={(event) => handleMenuOpen(event, resume)}
+              {/* <CardActionArea onClick={() => handleCardClick(resume.resume_id)}> */}
+                <CardHeader
+                  title={resume.resume_title}
+                  action={
+                    <IconButton
+                      aria-label='menu'
+                      aria-controls={`kebab-menu-${resume.resume_id}`}
+                      aria-haspopup='true'
+                      onClick={(event) => handleMenuOpen(event, resume)}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                />
+                <CardContent>
+                  <Menu
+                    id='kebab-menu'
+                    anchorEl={menuOpen}
+                    keepMounted
+                    open={Boolean(menuOpen)}
+                    onClose={handleMenuClose}
                   >
-                    <MoreVertIcon />
-                  </IconButton>
-                }
-              />
-              <CardContent>
-                <Menu
-                  id='kebab-menu'
-                  anchorEl={menuOpen}
-                  keepMounted
-                  open={Boolean(menuOpen)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem onClick={() => handleMakeCopy(selectedResume)}>
-                    <ListItemIcon>
-                      <FileCopyIcon fontSize='small' />
-                    </ListItemIcon>
-                    <ListItemText primary='Make a copy' />
-                  </MenuItem>
+                    <MenuItem onClick={(event) => handleMakeCopy(event, selectedResume)}>
+                      <ListItemIcon>
+                        <FileCopyIcon fontSize='small' />
+                      </ListItemIcon>
+                      <ListItemText primary='Make a copy' />
+                    </MenuItem>
 
-                  <MenuItem onClick={() => handleDownload(selectedResume)}>
-                    <ListItemIcon>
-                      <SimCardDownloadIcon fontSize='small' />
-                    </ListItemIcon>
-                    <ListItemText primary='Download' />
-                  </MenuItem>
+                    <MenuItem onClick={(event) => handleDownload(event, selectedResume)}>
+                      <ListItemIcon>
+                        <SimCardDownloadIcon fontSize='small' />
+                      </ListItemIcon>
+                      <ListItemText primary='Download' />
+                    </MenuItem>
 
-                  <MenuItem onClick={() => handleShare(selectedResume)}>
-                    <ListItemIcon>
-                      <ShareIcon fontSize='small' />
-                    </ListItemIcon>
-                    <ListItemText primary='Share' />
-                  </MenuItem>
-                </Menu>
+                    <MenuItem onClick={(event) => handleShare(event, selectedResume)}>
+                      <ListItemIcon>
+                        <ShareIcon fontSize='small' />
+                      </ListItemIcon>
+                      <ListItemText primary='Share' />
+                    </MenuItem>
+                  </Menu>
 
-                <Paper
-                  elevation={10}
-                  style={{
-                    padding: '16px',
-                    marginLeft: '20px',
-                    marginRight: '20px',
-                    marginBottom: '30px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    minWidth: '230px',
-                    minHeight: '125px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  <Typography gutterBottom variant='h6'>
-                    {resume.job_title}
+                  <Paper
+                    elevation={10}
+                    style={{
+                      padding: '16px',
+                      marginLeft: '20px',
+                      marginRight: '20px',
+                      marginBottom: '30px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      minWidth: '230px',
+                      minHeight: '125px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    <Typography gutterBottom variant='h6'>
+                      {resume.job_title}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      {resume.resume_description}
+                    </Typography>
+                  </Paper>
+
+                  <Typography variant='body2'>
+                    Edited{' '}
+                    {formatDistanceToNow(new Date(resume.last_modified_at), {
+                      addSuffix: true,
+                    }).replace('about ', '')}
                   </Typography>
-                  <Typography variant='body2' color='text.secondary'>
-                    {resume.resume_description}
-                  </Typography>
-                </Paper>
-
-                <Typography variant='body2'>
-                  Edited{' '}
-                  {formatDistanceToNow(new Date(resume.last_modified_at), {
-                    addSuffix: true,
-                  }).replace('about ', '')}
-                </Typography>
-              </CardContent>
+                </CardContent>
+              {/* </CardActionArea> */}
             </Card>
           </div>
         ))}
