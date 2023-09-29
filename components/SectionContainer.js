@@ -19,10 +19,6 @@ export default function SectionContainer(props) {
             {props.title}
           </Typography>
           {props.children}
-          <Button sx={{ mt: 3, ml: 1 }}>Cancel</Button>
-          <Button variant='contained' sx={{ mt: 3, ml: 1 }}>
-            Save
-          </Button>
         </Paper>
       </Container>
     </>
