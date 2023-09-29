@@ -98,18 +98,16 @@ export default function Profile({ user, resumes, err }) {
         Create New Resume
       </Button>
 
-      <Grid
-        container
-        spacing={2}
-        mt={6}
+      <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
           flexWrap: 'wrap',
+          justifyContent: 'center',
+          marginTop: '50px',
         }}
       >
         {resumes.map((resume) => (
-          <Grid item xs={12} sm={6} md={4} key={resume.resume_id}>
+          <div key={resume.resume_id} style={{ margin: '10px' }}>
             <Card style={{ width: '300px', height: '300px' }}>
               <CardHeader
                 title={resume.resume_title}
@@ -185,9 +183,9 @@ export default function Profile({ user, resumes, err }) {
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
+          </div>
         ))}
-      </Grid>
+      </div>
     </div>
   );
 }
