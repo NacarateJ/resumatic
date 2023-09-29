@@ -22,7 +22,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import { formatDistanceToNow } from 'date-fns';
 
 
-export default function Profile({ user, resumes, err }) {
+export default function Dashboard({ user, resumes, err }) {
   const router = useRouter();
 
   const [menuOpen, setMenuOpen] = useState(null);
@@ -61,7 +61,7 @@ export default function Profile({ user, resumes, err }) {
 
   // TO DO: uncomment function and cardActionArea
   // const handleCardClick = (resumeId) => {
-    // router.push(`/resumes/${resumeId}`);
+  // router.push(`/resumes/${resumeId}`);
   // };
 
   if (err) {
@@ -118,79 +118,85 @@ export default function Profile({ user, resumes, err }) {
           <div key={resume.resume_id} style={{ margin: '10px' }}>
             <Card style={{ width: '300px', height: '300px' }}>
               {/* <CardActionArea onClick={() => handleCardClick(resume.resume_id)}> */}
-                <CardHeader
-                  title={resume.resume_title}
-                  action={
-                    <IconButton
-                      aria-label='menu'
-                      aria-controls={`kebab-menu-${resume.resume_id}`}
-                      aria-haspopup='true'
-                      onClick={(event) => handleMenuOpen(event, resume)}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                />
-                <CardContent>
-                  <Menu
-                    id='kebab-menu'
-                    anchorEl={menuOpen}
-                    keepMounted
-                    open={Boolean(menuOpen)}
-                    onClose={handleMenuClose}
+              <CardHeader
+                title={resume.resume_title}
+                action={
+                  <IconButton
+                    aria-label='menu'
+                    aria-controls={`kebab-menu-${resume.resume_id}`}
+                    aria-haspopup='true'
+                    onClick={(event) => handleMenuOpen(event, resume)}
                   >
-                    <MenuItem onClick={(event) => handleMakeCopy(event, selectedResume)}>
-                      <ListItemIcon>
-                        <FileCopyIcon fontSize='small' />
-                      </ListItemIcon>
-                      <ListItemText primary='Make a copy' />
-                    </MenuItem>
-
-                    <MenuItem onClick={(event) => handleDownload(event, selectedResume)}>
-                      <ListItemIcon>
-                        <SimCardDownloadIcon fontSize='small' />
-                      </ListItemIcon>
-                      <ListItemText primary='Download' />
-                    </MenuItem>
-
-                    <MenuItem onClick={(event) => handleShare(event, selectedResume)}>
-                      <ListItemIcon>
-                        <ShareIcon fontSize='small' />
-                      </ListItemIcon>
-                      <ListItemText primary='Share' />
-                    </MenuItem>
-                  </Menu>
-
-                  <Paper
-                    elevation={10}
-                    style={{
-                      padding: '16px',
-                      marginLeft: '20px',
-                      marginRight: '20px',
-                      marginBottom: '30px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      minWidth: '230px',
-                      minHeight: '125px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Menu
+                  id='kebab-menu'
+                  anchorEl={menuOpen}
+                  keepMounted
+                  open={Boolean(menuOpen)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem
+                    onClick={(event) => handleMakeCopy(event, selectedResume)}
                   >
-                    <Typography gutterBottom variant='h6'>
-                      {resume.job_title}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      {resume.resume_description}
-                    </Typography>
-                  </Paper>
+                    <ListItemIcon>
+                      <FileCopyIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Make a copy' />
+                  </MenuItem>
 
-                  <Typography variant='body2'>
-                    Edited{' '}
-                    {formatDistanceToNow(new Date(resume.last_modified_at), {
-                      addSuffix: true,
-                    }).replace('about ', '')}
+                  <MenuItem
+                    onClick={(event) => handleDownload(event, selectedResume)}
+                  >
+                    <ListItemIcon>
+                      <SimCardDownloadIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Download' />
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={(event) => handleShare(event, selectedResume)}
+                  >
+                    <ListItemIcon>
+                      <ShareIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Share' />
+                  </MenuItem>
+                </Menu>
+
+                <Paper
+                  elevation={10}
+                  style={{
+                    padding: '16px',
+                    marginLeft: '20px',
+                    marginRight: '20px',
+                    marginBottom: '30px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: '230px',
+                    minHeight: '125px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  <Typography gutterBottom variant='h6'>
+                    {resume.job_title}
                   </Typography>
-                </CardContent>
+                  <Typography variant='body2' color='text.secondary'>
+                    {resume.resume_description}
+                  </Typography>
+                </Paper>
+
+                <Typography variant='body2'>
+                  Edited{' '}
+                  {formatDistanceToNow(new Date(resume.last_modified_at), {
+                    addSuffix: true,
+                  }).replace('about ', '')}
+                </Typography>
+              </CardContent>
               {/* </CardActionArea> */}
             </Card>
           </div>
