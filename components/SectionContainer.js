@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -13,9 +14,11 @@ export default function SectionContainer(props) {
             backgroundColor: 'WhiteSmoke',
           }}
         >
-          <Typography component='h1' variant='h6' align='left-center'>
-            {props.icon}
-            {props.title}
+          <Typography component='h1' variant='h6' align='left'>
+            <Grid display='flex' alignItems='center'>
+              {props.icon}
+              {props.title}
+            </Grid>
           </Typography>
           {props.children}
         </Paper>

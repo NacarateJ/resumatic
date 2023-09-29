@@ -99,10 +99,12 @@ export default function EditProfileSection() {
               />
             </Grid>
           </Grid>
-          <Button sx={{ mt: 3, ml: 1 }}>Cancel</Button>
-          <Button type='submit' variant='contained' sx={{ mt: 3, ml: 1 }}>
-            Save
-          </Button>
+          <Grid display='flex' justifyContent='right' alignItems='center'>
+            <Button sx={{ mt: 3, ml: 1 }}>Cancel</Button>
+            <Button type='submit' variant='contained' sx={{ mt: 3, ml: 1 }}>
+              Save
+            </Button>
+          </Grid>
         </Box>
       </SectionContainer>
     </>
