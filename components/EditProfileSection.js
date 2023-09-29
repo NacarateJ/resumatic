@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function EditProfileSection() {
   const handleSubmit = (event) => {
@@ -15,7 +16,7 @@ export default function EditProfileSection() {
 
   return (
     <>
-      <SectionContainer title='Edit Profile Section'>
+      <SectionContainer title='Edit Profile Section' icon={<InfoIcon />}>
         <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
