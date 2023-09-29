@@ -1,4 +1,4 @@
-import prisma from "../../prisma/prisma";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -87,6 +87,7 @@ export default async (req, res) => {
             },
           },
         },
+        // Add other scalar fields you want to select from Users here
       },
     });
 

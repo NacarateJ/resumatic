@@ -1,10 +1,11 @@
-import prisma from "../../../prisma/prisma";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export default async (req, res) => {
   try {
     const resumeId = req.query.id; // Retrieve the resumeId from the query parameters
+
 
     // Use Prisma queries to fetch specific fields from the resume based on resumeId
     const resumeData = await prisma.resumes.findUnique({
