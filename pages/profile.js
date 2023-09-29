@@ -98,93 +98,96 @@ export default function Profile({ user, resumes, err }) {
         Create New Resume
       </Button>
 
-      <Box mt={10}>
-        <Grid
-          container
-          spacing={2}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          {resumes.map((resume) => (
-            <Grid item xs={12} sm={6} md={4} key={resume.resume_id}>
-              <Card>
-                <CardHeader
-                  title={resume.resume_title}
-                  action={
-                    <IconButton
-                      aria-label='menu'
-                      aria-controls={`kebab-menu-${resume.resume_id}`}
-                      aria-haspopup='true'
-                      onClick={(event) => handleMenuOpen(event, resume)}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                />
-                <CardContent>
-                  <Menu
-                    id='kebab-menu'
-                    anchorEl={menuOpen}
-                    keepMounted
-                    open={Boolean(menuOpen)}
-                    onClose={handleMenuClose}
+      <Grid
+        container
+        spacing={2}
+        mt={6}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
+        {resumes.map((resume) => (
+          <Grid item xs={12} sm={6} md={4} key={resume.resume_id}>
+            <Card style={{ width: '300px', height: '300px' }}>
+              <CardHeader
+                title={resume.resume_title}
+                action={
+                  <IconButton
+                    aria-label='menu'
+                    aria-controls={`kebab-menu-${resume.resume_id}`}
+                    aria-haspopup='true'
+                    onClick={(event) => handleMenuOpen(event, resume)}
                   >
-                    <MenuItem onClick={() => handleMakeCopy(selectedResume)}>
-                      <ListItemIcon>
-                        <FileCopyIcon fontSize='small' />
-                      </ListItemIcon>
-                      <ListItemText primary='Make a copy' />
-                    </MenuItem>
+                    <MoreVertIcon />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Menu
+                  id='kebab-menu'
+                  anchorEl={menuOpen}
+                  keepMounted
+                  open={Boolean(menuOpen)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => handleMakeCopy(selectedResume)}>
+                    <ListItemIcon>
+                      <FileCopyIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Make a copy' />
+                  </MenuItem>
 
-                    <MenuItem onClick={() => handleDownload(selectedResume)}>
-                      <ListItemIcon>
-                        <SimCardDownloadIcon fontSize='small' />
-                      </ListItemIcon>
-                      <ListItemText primary='Download' />
-                    </MenuItem>
+                  <MenuItem onClick={() => handleDownload(selectedResume)}>
+                    <ListItemIcon>
+                      <SimCardDownloadIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Download' />
+                  </MenuItem>
 
-                    <MenuItem onClick={() => handleShare(selectedResume)}>
-                      <ListItemIcon>
-                        <ShareIcon fontSize='small' />
-                      </ListItemIcon>
-                      <ListItemText primary='Share' />
-                    </MenuItem>
-                  </Menu>
+                  <MenuItem onClick={() => handleShare(selectedResume)}>
+                    <ListItemIcon>
+                      <ShareIcon fontSize='small' />
+                    </ListItemIcon>
+                    <ListItemText primary='Share' />
+                  </MenuItem>
+                </Menu>
 
-                  <Paper
-                    elevation={10}
-                    style={{
-                      padding: '1rem',
-                      marginLeft: '20px',
-                      marginRight: '20px',
-                      marginBottom: '30px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <Typography gutterBottom variant='h6'>
-                      {resume.job_title}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      {resume.resume_description}
-                    </Typography>
-                  </Paper>
-
-                  <Typography variant='body2'>
-                    Edited{' '}
-                    {formatDistanceToNow(new Date(resume.last_modified_at), {
-                      addSuffix: true,
-                    }).replace('about ', '')}
+                <Paper
+                  elevation={10}
+                  style={{
+                    padding: '16px',
+                    marginLeft: '20px',
+                    marginRight: '20px',
+                    marginBottom: '30px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: '230px',
+                    minHeight: '125px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  <Typography gutterBottom variant='h6'>
+                    {resume.job_title}
                   </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+                  <Typography variant='body2' color='text.secondary'>
+                    {resume.resume_description}
+                  </Typography>
+                </Paper>
+
+                <Typography variant='body2'>
+                  Edited{' '}
+                  {formatDistanceToNow(new Date(resume.last_modified_at), {
+                    addSuffix: true,
+                  }).replace('about ', '')}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }
@@ -193,7 +196,7 @@ export async function getServerSideProps() {
   try {
     const user = await prisma.users.findUnique({
       where: {
-        user_id: 1, // Change it later to be dynamic when we have user  autho working
+        user_id: 3, // Change it later to be dynamic when we have user  autho working
       },
     });
 
