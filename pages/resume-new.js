@@ -1,4 +1,5 @@
-import EditResumeSection from "@/components/EditResumeSection";
+import EditResumeSection from '@/components/EditResumeSection';
+import EditProfileSection from '@/components/EditProfileSection';;
 import React from "react";
 import dynamic from 'next/dynamic';
 
@@ -13,6 +14,7 @@ export default function ResumeNew() {
     <div style={{ display: 'flex' }}>
       <div style={{ flex: 1, padding: '10px' }}>
         <EditResumeSection />
+        <EditProfileSection />
       </div>
 
       <div style={{ width: '50%', padding: '10px' }}>

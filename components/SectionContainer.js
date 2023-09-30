@@ -1,6 +1,4 @@
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import { Container, Paper } from '@mui/material';
 
 export default function SectionContainer(props) {
   return (
@@ -13,10 +11,6 @@ export default function SectionContainer(props) {
             backgroundColor: 'WhiteSmoke',
           }}
         >
-          <Typography component='h1' variant='h6' align='left-center'>
-            {props.icon}
-            {props.title}
-          </Typography>
           {props.children}
         </Paper>
       </Container>
