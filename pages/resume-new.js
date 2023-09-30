@@ -1,5 +1,6 @@
 import ResumeSection from '@/components/ResumeSection';
-import PesronalInfoSection from '@/components/PersonalInfoSection';
+import PersonalInfoSection from '@/components/PersonalInfoSection';
+import ProfileSection from '@/components/ProfileSection';
 import React from 'react';
 import dynamic from 'next/dynamic';
 
@@ -17,7 +18,8 @@ export default function ResumeNew() {
     <div style={{ display: 'flex' }}>
       <div style={{ flex: 1, padding: '10px' }}>
         <ResumeSection />
-        <PesronalInfoSection />
+        <PersonalInfoSection />
+        <ProfileSection />
       </div>
 
       <div style={{ width: '50%', padding: '10px' }}>
