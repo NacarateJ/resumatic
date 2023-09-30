@@ -11,8 +11,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-
-export default function EditResumeSection() {
+export default function ResumeSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -29,7 +28,7 @@ export default function EditResumeSection() {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography variant='h5'>Edit Resume</Typography>
+          <Typography variant='h5'>Resume</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
