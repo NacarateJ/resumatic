@@ -13,6 +13,7 @@ import {
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function ProfileSection() {
   const [summary, setSummary] = useState('');
@@ -50,7 +51,10 @@ export default function ProfileSection() {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography variant='h5'>Profile</Typography>
+          <Grid display='flex' alignItems='center'>
+            <AccountBoxIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
+            <Typography variant='h5'>Profile</Typography>
+          </Grid>
         </AccordionSummary>
         <AccordionDetails>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -114,7 +118,6 @@ export default function ProfileSection() {
             )}
 
             {/* Add logic to display generated summary once BE is set */}
-         
 
             <div
               style={{
