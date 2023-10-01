@@ -38,3 +38,66 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Sure, I've added the instructions for running `npx prisma studio` to your README.md file. Here's the updated content:
+
+### Database Configuration
+
+1. Create a `.env` file in the root of your project directory based on the provided `example.env` file.
+
+2. Open the `.env` file and add the following line, replacing the placeholders with your PostgreSQL database connection details:
+
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost:5432/mydatabase
+   ```
+
+   - `username`: Your PostgreSQL username.
+   - `password`: Your PostgreSQL password.
+   - `localhost`: The address where your PostgreSQL server is running.
+   - `5432`: The port on which PostgreSQL is running (default is 5432).
+   - `mydatabase`: The name of your PostgreSQL database.
+
+### Generate Prisma Client
+
+Run the following command to generate the Prisma Client based on the schema defined in `schema.prisma`:
+
+```bash
+npx prisma generate
+```
+
+### Run Migrations
+
+If there are database migrations provided in the `prisma/migrations` folder, apply them to your local database:
+
+```bash
+npx prisma db push
+```
+
+### Seed Database
+
+```bash
+node prisma/seed.js
+```
+
+### Reset Database
+
+```bash
+npx prisma migrate reset  
+```
+
+### Start Prisma Studio
+
+To interact with your database using Prisma Studio, run the following command:
+
+```bash
+npx prisma studio
+```
+
+This will open Prisma Studio in your default web browser, allowing you to explore and manipulate your data.
+
+### Start the Application
+
+You're all set! Start the Next.js development server:
+
+```bash
+npm run dev
+```
