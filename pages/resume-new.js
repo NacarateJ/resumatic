@@ -36,18 +36,7 @@ export default function ResumeNew() {
           </PDFViewerComponent>
         </div>
       </div>
-      <div style={{ width: '50%', padding: '10px' }}>
-        <PDFViewerComponent
-          showToolbar={false}
-          style={{
-            width: "100%",
-            height: "180%"
-          }}
-        >
-          <MyDocument />
-        </PDFViewerComponent>
-      </div>
-    </div>
+
     </LocalizationProvider >
   );
 }

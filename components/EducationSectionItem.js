@@ -27,28 +27,51 @@ export default function EducationSectionItem() {
   const [data, setData] = useState([]);
   const [generatedSummary, setGeneratedSummary] = useState('');
 
-  const generateEnhancedSummary = async (userSummary) => {
+  const generateEnhancedSummary = async () => {
     // Set loading state while generating summary
     setLoading(true);
 
-    // Simulate the generation of an enhanced summary
-    // Replace with actual API call --> CAN I DO IT HERE? SHOULD I SET IT IN API FOLDER
-    setTimeout(() => {
-      const enhancedSummary = userSummary;
+    try {
+      // Make an API request to the server with the summary content
+      const response = await fetch('/api/get-ai-response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ promptText: summary }), // Sending the summary content to the server
+      });
 
-      // Set the generated summary and clear loading state
-      setGeneratedSummary(enhancedSummary);
+      if (response.ok) {
+        const data = await response.json();
+        // Set the generated summary and clear loading state
+        setGeneratedSummary(data.completion);
+        setLoading(false);
+      } else {
+        // Handle error cases here
+        console.error('Failed to generate summary');
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error('Error occurred while generating summary:', error);
       setLoading(false);
-    }, 3000);
+    }
   };
 
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Call generateEnhancedSummary to generate the enhanced summary
+    await generateEnhancedSummary();
+
+    // Rest of your form submission logic goes here, if any
+    // For example, you can handle form data and make another API call if needed.
     const data = new FormData(event.currentTarget);
     console.log({
       data,
+      generatedSummary, // You can access the generated summary here if needed
     });
+
+    // Add additional logic to handle form submission, if necessary
   };
 
   return (
@@ -182,7 +205,12 @@ export default function EducationSectionItem() {
               </div>
             )}
 
-            {/* Add logic to display generated summary once BE is set */}
+            {generatedSummary && !loading && (
+              <div style={{ marginTop: '20px' }}>
+                <Typography variant='h6'>Generated Summary:</Typography>
+                <Typography variant='body1'>{generatedSummary}</Typography>
+              </div>
+            )}
 
 
             <div
