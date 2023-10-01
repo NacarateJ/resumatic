@@ -7,7 +7,6 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
   Button,
   Tooltip,
   MenuItem,
