@@ -1,15 +1,18 @@
-import EditResumeSection from '@/components/EditResumeSection';
-import EditProfileSection from '@/components/EditProfileSection';;
+import ResumeSection from '@/components/ResumeSection';
+import PesronalInfoSection from '@/components/PersonalInfoSection';
 import EducationSection from '@/components/EducationSection';
-import React from "react";
+import React from 'react';
 import dynamic from 'next/dynamic';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const PDFViewerComponent = dynamic(() => import('@react-pdf/renderer').then(module => module.PDFViewer), {
-  loading: () => <p>Loading PDF Viewer...</p>,
-  ssr: false // This ensures that the component is not loaded on the server side
-});
+const PDFViewerComponent = dynamic(
+  () => import('@react-pdf/renderer').then((module) => module.PDFViewer),
+  {
+    loading: () => <p>Loading PDF Viewer...</p>,
+    ssr: false, // This ensures that the component is not loaded on the server side
+  }
+);
 import MyDocument from '@/components/MyDocument';
 
 export default function ResumeNew() {
@@ -17,23 +20,34 @@ export default function ResumeNew() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, padding: '10px' }}>
-          <EditResumeSection />
-          <EditProfileSection />
+          <ResumeSection />
+          <PesronalInfoSection />
           <EducationSection />
         </div>
 
         <div style={{ width: '50%', padding: '10px' }}>
           <PDFViewerComponent
-            showToolbar={false}
             style={{
-              width: "100%",
-              height: "180%"
+              width: '100%',
+              height: '1000px',
             }}
           >
             <MyDocument />
           </PDFViewerComponent>
         </div>
       </div>
-    </LocalizationProvider>
+      <div style={{ width: '50%', padding: '10px' }}>
+        <PDFViewerComponent
+          showToolbar={false}
+          style={{
+            width: "100%",
+            height: "180%"
+          }}
+        >
+          <MyDocument />
+        </PDFViewerComponent>
+      </div>
+    </div>
+    </LocalizationProvider >
   );
 }

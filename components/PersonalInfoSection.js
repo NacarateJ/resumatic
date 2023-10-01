@@ -12,7 +12,7 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function EditProfileSection() {
+export default function PesronalInfoSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -32,7 +32,7 @@ export default function EditProfileSection() {
           >
             <Grid display='flex' alignItems='center'>
               <InfoIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
-              <Typography variant='h5'>Profile</Typography>
+              <Typography variant='h5'>Personal Info</Typography>
             </Grid>
           </AccordionSummary>
           <AccordionDetails>
