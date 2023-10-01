@@ -30,7 +30,7 @@ export default function LanguageSectionItem() {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography variant='h5'>Language #1</Typography>
+          <Typography variant='h8'>Language #1</Typography>
         </AccordionSummary>
       <AccordionDetails>
         <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>

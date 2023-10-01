@@ -1,14 +1,16 @@
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LanguageSectionItem from './LanguageSectionItem';
 import SectionContainer from './SectionContainer';
 import LanguageIcon from '@mui/icons-material/Language';
-import Grid from '@mui/material';
-import Button from '@mui/material';
-import Box from '@mui/material';
+import {
+  Grid,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+  Button,
+  Typography,
+} from '@mui/material';
 
 export default function LanguageSection() {
   const handleSubmit = (event) => {
