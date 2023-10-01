@@ -16,6 +16,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from './Logo';
 import Link from 'next/link';
+import { AccountCircle } from '@mui/icons-material';
 
 const pages = ['Dashboard'];
 const settings = ['Account', 'Logout'];
@@ -107,7 +108,7 @@ export default function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <AccountCircle sx={{ fontSize: 36, color: 'white' }} />
               </IconButton>
             </Tooltip>
             <Menu
