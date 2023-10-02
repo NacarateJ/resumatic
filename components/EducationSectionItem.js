@@ -31,6 +31,8 @@ export default function EducationSectionItem() {
     // Set loading state while generating summary
     setLoading(true);
 
+    const educationSummary = `you are a professional resume writer that is editing a clients resume, rewrite this section to be more professional. no longer than 4 sentences: ${summary}`;
+
     try {
       // Make an API request to the server with the summary content
       const response = await fetch('/api/get-ai-response', {
@@ -38,7 +40,7 @@ export default function EducationSectionItem() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ promptText: summary }), // Sending the summary content to the server
+        body: JSON.stringify({ promptText: educationSummary }), // Sending the summary content to the server
       });
 
       if (response.ok) {
@@ -49,11 +51,12 @@ export default function EducationSectionItem() {
       } else {
         // Handle error cases here
         console.error('Failed to generate summary');
+        setLoading(false); // Clear loading state in case of error
       }
     } catch (error) {
       // Handle network errors
       console.error('Error occurred while generating summary:', error);
-      setLoading(false);
+      setLoading(false); // Clear loading state in case of error
     }
   };
 
@@ -67,6 +70,7 @@ export default function EducationSectionItem() {
     // For example, you can handle form data and make another API call if needed.
     const data = new FormData(event.currentTarget);
     console.log({
+      summary,
       data,
       generatedSummary, // You can access the generated summary here if needed
     });
@@ -131,7 +135,7 @@ export default function EducationSectionItem() {
                     <FormControlLabel control={<Checkbox />} label="Only Year" />
                   </FormGroup>
                 </Grid>
-                <Grid justifyContent="flex-start" direction="column" item xs={5} >
+                <Grid justifyContent="flex-start" item xs={5} >
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker label={'mm/yyyy'} views={['month', 'year']} />
                   </LocalizationProvider>
@@ -166,10 +170,10 @@ export default function EducationSectionItem() {
                       backgroundColor: 'white',
                       height: '100px',
                       paddingTop: '10px',
-                      overflowY: 'auto',
                     },
                   }}
                   multiline
+                  onChange={(e) => setSummary(e.target.value)} // Update the summary state when the user types in the TextField
                 />
               </Grid>
             </Grid>

@@ -2,15 +2,19 @@
 export default async function handler(req, res) {
   try {
     // Sending a request to the OpenAI create chat completion endpoint
+    const { promptText } = req.body;
 
     // Setting parameters for our request
     const createChatCompletionEndpointURL =
       "https://api.openai.com/v1/chat/completions";
-    const promptText = `you are a professional web developer writing a resume summary, rewrite this short summary to be more proffesional. no longer then 4 sentences `; // Prompt for the OpenAI model
+
+    console.log('Prompt Text:', promptText);
     const createChatCompletionReqParams = {
       model: "gpt-3.5-turbo", // Model version to be used for generating the chat completion
       messages: [{ role: "user", content: promptText }], // User message with the specified role and content
     };
+
+    console.log('Request Sent to OpenAI API:', createChatCompletionReqParams);
 
     // Sending our request to OpenAI API
     const createChatCompletionRes = await fetch(
@@ -22,6 +26,7 @@ export default async function handler(req, res) {
           Authorization: "Bearer " + process.env.OPENAI_API_KEY, // Including OpenAI API Key in the Authorization header
         },
         body: JSON.stringify(createChatCompletionReqParams), // Converting request parameters to JSON format
+
       }
     );
 

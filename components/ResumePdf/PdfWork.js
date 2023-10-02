@@ -3,12 +3,9 @@ import commonStyles from "./commonStyles";
 import Bullet from "./Bullet";
 
 function WorkItem({ job }) {
-  console.log("Rendering job:", job); // Log the work object when rendering WorkItem component
-
   const bullets = Array.isArray(job.bullets)
-    ? job.experience_description.bullets.map((bullet) => <Bullet bullet={bullet} key={bullet.id} />)
+    ? job.bullets.map((bullet) => <Bullet bullet={bullet} key={bullet.id} />)
     : [];
-
 
   return (
     <>
@@ -24,14 +21,13 @@ function WorkItem({ job }) {
         <Text>{job.job_title}</Text>
         <Text>{job.city}, {job.country}</Text>
       </View>
+      <Text>{job.experience_description}</Text>
       <View style={commonStyles.bulletBlock}>{bullets}</View>
     </>
   );
 }
 
 function PdfWork({ work_experience }) {
-  console.log("Rendering PdfWork with work_experience:", work_experience); // Log the work_experience object when rendering PdfWork component
-
   const workItems = work_experience.map((work, index) => (
     <WorkItem work={work} key={index} />
   ));
