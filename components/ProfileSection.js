@@ -20,12 +20,22 @@ export default function ProfileSection() {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState('');
+  const [summaryError, setSummaryError] = useState('');
 
-  const generateEnhancedSummary = async () => {
+  const generateEnhancedSummary = async (inputSummary) => {
+    // Check if the input summary is empty
+    if (!inputSummary.trim()) {
+      setSummaryError('Please enter your summary');
+      return;
+    }
+
+    // Clear any previous error state
+    setSummaryError('');
+
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm creating a summary for my resume, please rewrite it in aprofessional way. The summary should be written from the first person point of view, it should be 2-3 short sentences expressing what I want to reflect to the employer, who I am, what the employer can expect from me, what's my especialization (BE/FE), why I am interested in this industry, my passions, interests, stack preferences, what type of products I like to create (intuitive, easy to use)... It should have max 485 characters ${summary}`;
+    const userInput = `I'm creating a summary for my resume, please rewrite it in a professional way. The summary should be written from the first-person point of view, it should be 2-3 short sentences expressing what I want to reflect to the employer, who I am, what the employer can expect from me, what's my specialization (BE/FE), why I am interested in this industry, my passions, interests, stack preferences, what type of products I like to create (intuitive, easy to use)... It should have max 485 characters: ${inputSummary}`;
 
     try {
       // Make an API request to the server with the summary content
@@ -45,6 +55,7 @@ export default function ProfileSection() {
       } else {
         // Handle error cases here
         console.error('Failed to generate summary');
+        setLoading(false);
       }
     } catch (error) {
       // Handle network errors
@@ -57,12 +68,13 @@ export default function ProfileSection() {
     event.preventDefault();
 
     // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary();
+    await generateEnhancedSummary(summary);
 
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
     const data = new FormData(event.currentTarget);
     console.log({
+      data,
       summary,
       generatedSummary, // You can access the generated summary here if needed
     });
@@ -84,7 +96,12 @@ export default function ProfileSection() {
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component='form'
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
@@ -92,6 +109,7 @@ export default function ProfileSection() {
                   id='profileSummary'
                   name='profileSummary'
                   label='Summary'
+                  placeholder='Briefly introduce yourself: what you want to reflect to the employer, why are you interested in this industry, your passions, interests, stack preferences...'
                   fullWidth
                   variant='filled'
                   InputProps={{
@@ -109,6 +127,10 @@ export default function ProfileSection() {
                     },
                   }}
                   multiline
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
+                  error={!!summaryError}
+                  helperText={summaryError}
                 />
               </Grid>
             </Grid>
@@ -119,6 +141,7 @@ export default function ProfileSection() {
               }}
             >
               <Button
+                type='button' // Change type to "button"
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
@@ -166,7 +189,7 @@ export default function ProfileSection() {
                 Cancel
               </Button>
               <Button
-                type='submit'
+                type='submit' // Change type to "submit"
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
