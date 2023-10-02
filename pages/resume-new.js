@@ -15,6 +15,8 @@ const PDFViewerComponent = dynamic(
     ssr: false, // This ensures that the component is not loaded on the server side
   }
 );
+import MyDocument from '@/components/MyDocument';
+import LanguageSection from '@/components/LanguageSection';
 
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
@@ -61,6 +63,7 @@ export default function ResumeNew() {
           <ResumeSection />
           <PesronalInfoSection />
           <EducationSection />
+          <LanguageSection />
         </div>
 
         <div style={{ width: '50%', padding: '10px' }}>
