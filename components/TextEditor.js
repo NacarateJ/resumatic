@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { createEditor, Editor, Transforms } from 'slate';
+import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { Box, Toolbar, IconButton } from '@mui/material';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
