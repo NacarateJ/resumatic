@@ -3,6 +3,7 @@ import PesronalInfoSection from '@/components/PersonalInfoSection';
 import ProfileSection from '@/components/ProfileSection';
 import EducationSection from '@/components/EducationSection';
 import LanguageSection from '@/components/LanguageSection';
+import SkillsSection from '@/components/SkillsSection';
 import dynamic from 'next/dynamic';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -63,6 +64,7 @@ export default function ResumeNew() {
           <ResumeSection />
           <PesronalInfoSection />
           <ProfileSection />
+          <SkillsSection />
           <EducationSection />
           <LanguageSection />
         </div>
