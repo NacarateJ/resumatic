@@ -9,7 +9,6 @@ const commonStyles = StyleSheet.create({
   },
   heading: {
     fontSize: 12,
-    // fontFamily: 'Garamond',
     fontWeight: 700,
     borderBottom: '0.5 solid #000',
     marginBottom: 5,

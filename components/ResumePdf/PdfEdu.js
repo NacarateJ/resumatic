@@ -3,8 +3,6 @@ import commonStyles from "./commonStyles";
 import Bullet from "./Bullet";
 
 function Education({ education }) {
-  // const bullets = education.bullets.map((bullet) => (<Bullet bullet={bullet} key={bullet.id} />));
-
   return (
     <>
       <View style={{ ...commonStyles.workHeaderLine, fontWeight: 700 }}>
