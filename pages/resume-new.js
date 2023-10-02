@@ -1,8 +1,7 @@
 import ResumeSection from '@/components/ResumeSection';
-import PersonalInfoSection from '@/components/PersonalInfoSection';
-import EducationSection from '@/components/EducationSection';
+import PesronalInfoSection from '@/components/PersonalInfoSection';
 import ProfileSection from '@/components/ProfileSection';
-import React from 'react';
+import EducationSection from '@/components/EducationSection';
 import LanguageSection from '@/components/LanguageSection';
 import dynamic from 'next/dynamic';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -19,7 +18,6 @@ const PDFViewerComponent = dynamic(
   }
 );
 
-
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
   const router = useRouter();
@@ -34,17 +32,17 @@ export default function ResumeNew() {
 
       // Make a request to your API endpoint with the parsed resumeId
       fetch(`/api/resumes/${id}`)
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           // Update state with the retrieved resume data
           setResumeData(data.resume);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error fetching resume data:', error);
           // Handle error, e.g., show an error message to the user or redirect to an error page
         });
@@ -63,15 +61,15 @@ export default function ResumeNew() {
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, padding: '10px' }}>
           <ResumeSection />
-          <PersonalInfoSection />
-          <EducationSection />
+          <PesronalInfoSection />
           <ProfileSection />
-      </div>
+          <EducationSection />
           <LanguageSection />
         </div>
 
         <div style={{ width: '50%', padding: '10px' }}>
-          <PDFViewerComponent showToolbar={false}
+          <PDFViewerComponent
+            showToolbar={false}
             style={{
               width: '100%',
               height: '1000px',
@@ -83,4 +81,4 @@ export default function ResumeNew() {
       </div>
     </LocalizationProvider>
   ) : null; // Return null if resumeData is not available yet
-};
+}
