@@ -9,7 +9,7 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import SchoolIcon from '@mui/icons-material/School';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EducationSectionItem from './EducationSectionItem';
 
@@ -32,7 +32,10 @@ export default function EducationSection() {
             aria-controls='panel1a-content'
             id='panel1a-header'
           >
-            <Typography variant='h5'>Education</Typography>
+            <Grid display='flex' alignItems='center'>
+              <SchoolIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
+              <Typography variant='h5'>Education</Typography>
+            </Grid>
           </AccordionSummary>
           <EducationSectionItem />
           <AccordionDetails>

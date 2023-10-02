@@ -24,12 +24,16 @@ export default function ResumeNew() {
 
   useEffect(() => {
     // Get the id parameter from the URL
-    const id = 2
-      ;
+    const { id } = router.query;
+    if (id === undefined) {
+      // Query parameters are not available yet, do nothing.
+      return;
+    }
     // Check if id is defined and is a valid integer
     if (id && !isNaN(parseInt(id))) {
       // Parse id into an integer
       const resumeId = parseInt(id);
+
 
       // Make a request to your API endpoint with the parsed resumeId
       fetch(`/api/resumes/${id}`)
@@ -68,7 +72,7 @@ export default function ResumeNew() {
         </div>
 
         <div style={{ width: '50%', padding: '10px' }}>
-          <PDFViewerComponent showToolbar={false}
+          <PDFViewerComponent showToolbar={true}
             style={{
               width: '100%',
               height: '1000px',

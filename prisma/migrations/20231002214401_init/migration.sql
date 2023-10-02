@@ -13,9 +13,9 @@ CREATE TABLE "Users" (
 CREATE TABLE "Resumes" (
     "resume_id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
-    "resume_title" VARCHAR(255) NOT NULL,
+    "resume_title" VARCHAR(255),
     "resume_description" TEXT,
-    "full_name" VARCHAR(255) NOT NULL,
+    "full_name" VARCHAR(255),
     "job_title" VARCHAR(255),
     "email" VARCHAR(255),
     "profile_description" TEXT,
@@ -34,7 +34,7 @@ CREATE TABLE "Resumes" (
 CREATE TABLE "Projects" (
     "project_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
-    "project_title" VARCHAR(255) NOT NULL,
+    "project_title" VARCHAR(255),
     "project_subtitle" TEXT,
     "project_description" TEXT,
     "start_date" TIMESTAMP(3),
@@ -50,7 +50,7 @@ CREATE TABLE "Projects" (
 CREATE TABLE "Educations" (
     "education_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
-    "school_name" VARCHAR(255) NOT NULL,
+    "school_name" VARCHAR(255),
     "city" VARCHAR(255),
     "country" VARCHAR(255),
     "degree" VARCHAR(255),
@@ -68,7 +68,7 @@ CREATE TABLE "Educations" (
 CREATE TABLE "Skills" (
     "skill_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
-    "skill_name" VARCHAR(255) NOT NULL,
+    "skill_name" VARCHAR(255),
     "skill_description" TEXT,
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 
@@ -79,7 +79,7 @@ CREATE TABLE "Skills" (
 CREATE TABLE "WorkExperiences" (
     "experience_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
-    "job_title" VARCHAR(255) NOT NULL,
+    "job_title" VARCHAR(255),
     "employer" VARCHAR(255),
     "city" VARCHAR(255),
     "country" VARCHAR(255),
@@ -96,7 +96,7 @@ CREATE TABLE "WorkExperiences" (
 CREATE TABLE "Languages" (
     "language_id" SERIAL NOT NULL,
     "resume_id" INTEGER NOT NULL,
-    "language_name" VARCHAR(255) NOT NULL,
+    "language_name" VARCHAR(255),
     "language_level" VARCHAR(255),
     "last_modified_at" TIMESTAMP(3) NOT NULL,
 

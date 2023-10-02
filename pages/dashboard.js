@@ -21,7 +21,7 @@ import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import ShareIcon from '@mui/icons-material/Share';
 import { formatDistanceToNow } from 'date-fns';
 
-
+const user_Id = 3;
 export default function Dashboard({ user, resumes, err }) {
   const router = useRouter();
 
@@ -57,7 +57,44 @@ export default function Dashboard({ user, resumes, err }) {
     // event.stopPropagation();
     console.log('Share clicked for resume:', resume);
     handleMenuClose();
+  }; const handleCreateResume = async () => {
+    try {
+      // Prepare the request body with hardcoded user data
+
+      const requestBody = {
+        user: {
+          userId: user_Id, // Use user_Id here, not userId
+        },
+      };
+
+
+      // Make a POST request to the API endpoint to create a new blank resume
+      const response = await fetch('/api/resumes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        // Parse the response JSON to get the new resume ID
+        const { resumeId } = await response.json();
+
+        // Redirect to the resume-new page with the new resume ID as a query parameter
+        router.push(`/${resumeId}`);
+      } else {
+        // Handle error responses from the API
+        console.error('Error creating resume:', response.statusText);
+        // Optionally, show an error message to the user
+      }
+    } catch (error) {
+      console.error('Error creating resume:', error);
+      // Handle network errors or other exceptions
+      // Optionally, show an error message to the user
+    }
   };
+
 
   // TO DO: uncomment function and cardActionArea
   // const handleCardClick = (resumeId) => {
@@ -101,7 +138,7 @@ export default function Dashboard({ user, resumes, err }) {
           marginTop: '1rem',
           width: '30%',
         }}
-        onClick={() => router.push('/resume-new')}
+        onClick={handleCreateResume}
       >
         Create New Resume
       </Button>
