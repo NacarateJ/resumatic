@@ -30,7 +30,6 @@ export default function LanguageSectionItem() {
                 name='language'
                 label='Enter Language'
                 fullWidth
-                autoComplete='degree'
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
