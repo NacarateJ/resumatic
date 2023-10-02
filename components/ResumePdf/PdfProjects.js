@@ -26,11 +26,8 @@ const styles = StyleSheet.create({
 });
 
 function Project({ project }) {
-  // const bullets = project.bullets.map((bullet) => (<Bullet bullet={bullet} key={bullet.id} />));
-
   return (
     <>
-
       <View style={{ ...commonStyles.workHeaderLine, fontWeight: 700 }}>
         <View>
           <Text style={styles.projectTitle}>{project.project_title} </Text>
@@ -43,7 +40,6 @@ function Project({ project }) {
         )}
       </View>
       {project.project_description !== '' && <View style={styles.summary}><Text>{project.project_description}</Text></View>}
-      {/* <View style={commonStyles.bulletBlock}>{bullets}</View> */}
       <View style={styles.linksLine}>
         <View style={styles.linkItem}>
           <Text>Code: </Text>
