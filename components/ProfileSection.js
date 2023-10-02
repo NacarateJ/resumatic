@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SectionContainer from './SectionContainer';
+import TextEditor from './TextEditor';
 import {
   Accordion,
   AccordionSummary,
@@ -144,7 +145,7 @@ export default function ProfileSection() {
             {generatedSummary && !loading && (
               <div style={{ marginTop: '20px' }}>
                 <Typography variant='h6'>Summary Suggestion:</Typography>
-                <Typography variant='body1'>{generatedSummary}</Typography>
+                <TextEditor generatedSummary={generatedSummary} />
               </div>
             )}
 
