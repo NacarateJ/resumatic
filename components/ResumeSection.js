@@ -40,7 +40,6 @@ export default function ResumeSection() {
                   name='resumeTitle'
                   label='Title'
                   fullWidth
-                  autoComplete='name'
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
                 />
