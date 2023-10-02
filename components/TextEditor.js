@@ -44,9 +44,12 @@ export default function TextEditor({ generatedSummary }) {
     return <Leaf {...props} />;
   }, []);
 
-  // Function to toggle bold mark
   const toggleBold = () => {
     CustomEditor.toggleBoldMark(editor);
+  };
+
+  const toggleItalic = () => {
+    CustomEditor.toggleItalicMark(editor);
   };
 
   return (
@@ -76,7 +79,7 @@ export default function TextEditor({ generatedSummary }) {
           <FormatIndentIncreaseIcon />
         </IconButton>
 
-        <IconButton>
+        <IconButton onClick={toggleItalic}>
           <FormatItalicIcon />
         </IconButton>
 
