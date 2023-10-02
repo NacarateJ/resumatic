@@ -25,6 +25,8 @@ export default function ProfileSection() {
     // Set loading state while generating summary
     setLoading(true);
 
+    const userInput = `I'm creating a summary for my resume, please rewrite it in aprofessional way. The summary should be written from the first person point of view, it should be 2-3 short sentences expressing what I want to reflect to the employer, who I am, what the employer can expect from me, what's my especialization (BE/FE), why I am interested in this industry, my passions, interests, stack preferences, what type of products I like to create (intuitive, easy to use)... It should have max 485 characters ${summary}`;
+
     try {
       // Make an API request to the server with the summary content
       const response = await fetch('/api/get-ai-response', {
@@ -32,7 +34,7 @@ export default function ProfileSection() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ promptText: summary }), // Sending the summary content to the server
+        body: JSON.stringify({ promptText: userInput }), // Sending the summary content to the server
       });
 
       if (response.ok) {
@@ -61,7 +63,7 @@ export default function ProfileSection() {
     // For example, you can handle form data and make another API call if needed.
     const data = new FormData(event.currentTarget);
     console.log({
-      data,
+      summary,
       generatedSummary, // You can access the generated summary here if needed
     });
 
