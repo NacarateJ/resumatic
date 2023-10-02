@@ -1,21 +1,20 @@
+import Link from 'next/link';
 import SectionContainer from '../SectionContainer';
-import {
-  Box,
-  Grid,
-  TextField,
-  Button,
-  Typography,
-  InputLabel,
-  FilledInput,
-} from '@mui/material';
+import { Box, Grid, TextField, Button, Typography } from '@mui/material';
 
 export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
+    // Access the form input fields using the event object
+    const formData = new FormData(event.target);
+
+    // Extract specific form field values
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    // Now you can use the `email` and `password` values as needed
+    console.log('Email:', email);
+    console.log('Password:', password);
   };
 
   return (
@@ -31,7 +30,7 @@ export default function Login() {
         }}
       >
         <Typography component='h1' variant='h5'>
-          Sign In
+          Login
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -44,43 +43,45 @@ export default function Login() {
               autoComplete='email'
               variant='filled'
               inputProps={{ style: { backgroundColor: 'white' } }}
+              sx={{ mt: 2 }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              required
               id='password'
               name='password'
               label='Password'
+              type='password'
+              autoComplete='current-password'
+              variant='filled'
               fullWidth
               inputProps={{ style: { backgroundColor: 'white' } }}
             />
           </Grid>
         </Grid>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'right',
-          }}
-        >
-          <Button
-            style={{
-              color: '#00B4D8',
-            }}
-            sx={{ mt: 3, ml: 1 }}
-          >
-            Cancel
-          </Button>
+        <Grid container display='flex' direction='column' alignItems='center'>
           <Button
             type='submit'
             variant='contained'
+            sx={{ mt: 3, ml: 1 }}
             style={{
               backgroundColor: '#00B4D8',
             }}
-            sx={{ mt: 3, ml: 1 }}
           >
-            Save
+            Login
           </Button>
-        </div>
+          <Link key='create-account' href={`/new-account`} passHref>
+            <Button
+              sx={{ mt: 1, ml: 1 }}
+              style={{
+                color: '#00B4D8',
+              }}
+            >
+              Create Account
+            </Button>
+          </Link>
+        </Grid>
       </Box>
     </SectionContainer>
   );
