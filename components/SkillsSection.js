@@ -1,7 +1,7 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LanguageSectionItem from './LanguageSectionItem';
 import SectionContainer from './SectionContainer';
-import LanguageIcon from '@mui/icons-material/Language';
+import PsychologyIcon from '@mui/icons-material/Psychology';
 import {
   Grid,
   Accordion,
@@ -11,6 +11,7 @@ import {
   Button,
   Typography,
 } from '@mui/material';
+import SkillsSectionItem from './SkillsSectionItem';
 
 export default function LanguageSection() {
   const handleSubmit = (event) => {
@@ -30,8 +31,8 @@ export default function LanguageSection() {
             id='panel1a-header'
           >
             <Grid display='flex' alignItems='center'>
-              <LanguageIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
-              <Typography variant='h5'>Languages</Typography>
+              <PsychologyIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
+              <Typography variant='h5'>Skills</Typography>
             </Grid>
           </AccordionSummary>
 
@@ -41,9 +42,9 @@ export default function LanguageSection() {
               aria-controls='panel1a-content'
               id='panel1a-header'
             >
-              <Typography variant='h8'>Language #1</Typography>
+              <Typography variant='h8'>Programming Languages</Typography>
             </AccordionSummary>
-            <LanguageSectionItem />
+            <SkillsSectionItem />
           </Accordion >
           <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
             <AccordionSummary
@@ -51,9 +52,9 @@ export default function LanguageSection() {
               aria-controls='panel1a-content'
               id='panel1a-header'
             >
-              <Typography variant='h8'>Language #2</Typography>
+              <Typography variant='h8'>Frameworks, Libraries & Databases</Typography>
             </AccordionSummary>
-            <LanguageSectionItem />
+            <SkillsSectionItem />
           </Accordion >
           <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
             <AccordionSummary
@@ -61,25 +62,10 @@ export default function LanguageSection() {
               aria-controls='panel1a-content'
               id='panel1a-header'
             >
-              <Typography variant='h8'>Language #3</Typography>
+              <Typography variant='h8'>Tools & Other Technologies</Typography>
             </AccordionSummary>
-            <LanguageSectionItem />
+            <SkillsSectionItem />
           </Accordion >
-          <AccordionDetails>
-            <Grid display='flex' justifyContent='center' alignItems='center'>
-
-              <Button
-                type='submit'
-                variant='contained'
-                sx={{ mt: 3, ml: 1 }}
-                style={{
-                  backgroundColor: '#00B4D8',
-                }}
-              >
-                Add
-              </Button>
-            </Grid>
-          </AccordionDetails>
         </Accordion>
       </SectionContainer>
     </>

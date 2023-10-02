@@ -5,11 +5,9 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import LanguageLevel from './LanguageLevel';
 
 
-
-export default function LanguageSectionItem() {
+export default function SkillsSectionItem() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -26,16 +24,23 @@ export default function LanguageSectionItem() {
             <Grid item xs={12}>
               <TextField
                 required
-                id='language'
-                name='language'
-                label='Enter Language'
+                id='skill'
+                name='skill'
+                label='Enter Skill'
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
             <Grid item xs={12}>
-              <LanguageLevel />
+              <TextField
+                id='skillDescription'
+                name='skillDescription'
+                label='Enter Description (recommended)'
+                fullWidth
+                variant='filled'
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
             </Grid>
             </Grid>
 

@@ -2,6 +2,7 @@ import ResumeSection from '@/components/ResumeSection';
 import PesronalInfoSection from '@/components/PersonalInfoSection';
 import EducationSection from '@/components/EducationSection';
 import LanguageSection from '@/components/LanguageSection';
+import SkillsSection from '@/components/SkillsSection';
 import dynamic from 'next/dynamic';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -62,6 +63,7 @@ export default function ResumeNew() {
         <div style={{ flex: 1, padding: '10px' }}>
           <ResumeSection />
           <PesronalInfoSection />
+          <SkillsSection />
           <EducationSection />
           <LanguageSection />
         </div>
