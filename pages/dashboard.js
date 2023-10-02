@@ -69,7 +69,7 @@ export default function Dashboard({ user, resumes, err }) {
 
 
       // Make a POST request to the API endpoint to create a new blank resume
-      const response = await fetch('/api/resumes', {
+      const response = await fetch('/api/create-resume', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
