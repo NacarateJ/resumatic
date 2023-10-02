@@ -34,9 +34,38 @@ export default function LanguageSection() {
               <Typography variant='h5'>Languages</Typography>
             </Grid>
           </AccordionSummary>
-          <AccordionDetails>
-          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+
+          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'
+            >
+              <Typography variant='h8'>Language #1</Typography>
+            </AccordionSummary>
             <LanguageSectionItem />
+          </Accordion >
+          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'
+            >
+              <Typography variant='h8'>Language #2</Typography>
+            </AccordionSummary>
+            <LanguageSectionItem />
+          </Accordion >
+          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'
+            >
+              <Typography variant='h8'>Language #3</Typography>
+            </AccordionSummary>
+            <LanguageSectionItem />
+          </Accordion >
+          <AccordionDetails>
             <Grid display='flex' justifyContent='center' alignItems='center'>
 
               <Button
@@ -50,7 +79,6 @@ export default function LanguageSection() {
                 Add
               </Button>
             </Grid>
-            </Box>
           </AccordionDetails>
         </Accordion>
       </SectionContainer>

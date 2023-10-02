@@ -1,15 +1,11 @@
 import {
   Grid,
-  Accordion,
-  AccordionSummary,
   AccordionDetails,
   TextField,
   Box,
   Button,
-  Typography,
 } from '@mui/material';
 import LanguageLevel from './LanguageLevel';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 
@@ -24,14 +20,6 @@ export default function LanguageSectionItem() {
 
   return (
     <>
-    <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-        >
-          <Typography variant='h8'>Language #1</Typography>
-        </AccordionSummary>
       <AccordionDetails>
         <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={3}>
@@ -79,7 +67,6 @@ export default function LanguageSectionItem() {
             </div>
         </Box>
         </AccordionDetails>
-      </Accordion>
     </>
   );
 };
