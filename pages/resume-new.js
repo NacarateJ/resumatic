@@ -1,6 +1,7 @@
 import ResumeSection from '@/components/ResumeSection';
 import PesronalInfoSection from '@/components/PersonalInfoSection';
 import EducationSection from '@/components/EducationSection';
+import LanguageSection from '@/components/LanguageSection';
 import dynamic from 'next/dynamic';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -15,8 +16,7 @@ const PDFViewerComponent = dynamic(
     ssr: false, // This ensures that the component is not loaded on the server side
   }
 );
-import MyDocument from '@/components/MyDocument';
-import LanguageSection from '@/components/LanguageSection';
+
 
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
