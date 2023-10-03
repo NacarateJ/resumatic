@@ -4,10 +4,10 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       const { dataType, data } = req.body;
-      console.log('Received data:', data);
+
       switch (dataType) {
         case 'resume':
-          const { resumeId, resumeTitle, resumeDescription, profileDescription } = data;
+          const { resumeId, resumeTitle, resumeDescription } = data;
 
           // Check if the provided resumeId exists in the database
           const existingResume = await prisma.resumes.findUnique({
@@ -28,9 +28,6 @@ export default async function handler(req, res) {
             data: {
               resume_title: resumeTitle,
               resume_description: resumeDescription,
-              profile_description: profileDescription,
-
-
               // ... other fields you want to update
             },
           });
