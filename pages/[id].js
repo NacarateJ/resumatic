@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import MyDocument from '@/components/MyDocument';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import ProjectSection from '@/components/ProjectSection';
 
 const PDFViewerComponent = dynamic(
   () => import('@react-pdf/renderer').then((module) => module.PDFViewer),
@@ -67,8 +68,9 @@ export default function ResumeNew() {
           <PersonalInfoSection resumeId={resumeId} />
           <ProfileSection resumeId={resumeId} />
           <SkillsSection />
-          <EducationSection />
           <LanguageSection />
+          <EducationSection />
+          <ProjectSection />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
           <PDFViewerComponent showToolbar={true}
