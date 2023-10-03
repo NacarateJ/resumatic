@@ -19,31 +19,37 @@ const PDFViewerComponent = dynamic(
   }
 );
 
+
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     // Get the id parameter from the URL
-    const id = 2;
+    const { id } = router.query;
+    if (id === undefined) {
+      // Query parameters are not available yet, do nothing.
+      return;
+    }
     // Check if id is defined and is a valid integer
     if (id && !isNaN(parseInt(id))) {
       // Parse id into an integer
       const resumeId = parseInt(id);
 
+
       // Make a request to your API endpoint with the parsed resumeId
       fetch(`/api/resumes/${id}`)
-        .then((response) => {
+        .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
           return response.json();
         })
-        .then((data) => {
+        .then(data => {
           // Update state with the retrieved resume data
           setResumeData(data.resume);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error('Error fetching resume data:', error);
           // Handle error, e.g., show an error message to the user or redirect to an error page
         });
@@ -70,8 +76,7 @@ export default function ResumeNew() {
         </div>
 
         <div style={{ width: '50%', padding: '10px' }}>
-          <PDFViewerComponent
-            showToolbar={false}
+          <PDFViewerComponent showToolbar={true}
             style={{
               width: '100%',
               height: '1000px',
@@ -83,4 +88,4 @@ export default function ResumeNew() {
       </div>
     </LocalizationProvider>
   ) : null; // Return null if resumeData is not available yet
-}
+};
