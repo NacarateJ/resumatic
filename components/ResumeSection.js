@@ -10,14 +10,47 @@ import {
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from 'react';
 
-export default function ResumeSection() {
-  const handleSubmit = (event) => {
+export default function ResumeSection({ resumeId }) {
+
+  console.log(`resumeSection: ${resumeId}`);
+  const [resumeTitle, setResumeTitle] = useState('');
+  const [resumeDescription, setResumeDescription] = useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
+
+    console.log(`resumeSection: ${resumeId}`);
+
+    try {
+      const response = await fetch('/api/insert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dataType: 'resume', // Specify the data type as 'resume'
+          data: {
+            resumeId: resumeId.resumeId,
+            resumeTitle,
+            resumeDescription,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log('Resume ID:', responseData.resumeId);
+        // Handle the response data as needed, e.g., show a success message.
+      } else {
+        console.error('Error inserting resume data:', response.statusText);
+        // Handle error and display an error message to the user.
+      }
+    } catch (error) {
+      console.error('Error inserting resume data:', error);
+      // Handle network errors or other exceptions.
+    }
   };
 
   return (
@@ -39,9 +72,11 @@ export default function ResumeSection() {
                   id='resumeTitle'
                   name='resumeTitle'
                   label='Title'
+                  value={resumeTitle}
+                  onChange={((e) => setResumeTitle(e.target.value))}
                   fullWidth
                   variant='filled'
-                  inputProps={{ style: { backgroundColor: 'white' } }}
+                  inputProps={{ style: { backgroundColor: 'white', overflowY: 'auto' } }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -49,6 +84,8 @@ export default function ResumeSection() {
                   id='resumeDescription'
                   name='resumeDescription'
                   label='Description'
+                  value={resumeDescription}
+                  onChange={((e) => setResumeDescription(e.target.value))}
                   fullWidth
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
