@@ -9,7 +9,7 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import SchoolIcon from '@mui/icons-material/School';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EducationSectionItem from './EducationSectionItem';
 
@@ -32,9 +32,42 @@ export default function EducationSection() {
             aria-controls='panel1a-content'
             id='panel1a-header'
           >
-            <Typography variant='h5'>Education</Typography>
+            <Grid display='flex' alignItems='center'>
+              <SchoolIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
+              <Typography variant='h5'>Education</Typography>
+            </Grid>
           </AccordionSummary>
-          <EducationSectionItem />
+
+          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'
+            >
+              <Typography variant='h8'>Education #1</Typography>
+            </AccordionSummary>
+            <EducationSectionItem />
+          </Accordion >
+          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'
+            >
+              <Typography variant='h8'>Education #1</Typography>
+            </AccordionSummary>
+            <EducationSectionItem />
+          </Accordion >
+          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'
+            >
+              <Typography variant='h8'>Education #1</Typography>
+            </AccordionSummary>
+            <EducationSectionItem />
+          </Accordion >
           <AccordionDetails>
             <Grid display='flex' justifyContent='center' alignItems='center'>
 

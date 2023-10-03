@@ -1,37 +1,42 @@
+import React, { useState } from 'react';
+import TextEditor from './TextEditor';
 import {
-  Grid,
-  Accordion,
-  AccordionSummary,
   AccordionDetails,
-  TextField,
-  Checkbox,
-  Box,
-  Button,
   Typography,
+  Box,
+  Grid,
+  TextField,
+  Button,
+  Checkbox,
 } from '@mui/material';
-import FormGroup from '@mui/material/FormGroup';
-import { useState } from "react";
-import FormControlLabel from '@mui/material/FormControlLabel';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-
-export default function EducationSectionItem() {
-
+export default function ProfileSection() {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
   const [generatedSummary, setGeneratedSummary] = useState('');
+  const [summaryError, setSummaryError] = useState('');
 
-  const generateEnhancedSummary = async () => {
+  const generateEnhancedSummary = async (inputSummary) => {
+    // Check if the input summary is empty
+    if (!inputSummary.trim()) {
+      setSummaryError('Please enter your summary');
+      return;
+    }
+
+    // Clear any previous error state
+    setSummaryError('');
+
     // Set loading state while generating summary
     setLoading(true);
 
-    const educationSummary = `you are a professional resume writer that is editing a clients resume, rewrite this section to be more professional. no longer than 4 sentences: ${summary}`;
+    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences expressing to the employer what my role was in the project and teh technologies I used along with what skills were necessary and demonstrate how I used my expertise. It should have max 485 characters: ${inputSummary}`;
 
     try {
       // Make an API request to the server with the summary content
@@ -40,7 +45,7 @@ export default function EducationSectionItem() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ promptText: educationSummary }), // Sending the summary content to the server
+        body: JSON.stringify({ promptText: userInput }), // Sending the summary content to the server
       });
 
       if (response.ok) {
@@ -51,12 +56,12 @@ export default function EducationSectionItem() {
       } else {
         // Handle error cases here
         console.error('Failed to generate summary');
-        setLoading(false); // Clear loading state in case of error
+        setLoading(false);
       }
     } catch (error) {
       // Handle network errors
       console.error('Error occurred while generating summary:', error);
-      setLoading(false); // Clear loading state in case of error
+      setLoading(false);
     }
   };
 
@@ -64,14 +69,14 @@ export default function EducationSectionItem() {
     event.preventDefault();
 
     // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary();
+    await generateEnhancedSummary(summary);
 
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
     const data = new FormData(event.currentTarget);
     console.log({
-      summary,
       data,
+      summary,
       generatedSummary, // You can access the generated summary here if needed
     });
 
@@ -80,45 +85,29 @@ export default function EducationSectionItem() {
 
   return (
     <>
-
       <AccordionDetails>
-        <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component='form'
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 required
-                id='degree'
-                name='degree'
-                label='Degree'
+                id='projectName'
+                name='projectName'
+                label='Project Name'
                 fullWidth
-                autoComplete='degree'
-                variant='filled'
-                inputProps={{ style: { backgroundColor: 'white' } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id='school'
-                name='school'
-                label='School'
-                fullWidth
-                variant='filled'
-                inputProps={{ style: { backgroundColor: 'white' } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id='gpa'
-                name='gpa'
-                label='Gpa'
-                fullWidth
+                autoComplete='project'
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
             <Grid item xs={12}>
             </Grid>
-            <Grid container spacing={1} justifyContent="space-evenly" columnSpacing={6}>
+            <Grid container spacing={1} justifyContent="space-evenly" columnSpacing={6} sx={{ mb: 2 }}>
               <Grid justifyContent="flex-start" item xs={5} >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker label={'mm/yyyy'} views={['month', 'year']} />
@@ -137,39 +126,41 @@ export default function EducationSectionItem() {
                 <FormControlLabel control={<Checkbox />} label="Present (Current)" />
               </Grid>
             </Grid>
-
           </Grid>
-
-
-        </Box>
-        <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField
-                required
-                id='profileSummary'
-                name='profileSummary'
-                label='Summary'
-                fullWidth
-                variant='filled'
-                InputProps={{
-                  style: {
-                    backgroundColor: 'white',
-                  },
-                  inputComponent: ScrollableInput,
-                }}
-                inputProps={{
-                  style: {
-                    backgroundColor: 'white',
-                    height: '100px',
-                    paddingTop: '10px',
-                  },
-                }}
-                multiline
-                onChange={(e) => setSummary(e.target.value)} // Update the summary state when the user types in the TextField
-              />
             </Grid>
-          </Grid>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  id='projectSummary'
+                  name='projectSummary'
+                  label='Summary'
+                  placeholder='Describe your project including what your role was in the project and the technologies and skills you used.'
+                  fullWidth
+                  variant='filled'
+                  InputProps={{
+                    style: {
+                      backgroundColor: 'white',
+                    },
+                    inputComponent: ScrollableInput,
+                  }}
+                  inputProps={{
+                    style: {
+                      backgroundColor: 'white',
+                      height: '100px',
+                      paddingTop: '10px',
+                      overflowY: 'auto',
+                    },
+                  }}
+                  multiline
+                  value={summary}
+                  onChange={(e) => setSummary(e.target.value)}
+                  error={!!summaryError}
+                  helperText={summaryError}
+                />
+              </Grid>
+            </Grid>
           <div
             style={{
               display: 'flex',
@@ -177,6 +168,7 @@ export default function EducationSectionItem() {
             }}
           >
             <Button
+              type='button' // Change type to "button"
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',
@@ -204,11 +196,10 @@ export default function EducationSectionItem() {
 
           {generatedSummary && !loading && (
             <div style={{ marginTop: '20px' }}>
-              <Typography variant='h6'>Generated Summary:</Typography>
-              <Typography variant='body1'>{generatedSummary}</Typography>
+              <Typography variant='h6'>Summary Suggestion:</Typography>
+              <TextEditor generatedSummary={generatedSummary} />
             </div>
           )}
-
 
           <div
             style={{
@@ -225,7 +216,7 @@ export default function EducationSectionItem() {
               Cancel
             </Button>
             <Button
-              type='submit'
+              type='submit' // Change type to "submit"
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',
@@ -237,9 +228,6 @@ export default function EducationSectionItem() {
           </div>
         </Box>
       </AccordionDetails>
-
     </>
   );
-};
-
-
+}
