@@ -12,7 +12,7 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function PesronalInfoSection() {
+export default function PersonalInfoSection() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

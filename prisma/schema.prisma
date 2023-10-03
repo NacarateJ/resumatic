@@ -46,34 +46,34 @@ model Resumes {
 
 // Define the Projects model, which represents user projects.
 model Projects {
-  project_id          Int       @id @default(autoincrement()) @map("project_id") // Primary Key
+  project_id          Int      @id @default(autoincrement()) @map("project_id") // Primary Key
   resume_id           Int // Foreign Key
-  project_title       String?   @db.VarChar(255) // Required
-  project_subtitle    String?   @db.Text // Optional
-  project_description String?   @db.Text // Optional
-  start_date          DateTime? // Optional
-  end_date            DateTime? // Optional
-  project_link        String?   @db.Text // Optional
+  project_title       String?  @db.VarChar(255) // Required
+  project_subtitle    String?  @db.Text // Optional
+  project_description String?  @db.Text // Optional
+  start_date          String? // Optional, stored as a string
+  end_date            String? // Optional, stored as a string
+  project_link        String?  @db.Text // Optional
   is_current          Boolean? // Optional
-  last_modified_at    DateTime  @updatedAt // Auto-updated timestamp
-  resume              Resumes   @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resumes
+  last_modified_at    DateTime @updatedAt // Auto-updated timestamp
+  resume              Resumes  @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resumes
 }
 
 // Define the Educations model, which represents user education.
 model Educations {
-  education_id          Int       @id @default(autoincrement()) @map("education_id") // Primary Key
+  education_id          Int      @id @default(autoincrement()) @map("education_id") // Primary Key
   resume_id             Int // Foreign Key
-  school_name           String?   @db.VarChar(255) // Required
-  city                  String?   @db.VarChar(255) // Optional
-  country               String?   @db.VarChar(255) // Optional
-  degree                String?   @db.VarChar(255) // Optional
-  education_description String?   @db.Text // Optional
-  start_date            DateTime? // Optional
-  end_date              DateTime? // Optional
+  school_name           String?  @db.VarChar(255) // Required
+  city                  String?  @db.VarChar(255) // Optional
+  country               String?  @db.VarChar(255) // Optional
+  degree                String?  @db.VarChar(255) // Optional
+  education_description String?  @db.Text // Optional
+  start_date            String? // Optional, stored as a string
+  end_date              String? // Optional, stored as a string
   gpa                   Float? // Optional
   is_current            Boolean? // Optional
-  last_modified_at      DateTime  @updatedAt // Auto-updated timestamp
-  resume                Resumes   @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resumes
+  last_modified_at      DateTime @updatedAt // Auto-updated timestamp
+  resume                Resumes  @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resumes
 }
 
 // Define the Skills model, which represents user skills.
@@ -88,18 +88,18 @@ model Skills {
 
 // Define the WorkExperiences model, which represents user work experience.
 model WorkExperiences {
-  experience_id          Int       @id @default(autoincrement()) @map("experience_id") // Primary Key
+  experience_id          Int      @id @default(autoincrement()) @map("experience_id") // Primary Key
   resume_id              Int // Foreign Key
-  job_title              String?   @db.VarChar(255) // Required
-  employer               String?   @db.VarChar(255) // Optional
-  city                   String?   @db.VarChar(255) // Optional
-  country                String?   @db.VarChar(255) // Optional
-  start_date             DateTime? // Optional
-  end_date               DateTime? // Optional
+  job_title              String?  @db.VarChar(255) // Required
+  employer               String?  @db.VarChar(255) // Optional
+  city                   String?  @db.VarChar(255) // Optional
+  country                String?  @db.VarChar(255) // Optional
+  start_date             String? // Optional, stored as a string
+  end_date               String? // Optional, stored as a string
   is_current             Boolean? // Optional
-  experience_description String?   @db.Text // Optional
-  last_modified_at       DateTime  @updatedAt // Auto-updated timestamp
-  resume                 Resumes   @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resumes
+  experience_description String?  @db.Text // Optional
+  last_modified_at       DateTime @updatedAt // Auto-updated timestamp
+  resume                 Resumes  @relation(fields: [resume_id], references: [resume_id]) // One-to-Many relationship with Resumes
 }
 
 // Define the Languages model, which represents user languages.
