@@ -1,14 +1,10 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import LanguageSectionItem from './LanguageSectionItem';
 import SectionContainer from './SectionContainer';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import {
   Grid,
   Accordion,
   AccordionSummary,
-  AccordionDetails,
-  Box,
-  Button,
   Typography,
 } from '@mui/material';
 import SkillsSectionItem from './SkillsSectionItem';
