@@ -11,6 +11,7 @@ import MyDocument from '@/components/MyDocument';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSection from '@/components/ProjectSection';
+import ProfessionalExperienceSection from '@/components/ProfessionalExperienceSection';
 
 const PDFViewerComponent = dynamic(
   () => import('@react-pdf/renderer').then((module) => module.PDFViewer),
@@ -71,6 +72,7 @@ export default function ResumeNew() {
           <LanguageSection />
           <EducationSection />
           <ProjectSection />
+          <ProfessionalExperienceSection />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
           <PDFViewerComponent showToolbar={true}
