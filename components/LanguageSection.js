@@ -7,7 +7,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Box,
   Button,
   Typography,
 } from '@mui/material';
