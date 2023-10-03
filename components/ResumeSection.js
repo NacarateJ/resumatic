@@ -32,7 +32,7 @@ export default function ResumeSection({ resumeId }) {
         body: JSON.stringify({
           dataType: 'resume', // Specify the data type as 'resume'
           data: {
-            resumeId: resumeId.resumeId,
+            resumeId: resumeId,
             resumeTitle,
             resumeDescription,
           },

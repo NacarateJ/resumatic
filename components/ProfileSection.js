@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SectionContainer from './SectionContainer';
 import TextEditor from './TextEditor';
 import {
@@ -16,8 +16,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-export default function ProfileSection() {
-  const [summary, setSummary] = useState('');
+export default function ProfileSection({ resumeId }) {
+  // const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState('');
   const [summaryError, setSummaryError] = useState('');
@@ -64,23 +64,53 @@ export default function ProfileSection() {
     }
   };
 
+  const handleEnhanceClick = () => {
+    setLoading(true);
+    generateEnhancedSummary(summary);
+  };
+
+
+  useEffect(() => {
+    if (loading) {
+      generateEnhancedSummary(summary);
+    }
+  }, [loading]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const userInputSummary = document.getElementById('profileSummary').value; // Read the value directly from the input field
+    console.log('User input summary:', userInputSummary);
 
-    // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary(summary);
+    try {
+      const response = await fetch('/api/insert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dataType: 'resume',
+          data: {
+            resumeId: resumeId,
+            summary: userInputSummary, // Use the user-entered summary data from the input field
+          },
+        }),
+      });
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-      summary,
-      generatedSummary, // You can access the generated summary here if needed
-    });
-
-    // Add additional logic to handle form submission, if necessary
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log('Resume ID:', responseData.resumeId);
+        // Handle the response data as needed, e.g., show a success message.
+      } else {
+        console.error('Error inserting resume data:', response.statusText);
+        // Handle error and display an error message to the user.
+      }
+    } catch (error) {
+      console.error('Error inserting resume data:', error);
+      // Handle network errors or other exceptions.
+    }
   };
+
+
 
   return (
     <SectionContainer>
@@ -104,7 +134,7 @@ export default function ProfileSection() {
           >
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <TextField
+                {/* <TextField
                   required
                   id='profileSummary'
                   name='profileSummary'
@@ -117,21 +147,22 @@ export default function ProfileSection() {
                       backgroundColor: 'white',
                     },
                     inputComponent: ScrollableInput,
-                  }}
-                  inputProps={{
-                    style: {
-                      backgroundColor: 'white',
-                      height: '100px',
-                      paddingTop: '10px',
-                      overflowY: 'auto',
+                    inputProps: {
+                      style: {
+                        backgroundColor: 'white',
+                        height: '100px',
+                        paddingTop: '10px',
+                        // overflowX: 'hidden',
+                        // overflowY: 'auto',
+                      },
                     },
                   }}
                   multiline
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
+                  // value={summary}
+                  // onChange={(e) => setSummary(e.target.value)}
                   error={!!summaryError}
                   helperText={summaryError}
-                />
+                /> */}
               </Grid>
             </Grid>
             <div
@@ -204,4 +235,4 @@ export default function ProfileSection() {
       </Accordion>
     </SectionContainer>
   );
-}
+};
