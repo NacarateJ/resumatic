@@ -14,14 +14,14 @@ import { useState } from 'react';
 
 export default function ResumeSection({ resumeId }) {
 
-  console.log(`resumeSection: ${resumeId}`);
+
   const [resumeTitle, setResumeTitle] = useState('');
   const [resumeDescription, setResumeDescription] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(`resumeSection: ${resumeId}`);
+
 
     try {
       const response = await fetch('/api/insert', {
@@ -32,7 +32,7 @@ export default function ResumeSection({ resumeId }) {
         body: JSON.stringify({
           dataType: 'resume', // Specify the data type as 'resume'
           data: {
-            resumeId: resumeId.resumeId,
+            resumeId: resumeId,
             resumeTitle,
             resumeDescription,
           },
@@ -41,7 +41,7 @@ export default function ResumeSection({ resumeId }) {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log('Resume ID:', responseData.resumeId);
+
         // Handle the response data as needed, e.g., show a success message.
       } else {
         console.error('Error inserting resume data:', response.statusText);
