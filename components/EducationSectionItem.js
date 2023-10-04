@@ -20,15 +20,37 @@ import {
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
+import TextEditor from './TextEditor';
 
 export default function EducationSectionItem() {
   const [summary, setSummary] = useState('');
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [generatedSummary, setGeneratedSummary] = useState('');
-  const [checkedShow, setCheckedShow] = useState(false);
 
-  const generateEnhancedSummary = async () => {
+  // State managmenent for generates summary
+  const [loading, setLoading] = useState(false);
+  const [summaryError, setSummaryError] = useState('');
+  const [generatedSummary, setGeneratedSummary] = useState('');
+
+  // State managment for Start Date checkboxes
+  const [dontShowStartDate, setDontShowStartDate] = useState(false);
+  const [onlyYearStartDate, setOnlyYearStartDate] = useState(false);
+  const [presentStartDate, setPresentStartDate] = useState(false);
+
+  // State managment for End Date checkboxes
+  const [dontShowEndDate, setDontShowEndDate] = useState(false);
+  const [onlyYearEndDate, setOnlyYearEndDate] = useState(false);
+  const [presentEndDate, setPresentEndDate] = useState(false);
+
+  const generateEnhancedSummary = async (input) => {
+    // Check if the input summary is empty
+    if (!input.trim()) {
+      setSummaryError('Please enter your summary');
+      return;
+    }
+
+    // Clear any previous error state
+    setSummaryError('');
+
     // Set loading state while generating summary
     setLoading(true);
 
@@ -61,34 +83,26 @@ export default function EducationSectionItem() {
     }
   };
 
-  const handleEnchance = async (event) => {
-    event.preventDefault();
-    // Call generateEnhancedSummary to generate the enhanced summary
-    const getSummary = await generateEnhancedSummary();
-    setGeneratedSummary(getSummary);
-
-    console.log('Generated Summary', generatedSummary);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      degree: formData.get('degree'),
+      school: formData.get('school'),
+      gpa: formData.get('gpa'),
+      educationSummary: formData.get('educationSummary'),
+    };
+
+    console.log(data);
 
     // Add additional logic to handle form submission, if necessary
   };
 
-  const handleCheckboxShow = (event) => {
-    setCheckedShow(event.target.checked);
-  };
-
   return (
     <AccordionDetails>
-      <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Box component='form' sx={{ mt: 3 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
@@ -131,19 +145,32 @@ export default function EducationSectionItem() {
           >
             <Grid justifyContent='flex-start' item xs={5}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label={'mm/yyyy'} views={['month', 'year']} />
+                <DatePicker label={'Start Date'} views={['month', 'year']} />
               </LocalizationProvider>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox onChange={handleCheckboxShow} />}
+                  control={
+                    <Checkbox
+                      checked={dontShowStartDate}
+                      onChange={(e) => setDontShowStartDate(e.target.checked)}
+                    />
+                  }
                   label="Don't Show"
                 />
-                <FormControlLabel control={<Checkbox />} label='Only Year' />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={onlyYearStartDate}
+                      onChange={(e) => setOnlyYearStartDate(e.target.checked)}
+                    />
+                  }
+                  label='Only Year'
+                />
               </FormGroup>
             </Grid>
             <Grid justifyContent='flex-start' item xs={5}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label={'mm/yyyy'} views={['month', 'year']} />
+                <DatePicker label={'End Date'} views={['month', 'year']} />
               </LocalizationProvider>
               <FormControlLabel control={<Checkbox />} label="Don't Show" />
               <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -158,8 +185,8 @@ export default function EducationSectionItem() {
           <Grid item xs={12}>
             <TextField
               required
-              id='profileSummary'
-              name='profileSummary'
+              id='educationSummary'
+              name='educationSummary'
               label='Summary'
               fullWidth
               variant='filled'
@@ -175,9 +202,13 @@ export default function EducationSectionItem() {
                   height: '100px',
                   paddingTop: '10px',
                 },
+                inputComponent: ScrollableInput,
               }}
               multiline
+              value={summary}
               onChange={(e) => setSummary(e.target.value)} // Update the summary state when the user types in the TextField
+              error={!!summaryError}
+              helperText={summaryError}
             />
           </Grid>
         </Grid>
@@ -193,7 +224,7 @@ export default function EducationSectionItem() {
               backgroundColor: '#00B4D8',
             }}
             sx={{ mt: 3, ml: 1 }}
-            onClick={handleEnchance}
+            onClick={() => generateEnhancedSummary(summary)}
             disabled={loading}
           >
             Enhance
@@ -216,7 +247,7 @@ export default function EducationSectionItem() {
         {generatedSummary && !loading && (
           <div style={{ marginTop: '20px' }}>
             <Typography variant='h6'>Generated Summary:</Typography>
-            <Typography variant='body1'>{generatedSummary}</Typography>
+            <TextEditor generatedSummary={generatedSummary} />
           </div>
         )}
 
@@ -236,7 +267,7 @@ export default function EducationSectionItem() {
           </Button>
           <Button
             type='submit'
-            onSubmit={handleSubmit}
+            onClick={handleSubmit}
             variant='contained'
             style={{
               backgroundColor: '#00B4D8',

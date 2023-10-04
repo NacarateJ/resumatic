@@ -4,8 +4,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  TextField,
-  Box,
   Button,
   Typography,
 } from '@mui/material';
@@ -14,14 +12,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EducationSectionItem from './EducationSectionItem';
 
 export default function EducationSection() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
-  };
-
   return (
     <SectionContainer>
       <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
