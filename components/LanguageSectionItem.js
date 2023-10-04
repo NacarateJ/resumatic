@@ -11,12 +11,16 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LanguageLevel from './LanguageLevel';
+import CancelButton from './CancelButton';
 
 
 
-export default function LanguageSectionItem({ languageName, languageLevel, fetchResumeData, resumeId }) {
+export default function LanguageSectionItem({ languageName, languageLevel, languageId, fetchResumeData, resumeId }) {
   const [selectedLevel, setSelectedLevel] = useState(languageLevel || '');
   const [langName, setLangName] = useState(languageName || "");
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+
+
   const handleLevelChange = (event) => {
     const selectedValue = event.target.value;
     if (['', 'Beginner', 'Elementary', 'Limited', 'Professional', 'Native'].includes(selectedValue)) {
@@ -59,16 +63,25 @@ export default function LanguageSectionItem({ languageName, languageLevel, fetch
     }
   };
 
+  const handleCancel = () => {
+    setIsAccordionOpen(false);
+  };
+
   return (
     <>
-
-      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+      <Accordion
+        sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+        expanded={isAccordionOpen}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
           id='panel1a-header'
+          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
         >
-          <Typography variant='h8'>Language #3</Typography>
+          <Typography variant='h8'>
+            {languageName ? languageName : `New language:`}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box component='form' sx={{ mt: 3 }}>
@@ -80,13 +93,17 @@ export default function LanguageSectionItem({ languageName, languageLevel, fetch
                   name='language'
                   label='Enter Language'
                   value={langName}
-                  onChange={((e) => setLangName(e.target.value))}
+                  onChange={(e) => setLangName(e.target.value)}
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <LanguageLevel languageLevel={languageLevel} selectedLevel={selectedLevel} handleLevelChange={handleLevelChange} />
+                <LanguageLevel
+                  languageLevel={languageLevel}
+                  selectedLevel={selectedLevel}
+                  handleLevelChange={handleLevelChange}
+                />
               </Grid>
             </Grid>
 
@@ -96,14 +113,7 @@ export default function LanguageSectionItem({ languageName, languageLevel, fetch
                 justifyContent: 'right',
               }}
             >
-              <Button
-                style={{
-                  color: '#00B4D8',
-                }}
-                sx={{ mt: 3, ml: 1 }}
-              >
-                Cancel
-              </Button>
+              <CancelButton onClick={handleCancel} />
               <Button
                 type='submit'
                 variant='contained'
@@ -118,7 +128,7 @@ export default function LanguageSectionItem({ languageName, languageLevel, fetch
             </div>
           </Box>
         </AccordionDetails>
-      </Accordion >
+      </Accordion>
     </>
   );
 };

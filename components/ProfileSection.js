@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SectionContainer from './SectionContainer';
 import TextEditor from './TextEditor';
+import CancelButton from './CancelButton';
 import {
   Accordion,
   AccordionSummary,
@@ -17,13 +18,11 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function ProfileSection({ resumeData, fetchResumeData }) {
-
-  
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState(resumeData.profile_description || '');
   const [summaryError, setSummaryError] = useState('');
-  const [isAccordionOpen, setIsAccordionOpen] = useState(true);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const generateEnhancedSummary = async (inputSummary) => {
     // Check if the input summary is empty
@@ -151,7 +150,7 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
                       backgroundColor: 'white',
                       height: '100px',
                       paddingTop: '10px',
-                      overflowY: 'auto',
+                      // overflowY: 'auto',
                     },
                   }}
                   multiline
@@ -208,15 +207,7 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
                 justifyContent: 'right',
               }}
             >
-              <Button
-                style={{
-                  color: '#00B4D8',
-                }}
-                sx={{ mt: 3, ml: 1 }}
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
+              <CancelButton onClick={handleCancel} />
               <Button
                 type='submit' // Change type to "submit"
                 variant='contained'

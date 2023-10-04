@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LanguageSectionItem from './LanguageSectionItem';
 import SectionContainer from './SectionContainer';
@@ -13,11 +12,12 @@ import {
 } from '@mui/material';
 
 export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
-  console.log(resumeData.languages?.[0]?.language_name);
   return (
     <>
       <SectionContainer>
-        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+        <Accordion
+          sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
@@ -29,12 +29,26 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
             </Grid>
           </AccordionSummary>
 
-          <LanguageSectionItem languageName={resumeData.languages?.[0]?.language_name} languageLevel={resumeData.languages?.[0]?.language_level} resumeId={resumeId} fetchResumeData={fetchResumeData} />
-          <LanguageSectionItem languageName={resumeData.languages?.[1]?.language_name} languageLevel={resumeData.languages?.[1]?.language_level} resumeId={resumeId} fetchResumeData={fetchResumeData} />
-          <LanguageSectionItem languageName={resumeData.languages?.[2]?.language_name} languageLevel={resumeData.languages?.[2]?.language_level} resumeId={resumeId} fetchResumeData={fetchResumeData} />
+          <LanguageSectionItem
+            languageName={resumeData.languages?.[0]?.language_name}
+            languageLevel={resumeData.languages?.[0]?.language_level}
+            resumeId={resumeId}
+            fetchResumeData={fetchResumeData}
+          />
+          <LanguageSectionItem
+            languageName={resumeData.languages?.[1]?.language_name}
+            languageLevel={resumeData.languages?.[1]?.language_level}
+            resumeId={resumeId}
+            fetchResumeData={fetchResumeData}
+          />
+          <LanguageSectionItem
+            languageName={resumeData.languages?.[2]?.language_name}
+            languageLevel={resumeData.languages?.[2]?.language_level}
+            resumeId={resumeId}
+            fetchResumeData={fetchResumeData}
+          />
           <AccordionDetails>
             <Grid display='flex' justifyContent='center' alignItems='center'>
-
               <Button
                 type='submit'
                 variant='contained'
