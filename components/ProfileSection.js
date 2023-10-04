@@ -16,7 +16,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-export default function ProfileSection({ resumeData, fetchResumeData, resumeId }) {
+export default function ProfileSection({ resumeData, fetchResumeData }) {
+
+  
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState(resumeData.profile_description || '');
@@ -72,15 +74,16 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
       // Handle the case where no generated summary is available
       return;
     }
-    console.log('---------------------------------');
+   
     // Create an object with the enhanced summary
     const requestBody = {
       enhancedSummary: generatedSummary,
+      resumeId: resumeData.resume_id,
     };
 
     try {
       // Make an API request to save the enhanced summary
-      const response = await fetch('/api/create-profile-description', {
+      const response = await fetch('/api/profileSectionInsert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,6 +92,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
       });
 
       if (response.ok) {
+        fetchResumeData(resumeData.resume_id);
         // Handle success, e.g., show a success message to the user
         console.log('Enhanced summary saved successfully');
       } else {
