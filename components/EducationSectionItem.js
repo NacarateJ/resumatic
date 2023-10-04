@@ -21,10 +21,13 @@ import {
   DatePicker,
 } from '@mui/x-date-pickers';
 import TextEditor from './TextEditor';
+import CancelButton from './CancelButton';
 
 export default function EducationSectionItem({ educationNum }) {
-  // const [summary, setSummary] = useState('');
   const [data, setData] = useState([]);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+
+  // const [summary, setSummary] = useState('');
 
   // State managmenent for generates summary
   // const [loading, setLoading] = useState(false);
@@ -90,12 +93,20 @@ export default function EducationSectionItem({ educationNum }) {
     // Add additional logic to handle form submission, if necessary
   };
 
+  const handleCancel = () => {
+    setIsAccordionOpen(false);
+  };
+
   return (
-    <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+    <Accordion
+      sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+      expanded={isAccordionOpen}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls='panel1a-content'
         id='panel1a-header'
+        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
         <Typography variant='h8'>{educationNum}</Typography>
       </AccordionSummary>
@@ -238,14 +249,7 @@ export default function EducationSectionItem({ educationNum }) {
               justifyContent: 'right',
             }}
           >
-            <Button
-              style={{
-                color: '#00B4D8',
-              }}
-              sx={{ mt: 3, ml: 1 }}
-            >
-              Cancel
-            </Button>
+            <CancelButton onClick={handleCancel} />
             <Button
               type='submit'
               onClick={handleSubmit}
