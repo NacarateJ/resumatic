@@ -4,8 +4,8 @@ import commonStyles from "./commonStyles";
 function SkillItem({ skill }) {
   return (
     <View style={commonStyles.normalTextLine}>
-      <Text style={commonStyles.boldText}>{skill.skill_name}: </Text>
-      <Text>{skill.skill_description}</Text>
+      <Text style={commonStyles.boldText}>{skill.skill_description}: </Text>
+      <Text>{skill.skill_name}</Text>
     </View>
   );
 }

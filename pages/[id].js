@@ -11,6 +11,7 @@ import MyDocument from '@/components/MyDocument';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProjectSection from '@/components/ProjectSection';
+import ProfessionalExperienceSection from '@/components/ProfessionalExperienceSection';
 
 const PDFViewerComponent = dynamic(
   () => import('@react-pdf/renderer').then((module) => module.PDFViewer),
@@ -23,7 +24,27 @@ const PDFViewerComponent = dynamic(
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
   const [resumeId, setResumeId] = useState(null);
+  const [dataDetch, setDataFetch] = useState(false);
   const router = useRouter();
+
+
+  const fetchResumeData = (resId) => {
+    fetch(`/api/resumes/${resId}`) //
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setResumeId(resId);
+        setResumeData(data.resume);
+      })
+      .catch(error => {
+        console.error('Error fetching resume data:', error);
+      });
+  };
+
 
   useEffect(() => {
     const { id } = router.query;
@@ -34,29 +55,15 @@ export default function ResumeNew() {
     if (id && !isNaN(parseInt(id))) {
       const parsedResumeId = parseInt(id);
 
-      fetch(`/api/resumes/${parsedResumeId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          setResumeId(parsedResumeId);
-          setResumeData(data.resume);
-        })
-        .catch(error => {
-          console.error('Error fetching resume data:', error);
-        });
+      fetchResumeData(parsedResumeId);
+
     } else {
       console.error(`Invalid resume ID: ${id}`);
       // Handle invalid or missing ID, e.g., redirect to an error page
     }
   }, [router.query]);
 
-  useEffect(() => {
-    // Reload MyDocument component whenever resumeData changes
-  }, [resumeData]);
+
 
 
 
@@ -64,13 +71,13 @@ export default function ResumeNew() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, padding: '10px' }}>
-          <ResumeSection resumeId={resumeId} />
-          <PersonalInfoSection resumeId={resumeId} />
-          <ProfileSection resumeId={resumeId} />
-          <SkillsSection />
-          <LanguageSection />
-          <EducationSection />
-          <ProjectSection />
+          <ResumeSection resumeData={resumeData} resumeId={resumeId} />
+          <PersonalInfoSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProfileSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <SkillsSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <LanguageSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <EducationSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProjectSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
           <PDFViewerComponent showToolbar={true}
