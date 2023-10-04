@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LanguageSectionItem from './LanguageSectionItem';
 import SectionContainer from './SectionContainer';
@@ -11,14 +12,8 @@ import {
   Typography,
 } from '@mui/material';
 
-export default function LanguageSection() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
-  };
+export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
+  console.log(resumeData.languages?.[0]?.language_name);
   return (
     <>
       <SectionContainer>
@@ -34,36 +29,9 @@ export default function LanguageSection() {
             </Grid>
           </AccordionSummary>
 
-          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
-              <Typography variant='h8'>Language #1</Typography>
-            </AccordionSummary>
-            <LanguageSectionItem />
-          </Accordion >
-          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
-              <Typography variant='h8'>Language #2</Typography>
-            </AccordionSummary>
-            <LanguageSectionItem />
-          </Accordion >
-          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
-              <Typography variant='h8'>Language #3</Typography>
-            </AccordionSummary>
-            <LanguageSectionItem />
-          </Accordion >
+          <LanguageSectionItem languageName={resumeData.languages?.[0]?.language_name} languageLevel={resumeData.languages?.[0]?.language_level} resumeId={resumeId} fetchResumeData={fetchResumeData} />
+          <LanguageSectionItem languageName={resumeData.languages?.[1]?.language_name} languageLevel={resumeData.languages?.[1]?.language_level} resumeId={resumeId} fetchResumeData={fetchResumeData} />
+          <LanguageSectionItem languageName={resumeData.languages?.[2]?.language_name} languageLevel={resumeData.languages?.[2]?.language_level} resumeId={resumeId} fetchResumeData={fetchResumeData} />
           <AccordionDetails>
             <Grid display='flex' justifyContent='center' alignItems='center'>
 
