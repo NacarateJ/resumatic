@@ -31,16 +31,6 @@ export default function EducationSectionItem() {
   const [summaryError, setSummaryError] = useState('');
   const [generatedSummary, setGeneratedSummary] = useState('');
 
-  // State managment for Start Date checkboxes
-  const [dontShowStartDate, setDontShowStartDate] = useState(false);
-  const [onlyYearStartDate, setOnlyYearStartDate] = useState(false);
-  const [presentStartDate, setPresentStartDate] = useState(false);
-
-  // State managment for End Date checkboxes
-  const [dontShowEndDate, setDontShowEndDate] = useState(false);
-  const [onlyYearEndDate, setOnlyYearEndDate] = useState(false);
-  const [presentEndDate, setPresentEndDate] = useState(false);
-
   const generateEnhancedSummary = async (input) => {
     // Check if the input summary is empty
     if (!input.trim()) {
@@ -87,15 +77,15 @@ export default function EducationSectionItem() {
     event.preventDefault();
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
-    const formData = new FormData(event.currentTarget);
-    const data = {
-      degree: formData.get('degree'),
-      school: formData.get('school'),
-      gpa: formData.get('gpa'),
-      educationSummary: formData.get('educationSummary'),
-    };
+    // const formData = new FormData(event.currentTarget);
+    // const data = {
+    //   degree: formData.get('degree'),
+    //   school: formData.get('school'),
+    //   gpa: formData.get('gpa'),
+    //   educationSummary: formData.get('educationSummary'),
+    // };
 
-    console.log(data);
+    // console.log(data);
 
     // Add additional logic to handle form submission, if necessary
   };
@@ -148,24 +138,8 @@ export default function EducationSectionItem() {
                 <DatePicker label={'Start Date'} views={['month', 'year']} />
               </LocalizationProvider>
               <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={dontShowStartDate}
-                      onChange={(e) => setDontShowStartDate(e.target.checked)}
-                    />
-                  }
-                  label="Don't Show"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={onlyYearStartDate}
-                      onChange={(e) => setOnlyYearStartDate(e.target.checked)}
-                    />
-                  }
-                  label='Only Year'
-                />
+                <FormControlLabel control={<Checkbox />} label="Don't Show" />
+                <FormControlLabel control={<Checkbox />} label='Only Year' />
               </FormGroup>
             </Grid>
             <Grid justifyContent='flex-start' item xs={5}>
@@ -202,7 +176,6 @@ export default function EducationSectionItem() {
                   height: '100px',
                   paddingTop: '10px',
                 },
-                inputComponent: ScrollableInput,
               }}
               multiline
               value={summary}
