@@ -1,4 +1,5 @@
 import SectionContainer from './SectionContainer';
+import CancelButton from './CancelButton';
 import { useState } from 'react';
 import {
   Grid,
@@ -23,6 +24,7 @@ export default function PersonalInfoSection({ resumeData, fetchResumeData, resum
   const [website, setWebsite] = useState(resumeData.website_link || "");
   const [linkedin, setLinkedin] = useState(resumeData.linkedin_link || "");
   const [github, setGithub] = useState(resumeData.github_link || "");
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,14 +67,22 @@ export default function PersonalInfoSection({ resumeData, fetchResumeData, resum
     }
   };
 
+  const handleCancel = () => {
+    setIsAccordionOpen(false);
+  };
+
   return (
     <>
       <SectionContainer>
-        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+        <Accordion
+          sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+          expanded={isAccordionOpen}
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
+            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
           >
             <Grid display='flex' alignItems='center'>
               <InfoIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
@@ -187,14 +197,7 @@ export default function PersonalInfoSection({ resumeData, fetchResumeData, resum
                 </Grid>
               </Grid>
               <Grid display='flex' justifyContent='right' alignItems='center'>
-                <Button
-                  sx={{ mt: 3, ml: 1 }}
-                  style={{
-                    color: '#00B4D8',
-                  }}
-                >
-                  Cancel
-                </Button>
+                <CancelButton onClick={handleCancel} />
                 <Button
                   type='submit'
                   variant='contained'
