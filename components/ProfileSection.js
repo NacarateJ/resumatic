@@ -70,8 +70,9 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
     event.preventDefault();
 
     // Check if a generated summary exists
-    if (!generatedSummary) {
+    if (!summary.trim()) {
       // Handle the case where no generated summary is available
+      setSummaryError('Please generate a new summary before saving');
       return;
     }
    
@@ -141,7 +142,7 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
                       backgroundColor: 'white',
                       height: '100px',
                       paddingTop: '10px',
-                      // overflowY: 'auto',
+                      overflowY: 'auto',
                     },
                   }}
                   multiline
@@ -215,7 +216,7 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
                 sx={{ mt: 3, ml: 1 }}
                 onClick={handleSubmit}
               >
-                Save
+                Save Enhanced Summary
               </Button>
             </div>
           </Box>
