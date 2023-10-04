@@ -67,19 +67,38 @@ export default function ProfileSection() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary(summary);
+    // Check if a generated summary exists
+    if (!generatedSummary) {
+      // Handle the case where no generated summary is available
+      return;
+    }
+    console.log('---------------------------------');
+    // Create an object with the enhanced summary
+    const requestBody = {
+      enhancedSummary: generatedSummary,
+    };
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-      summary,
-      generatedSummary, // You can access the generated summary here if needed
-    });
+    try {
+      // Make an API request to save the enhanced summary
+      const response = await fetch('/api/create-profile-description', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
 
-    // Add additional logic to handle form submission, if necessary
+      if (response.ok) {
+        // Handle success, e.g., show a success message to the user
+        console.log('Enhanced summary saved successfully');
+      } else {
+        // Handle error cases here
+        console.error('Failed to save enhanced summary');
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error('Error occurred while saving enhanced summary:', error);
+    }
   };
 
   return (
@@ -96,12 +115,7 @@ export default function ProfileSection() {
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Box
-            component='form'
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <Box component='form' noValidate sx={{ mt: 3 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
@@ -195,6 +209,7 @@ export default function ProfileSection() {
                   backgroundColor: '#00B4D8',
                 }}
                 sx={{ mt: 3, ml: 1 }}
+                onClick={handleSubmit}
               >
                 Save
               </Button>
