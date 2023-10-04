@@ -26,7 +26,11 @@ export default function EducationSection() {
           </Grid>
         </AccordionSummary>
 
-        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+        <EducationSectionItem educationNum='Education #1' />
+        <EducationSectionItem educationNum='Education #2' />
+        <EducationSectionItem educationNum='Education #3' />
+
+        {/* <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
@@ -55,7 +59,8 @@ export default function EducationSection() {
             <Typography variant='h8'>Education #3</Typography>
           </AccordionSummary>
           <EducationSectionItem />
-        </Accordion>
+        </Accordion> */}
+
         <AccordionDetails>
           <Grid display='flex' justifyContent='center' alignItems='center'>
             <Button
