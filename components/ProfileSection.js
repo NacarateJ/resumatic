@@ -73,7 +73,7 @@ export default function ProfileSection() {
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
     const formData = new FormData();
-    formData.append('profileSummary', summary);
+
 
     console.log({
       summary,
@@ -100,7 +100,7 @@ export default function ProfileSection() {
           <Box
             component='form'
             noValidate
-            onSubmit={handleSubmit}
+            onClick={() => generateEnhancedSummary(summary)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={3}>
@@ -191,7 +191,7 @@ export default function ProfileSection() {
                 Cancel
               </Button>
               <Button
-                type='button' // Change type to "submit"
+                type='submit' // Change type to "submit"
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
