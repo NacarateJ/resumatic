@@ -12,11 +12,12 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 
-export default function ResumeSection({ resumeId }) {
+export default function ResumeSection({ resumeData, resumeId, }) {
 
 
-  const [resumeTitle, setResumeTitle] = useState('');
-  const [resumeDescription, setResumeDescription] = useState('');
+  const [resumeTitle, setResumeTitle] = useState(resumeData.resume_title || '');
+  const [resumeDescription, setResumeDescription] = useState(resumeData.resume_description || '');
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,7 +25,7 @@ export default function ResumeSection({ resumeId }) {
 
 
     try {
-      const response = await fetch('/api/insert', {
+      const response = await fetch('/api/resumeSectionInsert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

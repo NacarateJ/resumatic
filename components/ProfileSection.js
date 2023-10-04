@@ -16,10 +16,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-export default function ProfileSection() {
+export default function ProfileSection({ resumeData, fetchResumeData, resumeId }) {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [generatedSummary, setGeneratedSummary] = useState(resumeData.profile_description || '');
   const [summaryError, setSummaryError] = useState('');
 
   const generateEnhancedSummary = async (inputSummary) => {

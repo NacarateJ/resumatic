@@ -5,12 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function LanguageLevel() {
-  const [level, setLevel] = React.useState('');
+export default function LanguageLevel({ languageLevel, selectedLevel, handleLevelChange }) {
 
-  const handleChange = (event) => {
-    setLevel(event.target.value);
-  };
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -19,18 +15,18 @@ export default function LanguageLevel() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={level}
+          value={selectedLevel}
           label="Level"
-          onChange={handleChange}
+          onChange={handleLevelChange}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value="beginner">Beginner</MenuItem>
-          <MenuItem value="elementary">Elementary Proficiency</MenuItem>
-          <MenuItem value="limited">Limited Working Proficiency</MenuItem>
-          <MenuItem value="professional">Professional Working Proficiency</MenuItem>
-          <MenuItem value="native">Native / Bilingual Proficiency</MenuItem>
+          <MenuItem value="Beginner">Beginner</MenuItem>
+          <MenuItem value="Elementary">Elementary Proficiency</MenuItem>
+          <MenuItem value="Limited">Limited Working Proficiency</MenuItem>
+          <MenuItem value="Professional">Professional Working Proficiency</MenuItem>
+          <MenuItem value="Native">Native / Bilingual Proficiency</MenuItem>
         </Select>
       </FormControl>
     </Box>
