@@ -71,13 +71,13 @@ export default function ResumeNew() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, padding: '10px' }}>
-          <ResumeSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
-          <PersonalInfoSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
-          <ProfileSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
-          <SkillsSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
-          <LanguageSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
-          <EducationSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
-          <ProjectSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ResumeSection resumeData={resumeData} resumeId={resumeId} />
+          <PersonalInfoSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProfileSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <SkillsSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <LanguageSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <EducationSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProjectSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
           <PDFViewerComponent showToolbar={true}
