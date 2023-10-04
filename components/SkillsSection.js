@@ -1,6 +1,6 @@
-
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SectionContainer from './SectionContainer';
+import CancelButton from './CancelButton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import {
   Grid,
@@ -15,15 +15,17 @@ import {
 import { useState, useEffect } from 'react';
 
 export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
-
-
   const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || "");
   const [frmwrkLibDb, setfrmwrkLibDb] = useState(resumeData.skills?.[1]?.skill_name || "");
   const [toolsTech, settoolsTech] = useState(resumeData.skills?.[2]?.skill_name || "");
-
-
-
-
+  
+  // Accordion states
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [isProgLangAccordionOpen, setIsProgLangAccordionOpen] = useState(false);
+  const [isFrmwrkLibDbAccordionOpen, setIsFrmwrkLibDbAccordionOpen] =
+    useState(false);
+  const [isToolsTechAccordionOpen, setIsToolsTechAccordionOpen] =
+    useState(false);
 
   const handleSubmit = async (event, skillDescription) => {
     event.preventDefault();
@@ -63,14 +65,30 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
     }
   };
 
+  const handleCancel = (accordionName) => {
+    if (accordionName === 'Programming Languages') {
+      setIsProgLangAccordionOpen(false);
+    } else if (
+      accordionName === 'Frameworks, Libraries & Databases Description'
+    ) {
+      setIsFrmwrkLibDbAccordionOpen(false);
+    } else if (accordionName === 'Tools & Other Technologies') {
+      setIsToolsTechAccordionOpen(false);
+    }
+  };
+
   return (
     <>
       <SectionContainer>
-        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+        <Accordion
+          sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+          expanded={isAccordionOpen}
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
+            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
           >
             <Grid display='flex' alignItems='center'>
               <PsychologyIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
@@ -78,11 +96,17 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
             </Grid>
           </AccordionSummary>
 
-          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+          <Accordion
+            sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+            expanded={isProgLangAccordionOpen}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
               id='panel1a-header'
+              onClick={() =>
+                setIsProgLangAccordionOpen(!isProgLangAccordionOpen)
+              }
             >
               <Typography variant='h6'>Programming Languages</Typography>
             </AccordionSummary>
@@ -97,7 +121,7 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                       label='(Eg. Python, Javascript, Ruby)'
                       fullWidth
                       value={progLang}
-                      onChange={((e) => setProgLang(e.target.value))}
+                      onChange={(e) => setProgLang(e.target.value)}
                       variant='filled'
                       inputProps={{ style: { backgroundColor: 'white' } }}
                     />
@@ -110,21 +134,18 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                     justifyContent: 'right',
                   }}
                 >
-                  <Button
-                    style={{
-                      color: '#00B4D8',
-                    }}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Cancel
-                  </Button>
+                  <CancelButton
+                    onClick={() => handleCancel('Programming Languages')}
+                  />
                   <Button
                     type='submit'
                     variant='contained'
                     style={{
                       backgroundColor: '#00B4D8',
                     }}
-                    onClick={(event) => handleSubmit(event, 'Programming Languages')}
+                    onClick={(event) =>
+                      handleSubmit(event, 'Programming Languages')
+                    }
                     sx={{ mt: 3, ml: 1 }}
                   >
                     Save
@@ -132,14 +153,22 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                 </div>
               </Box>
             </AccordionDetails>
-          </Accordion >
-          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+          </Accordion>
+          <Accordion
+            sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+            expanded={isFrmwrkLibDbAccordionOpen}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
               id='panel1a-header'
+              onClick={() =>
+                setIsFrmwrkLibDbAccordionOpen(!isFrmwrkLibDbAccordionOpen)
+              }
             >
-              <Typography variant='h6'>Frameworks, Libraries & Databases</Typography>
+              <Typography variant='h6'>
+                Frameworks, Libraries & Databases
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Box component='form' sx={{ mt: 3 }}>
@@ -151,12 +180,11 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                       name='frameworksLibrariesDatabases'
                       label='Eg. Express, React, PostgreSQL'
                       value={frmwrkLibDb}
-                      onChange={((e) => setfrmwrkLibDb(e.target.value))}
+                      onChange={(e) => setfrmwrkLibDb(e.target.value)}
                       fullWidth
                       variant='filled'
                       inputProps={{ style: { backgroundColor: 'white' } }}
                     />
-
                   </Grid>
                 </Grid>
 
@@ -166,33 +194,44 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                     justifyContent: 'right',
                   }}
                 >
-                  <Button
-                    style={{
-                      color: '#00B4D8',
-                    }}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Cancel
-                  </Button>
+                  <CancelButton
+                    onClick={() =>
+                      handleCancel(
+                        'Frameworks, Libraries & Databases Description'
+                      )
+                    }
+                  />
                   <Button
                     type='submit'
                     variant='contained'
                     style={{
                       backgroundColor: '#00B4D8',
                     }}
-                    onClick={(event) => handleSubmit(event, 'Frameworks, Libraries & Databases Description')}
+                    onClick={(event) =>
+                      handleSubmit(
+                        event,
+                        'Frameworks, Libraries & Databases Description'
+                      )
+                    }
                     sx={{ mt: 3, ml: 1 }}
                   >
                     Save
                   </Button>
                 </div>
               </Box>
-            </AccordionDetails>          </Accordion >
-          <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+            </AccordionDetails>{' '}
+          </Accordion>
+          <Accordion
+            sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+            expanded={isToolsTechAccordionOpen}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
               id='panel1a-header'
+              onClick={() =>
+                setIsToolsTechAccordionOpen(!isToolsTechAccordionOpen)
+              }
             >
               <Typography variant='h6'>Tools & Other Technologies</Typography>
             </AccordionSummary>
@@ -206,12 +245,11 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                       name='skill'
                       label='Eg. GitHub, Sublime Text, Figma'
                       value={toolsTech}
-                      onChange={((e) => settoolsTech(e.target.value))}
+                      onChange={(e) => settoolsTech(e.target.value)}
                       fullWidth
                       variant='filled'
                       inputProps={{ style: { backgroundColor: 'white' } }}
                     />
-
                   </Grid>
                 </Grid>
 
@@ -221,28 +259,26 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
                     justifyContent: 'right',
                   }}
                 >
-                  <Button
-                    style={{
-                      color: '#00B4D8',
-                    }}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Cancel
-                  </Button>
+                  <CancelButton
+                    onClick={() => handleCancel('Tools & Other Technologies')}
+                  />
                   <Button
                     type='submit'
                     variant='contained'
                     style={{
                       backgroundColor: '#00B4D8',
                     }}
-                    onClick={(event) => handleSubmit(event, 'Tools & Other Technologies')}
+                    onClick={(event) =>
+                      handleSubmit(event, 'Tools & Other Technologies')
+                    }
                     sx={{ mt: 3, ml: 1 }}
                   >
                     Save
                   </Button>
                 </div>
               </Box>
-            </AccordionDetails>          </Accordion >
+            </AccordionDetails>{' '}
+          </Accordion>
         </Accordion>
       </SectionContainer>
     </>
