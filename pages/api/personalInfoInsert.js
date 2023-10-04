@@ -7,9 +7,22 @@ export default async function handler(req, res) {
 
       switch (dataType) {
         case 'resume':
-          const { resumeId, resumeTitle, resumeDescription } = data;
+          const {
+            resumeId,
+            resumeTitle,
+            resumeDescription,
+            fullName,
+            jobTitle,
+            email,
+            profileDescription,
+            phoneNumber,
+            address,
+            websiteLink,
+            linkedinLink,
+            githubLink,
+          } = data;
 
-          // Check if the provided resumeId exists in the database
+          // Check if the provided resumeId exists in the Resumes table
           const existingResume = await prisma.resumes.findUnique({
             where: {
               resume_id: resumeId,
@@ -28,7 +41,15 @@ export default async function handler(req, res) {
             data: {
               resume_title: resumeTitle,
               resume_description: resumeDescription,
-              // ... other fields you want to update
+              full_name: fullName,
+              job_title: jobTitle,
+              email,
+              profile_description: profileDescription,
+              phone_number: phoneNumber,
+              address,
+              website_link: websiteLink,
+              linkedin_link: linkedinLink,
+              github_link: githubLink,
             },
           });
 

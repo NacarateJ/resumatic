@@ -127,40 +127,40 @@ export default function ProfileSection() {
               </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12}>
+          </Grid>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
+              <TextField
+                required
+                id='projectSummary'
+                name='projectSummary'
+                label='Summary'
+                placeholder='Describe your project including what your role was in the project and the technologies and skills you used.'
+                fullWidth
+                variant='filled'
+                InputProps={{
+                  style: {
+                    backgroundColor: 'white',
+                  },
+                  inputComponent: ScrollableInput,
+                }}
+                inputProps={{
+                  style: {
+                    backgroundColor: 'white',
+                    height: '100px',
+                    paddingTop: '10px',
+                    // overflowY: 'auto',
+                  },
+                }}
+                multiline
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                error={!!summaryError}
+                helperText={summaryError}
+              />
             </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id='projectSummary'
-                  name='projectSummary'
-                  label='Summary'
-                  placeholder='Describe your project including what your role was in the project and the technologies and skills you used.'
-                  fullWidth
-                  variant='filled'
-                  InputProps={{
-                    style: {
-                      backgroundColor: 'white',
-                    },
-                    inputComponent: ScrollableInput,
-                  }}
-                  inputProps={{
-                    style: {
-                      backgroundColor: 'white',
-                      height: '100px',
-                      paddingTop: '10px',
-                      overflowY: 'auto',
-                    },
-                  }}
-                  multiline
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
-                  error={!!summaryError}
-                  helperText={summaryError}
-                />
-              </Grid>
-            </Grid>
+          </Grid>
           <div
             style={{
               display: 'flex',
