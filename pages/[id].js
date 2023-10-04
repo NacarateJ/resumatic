@@ -23,7 +23,27 @@ const PDFViewerComponent = dynamic(
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
   const [resumeId, setResumeId] = useState(null);
+  const [dataDetch, setDataFetch] = useState(false);
   const router = useRouter();
+
+
+  const fetchResumeData = (resId) => {
+    fetch(`/api/resumes/${resId}`) //
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setResumeId(resId);
+        setResumeData(data.resume);
+      })
+      .catch(error => {
+        console.error('Error fetching resume data:', error);
+      });
+  };
+
 
   useEffect(() => {
     const { id } = router.query;
@@ -34,29 +54,15 @@ export default function ResumeNew() {
     if (id && !isNaN(parseInt(id))) {
       const parsedResumeId = parseInt(id);
 
-      fetch(`/api/resumes/${parsedResumeId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          setResumeId(parsedResumeId);
-          setResumeData(data.resume);
-        })
-        .catch(error => {
-          console.error('Error fetching resume data:', error);
-        });
+      fetchResumeData(parsedResumeId);
+
     } else {
       console.error(`Invalid resume ID: ${id}`);
       // Handle invalid or missing ID, e.g., redirect to an error page
     }
   }, [router.query]);
 
-  useEffect(() => {
-    // Reload MyDocument component whenever resumeData changes
-  }, [resumeData]);
+
 
 
 
@@ -64,13 +70,13 @@ export default function ResumeNew() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, padding: '10px' }}>
-          <ResumeSection resumeId={resumeId} />
-          <PersonalInfoSection resumeId={resumeId} />
-          <ProfileSection resumeId={resumeId} />
-          <SkillsSection />
-          <LanguageSection />
-          <EducationSection />
-          <ProjectSection />
+          <ResumeSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <PersonalInfoSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProfileSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <SkillsSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <LanguageSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <EducationSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProjectSection fetchResumeData={fetchResumeData} resumeId={resumeId} />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
           <PDFViewerComponent showToolbar={true}

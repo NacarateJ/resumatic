@@ -1,12 +1,12 @@
-import prisma from '@/utils/prisma';
+import prisma from "@/prisma/prisma";
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      console.log('Request Body:', req.body);
+
       // Extract user ID from the request
       const userId = parseInt(req.body.user.userId); // Example: req.body.user.userId contains the user ID
-      console.log('Parsed User ID:', userId);
+
       // Fetch user data from the database based on the user ID
       const userData = await prisma.users.findUnique({
         where: {

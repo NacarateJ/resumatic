@@ -1,4 +1,5 @@
 import SectionContainer from './SectionContainer';
+import { useState } from 'react';
 import {
   Grid,
   Accordion,
@@ -12,13 +13,57 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function PersonalInfoSection() {
-  const handleSubmit = (event) => {
+export default function PersonalInfoSection({ fetchResumeData, resumeId }) {
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
+    const formData = new FormData(event.currentTarget);
+    const fullName = formData.get('fullName');
+    const jobTitle = formData.get('jobTitle');
+    const phoneNumber = formData.get('phoneNumber');
+    const email = formData.get('email');
+    const address = formData.get('address');
+    const website = formData.get('website');
+    const linkedin = formData.get('linkedin');
+    const github = formData.get('github');
+
+    const userData = {
+      fullName,
+      jobTitle,
+      phoneNumber,
+      email,
+      address,
+      website,
+      linkedin,
+      github,
+      resumeId, // Include resumeId if needed
+    };
+
+    try {
+      const response = await fetch('/api/personalInfoInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dataType: 'resume',
+          data: userData,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('User data inserted successfully');
+        fetchResumeData(resumeId);
+        // Handle success if needed
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Failed to insert user data');
+      }
+    } catch (error) {
+      console.error('Error inserting user data:', error);
+      setError('Failed to insert user data');
+    }
   };
 
   return (

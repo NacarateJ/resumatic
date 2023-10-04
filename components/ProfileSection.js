@@ -72,9 +72,10 @@ export default function ProfileSection() {
 
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
+    const formData = new FormData();
+    formData.append('profileSummary', summary);
+
     console.log({
-      data,
       summary,
       generatedSummary, // You can access the generated summary here if needed
     });
@@ -115,6 +116,7 @@ export default function ProfileSection() {
                   InputProps={{
                     style: {
                       backgroundColor: 'white',
+
                     },
                     inputComponent: ScrollableInput,
                   }}
@@ -123,7 +125,7 @@ export default function ProfileSection() {
                       backgroundColor: 'white',
                       height: '100px',
                       paddingTop: '10px',
-                      overflowY: 'auto',
+                      // overflowY: 'auto',
                     },
                   }}
                   multiline
@@ -147,7 +149,7 @@ export default function ProfileSection() {
                   backgroundColor: '#00B4D8',
                 }}
                 sx={{ mt: 3, ml: 1 }}
-                onClick={() => generateEnhancedSummary(summary)}
+                onClick={handleSubmit}
                 disabled={loading}
               >
                 Enhance
@@ -189,12 +191,14 @@ export default function ProfileSection() {
                 Cancel
               </Button>
               <Button
-                type='submit' // Change type to "submit"
+                type='button' // Change type to "submit"
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
                 }}
                 sx={{ mt: 3, ml: 1 }}
+              // onClick={handleSubmit}
+              // disabled={loading}
               >
                 Save
               </Button>

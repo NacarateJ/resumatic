@@ -1,4 +1,4 @@
-// Logic for the `api/hello` endpoint
+
 export default async function handler(req, res) {
   try {
     // Sending a request to the OpenAI create chat completion endpoint
