@@ -16,11 +16,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-export default function ProfileSection({ resumeData, fetchResumeData, resumeId }) {
+export default function ProfileSection({ resumeData, fetchResumeData }) {
+
+  
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState(resumeData.profile_description || '');
   const [summaryError, setSummaryError] = useState('');
+  const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
   const generateEnhancedSummary = async (inputSummary) => {
     // Check if the input summary is empty
@@ -68,19 +71,21 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
     event.preventDefault();
 
     // Check if a generated summary exists
-    if (!generatedSummary) {
+    if (!summary.trim()) {
       // Handle the case where no generated summary is available
+      setSummaryError('Please generate a new summary before saving');
       return;
     }
-    console.log('---------------------------------');
+   
     // Create an object with the enhanced summary
     const requestBody = {
       enhancedSummary: generatedSummary,
+      resumeId: resumeData.resume_id,
     };
 
     try {
       // Make an API request to save the enhanced summary
-      const response = await fetch('/api/create-profile-description', {
+      const response = await fetch('/api/profileSectionInsert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,6 +94,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
       });
 
       if (response.ok) {
+        fetchResumeData(resumeData.resume_id);
         // Handle success, e.g., show a success message to the user
         console.log('Enhanced summary saved successfully');
       } else {
@@ -101,13 +107,21 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
     }
   };
 
+   const handleCancel = () => {
+     setIsAccordionOpen(false);
+   };
+
   return (
     <SectionContainer>
-      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+      <Accordion
+        sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+        expanded={isAccordionOpen}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
           id='panel1a-header'
+          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
         >
           <Grid display='flex' alignItems='center'>
             <AccountBoxIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
@@ -137,7 +151,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
                       backgroundColor: 'white',
                       height: '100px',
                       paddingTop: '10px',
-                      // overflowY: 'auto',
+                      overflowY: 'auto',
                     },
                   }}
                   multiline
@@ -199,6 +213,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
                   color: '#00B4D8',
                 }}
                 sx={{ mt: 3, ml: 1 }}
+                onClick={handleCancel}
               >
                 Cancel
               </Button>
@@ -211,7 +226,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, resumeId }
                 sx={{ mt: 3, ml: 1 }}
                 onClick={handleSubmit}
               >
-                Save
+                Save Enhanced Summary
               </Button>
             </div>
           </Box>
