@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma/prisma';
 import { useRouter } from 'next/router';
 import {
   Typography,
