@@ -8,20 +8,27 @@ import {
   TextField,
   Button,
   Checkbox,
+  Accordion,
+  AccordionSummary,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {
+  AdapterDayjs,
+  LocalizationProvider,
+  DatePicker,
+} from '@mui/x-date-pickers';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CancelButton from './CancelButton';
 
-export default function ProfileSection() {
+export default function ProfessionalExperienceSectionItem({ experienceNum }) {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState('');
   const [summaryError, setSummaryError] = useState('');
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const generateEnhancedSummary = async (inputSummary) => {
     // Check if the input summary is empty
@@ -83,15 +90,25 @@ export default function ProfileSection() {
     // Add additional logic to handle form submission, if necessary
   };
 
+  const handleCancel = () => {
+    setIsAccordionOpen(false);
+  };
+
   return (
-    <>
+    <Accordion
+      sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+      expanded={isAccordionOpen}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls='panel1a-content'
+        id='panel1a-header'
+        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+      >
+        <Typography variant='h8'>{experienceNum}</Typography>
+      </AccordionSummary>
       <AccordionDetails>
-        <Box
-          component='form'
-          noValidate
-          onSubmit={handleSubmit}
-          sx={{ mt: 3 }}
-        >
+        <Box component='form' sx={{ mt: 3 }}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
@@ -104,8 +121,6 @@ export default function ProfileSection() {
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
-            </Grid>
-            <Grid item xs={12}>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -127,62 +142,69 @@ export default function ProfileSection() {
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
-            <Grid item xs={12}>
-            </Grid>
-            <Grid container spacing={1} justifyContent="space-evenly" columnSpacing={6} sx={{ mb: 2 }}>
-              <Grid justifyContent="flex-start" item xs={5} >
+            <Grid item xs={12}></Grid>
+            <Grid
+              container
+              spacing={1}
+              justifyContent='space-evenly'
+              columnSpacing={6}
+              sx={{ mb: 2 }}
+            >
+              <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'mm/yyyy'} views={['month', 'year']} />
+                  <DatePicker label={'Start Date'} views={['month', 'year']} />
                 </LocalizationProvider>
-                <FormGroup>
+                {/* <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Don't Show" />
-                  <FormControlLabel control={<Checkbox />} label="Only Year" />
-                </FormGroup>
+                  <FormControlLabel control={<Checkbox />} label='Only Year' />
+                </FormGroup> */}
               </Grid>
-              <Grid justifyContent="flex-start" item xs={5} >
+              <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'mm/yyyy'} views={['month', 'year']} />
+                  <DatePicker label={'End Date'} views={['month', 'year']} />
                 </LocalizationProvider>
-                <FormControlLabel control={<Checkbox />} label="Don't Show" />
-                <FormControlLabel control={<Checkbox />} label="Only Year" />
-                <FormControlLabel control={<Checkbox />} label="Present (Current)" />
+                {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
+                <FormControlLabel control={<Checkbox />} label='Only Year' />
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label='Present (Current)'
+                /> */}
               </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12}></Grid>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
+              <TextField
+                required
+                id='experienceSummary'
+                name='experienceSummary'
+                label='Summary'
+                placeholder='Describe your work experience including what your role was and the technologies and skills you used.'
+                fullWidth
+                variant='filled'
+                InputProps={{
+                  style: {
+                    backgroundColor: 'white',
+                  },
+                  inputComponent: ScrollableInput,
+                }}
+                inputProps={{
+                  style: {
+                    backgroundColor: 'white',
+                    height: '100px',
+                    paddingTop: '10px',
+                    overflowY: 'auto',
+                  },
+                }}
+                multiline
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+                error={!!summaryError}
+                helperText={summaryError}
+              />
             </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id='experienceSummary'
-                  name='experienceSummary'
-                  label='Summary'
-                  placeholder='Describe your work experience including what your role was and the technologies and skills you used.'
-                  fullWidth
-                  variant='filled'
-                  InputProps={{
-                    style: {
-                      backgroundColor: 'white',
-                    },
-                    inputComponent: ScrollableInput,
-                  }}
-                  inputProps={{
-                    style: {
-                      backgroundColor: 'white',
-                      height: '100px',
-                      paddingTop: '10px',
-                      overflowY: 'auto',
-                    },
-                  }}
-                  multiline
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
-                  error={!!summaryError}
-                  helperText={summaryError}
-                />
-              </Grid>
-            </Grid>
+          </Grid>
           <div
             style={{
               display: 'flex',
@@ -229,14 +251,7 @@ export default function ProfileSection() {
               justifyContent: 'right',
             }}
           >
-            <Button
-              style={{
-                color: '#00B4D8',
-              }}
-              sx={{ mt: 3, ml: 1 }}
-            >
-              Cancel
-            </Button>
+            <CancelButton onClick={handleCancel} />
             <Button
               type='submit' // Change type to "submit"
               variant='contained'
@@ -250,6 +265,6 @@ export default function ProfileSection() {
           </div>
         </Box>
       </AccordionDetails>
-    </>
+    </Accordion>
   );
 }
