@@ -137,6 +137,26 @@ export default function EducationSectionItem({ educationNum }) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id='city'
+                name='city'
+                label='City'
+                fullWidth
+                variant='filled'
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id='country'
+                name='country'
+                label='Country'
+                fullWidth
+                variant='filled'
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 id='gpa'
                 name='gpa'
                 label='GPA'
