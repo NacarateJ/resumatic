@@ -1,4 +1,5 @@
 import SectionContainer from './SectionContainer';
+import CancelButton from './CancelButton';
 import {
   Box,
   Grid,
@@ -10,23 +11,66 @@ import {
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from 'react';
 
-export default function ResumeSection() {
-  const handleSubmit = (event) => {
+export default function ResumeSection({ resumeData, resumeId, }) {
+
+
+  const [resumeTitle, setResumeTitle] = useState(resumeData.resume_title || '');
+  const [resumeDescription, setResumeDescription] = useState(resumeData.resume_description || '');
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
+
+
+
+    try {
+      const response = await fetch('/api/resumeSectionInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dataType: 'resume', // Specify the data type as 'resume'
+          data: {
+            resumeId: resumeId,
+            resumeTitle,
+            resumeDescription,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+
+        // Handle the response data as needed, e.g., show a success message.
+      } else {
+        console.error('Error inserting resume data:', response.statusText);
+        // Handle error and display an error message to the user.
+      }
+    } catch (error) {
+      console.error('Error inserting resume data:', error);
+      // Handle network errors or other exceptions.
+    }
+  };
+
+  const handleCancel = () => {
+    setIsAccordionOpen(false);
   };
 
   return (
     <SectionContainer>
-      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+      <Accordion
+        sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+        expanded={isAccordionOpen}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
           id='panel1a-header'
+          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
         >
           <Typography variant='h5'>Resume</Typography>
         </AccordionSummary>
@@ -39,9 +83,13 @@ export default function ResumeSection() {
                   id='resumeTitle'
                   name='resumeTitle'
                   label='Title'
+                  value={resumeTitle}
+                  onChange={(e) => setResumeTitle(e.target.value)}
                   fullWidth
                   variant='filled'
-                  inputProps={{ style: { backgroundColor: 'white' } }}
+                  inputProps={{
+                    style: { backgroundColor: 'white', overflowY: 'auto' },
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -49,6 +97,8 @@ export default function ResumeSection() {
                   id='resumeDescription'
                   name='resumeDescription'
                   label='Description'
+                  value={resumeDescription}
+                  onChange={(e) => setResumeDescription(e.target.value)}
                   fullWidth
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
@@ -61,14 +111,7 @@ export default function ResumeSection() {
                 justifyContent: 'right',
               }}
             >
-              <Button
-                style={{
-                  color: '#00B4D8',
-                }}
-                sx={{ mt: 3, ml: 1 }}
-              >
-                Cancel
-              </Button>
+              <CancelButton onClick={handleCancel} />
               <Button
                 type='submit'
                 variant='contained'

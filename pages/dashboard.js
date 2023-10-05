@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import prisma from '@/utils/prisma';
+import React, { useState, useRef } from 'react';
+import prisma from '@/prisma/prisma';
 import { useRouter } from 'next/router';
 import {
   Typography,
@@ -13,7 +13,8 @@ import {
   ListItemIcon,
   ListItemText,
   CardHeader,
-  // CardActionArea,
+  cardActionArea,
+  CardActionArea,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -21,12 +22,13 @@ import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import ShareIcon from '@mui/icons-material/Share';
 import { formatDistanceToNow } from 'date-fns';
 
-
+const user_Id = 3;
 export default function Dashboard({ user, resumes, err }) {
   const router = useRouter();
 
   const [menuOpen, setMenuOpen] = useState(null);
   const [selectedResume, setSelectedResume] = useState(null);
+  const menuRef = useRef(null);
 
   const handleMenuOpen = (event, resume) => {
     event.stopPropagation(); // Prevent card click when kebab menu is clicked
@@ -57,12 +59,54 @@ export default function Dashboard({ user, resumes, err }) {
     // event.stopPropagation();
     console.log('Share clicked for resume:', resume);
     handleMenuClose();
+  }; const handleCreateResume = async () => {
+    try {
+      // Prepare the request body with hardcoded user data
+
+      const requestBody = {
+        user: {
+          userId: user_Id, // Use user_Id here, not userId
+        },
+      };
+
+
+      // Make a POST request to the API endpoint to create a new blank resume
+      const response = await fetch('/api/create-resume', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (response.ok) {
+        // Parse the response JSON to get the new resume ID
+        const { resumeId } = await response.json();
+
+        // Redirect to the resume-new page with the new resume ID as a query parameter
+        router.push(`/${resumeId}`);
+      } else {
+        // Handle error responses from the API
+        console.error('Error creating resume:', response.statusText);
+        // Optionally, show an error message to the user
+      }
+    } catch (error) {
+      console.error('Error creating resume:', error);
+      // Handle network errors or other exceptions
+      // Optionally, show an error message to the user
+    }
   };
 
-  // TO DO: uncomment function and cardActionArea
-  // const handleCardClick = (resumeId) => {
-  // router.push(`/resumes/${resumeId}`);
-  // };
+
+
+  const handleCardClick = (resumeId, event) => {
+    if (menuRef.current && menuRef.current.contains(event.target)) {
+      // Click occurred inside the Menu or its children
+      return;
+    }
+
+    router.push(`/${resumeId}`);
+  };
 
   if (err) {
     return (
@@ -101,7 +145,7 @@ export default function Dashboard({ user, resumes, err }) {
           marginTop: '1rem',
           width: '30%',
         }}
-        onClick={() => router.push('/resume-new')}
+        onClick={handleCreateResume}
       >
         Create New Resume
       </Button>
@@ -116,16 +160,20 @@ export default function Dashboard({ user, resumes, err }) {
       >
         {resumes.map((resume) => (
           <div key={resume.resume_id} style={{ margin: '10px' }}>
-            <Card style={{ width: '300px', height: '300px' }}>
-              {/* <CardActionArea onClick={() => handleCardClick(resume.resume_id)}> */}
+            <Card
+              style={{ width: '300px', height: '300px' }}
+              onClick={(e) => handleCardClick(resume.resume_id, e)}
+            >
               <CardHeader
                 title={resume.resume_title}
+
                 action={
                   <IconButton
                     aria-label='menu'
                     aria-controls={`kebab-menu-${resume.resume_id}`}
                     aria-haspopup='true'
                     onClick={(event) => handleMenuOpen(event, resume)}
+                    ref={menuRef}
                   >
                     <MoreVertIcon />
                   </IconButton>
@@ -138,6 +186,7 @@ export default function Dashboard({ user, resumes, err }) {
                   keepMounted
                   open={Boolean(menuOpen)}
                   onClose={handleMenuClose}
+                  ref={menuRef}
                 >
                   <MenuItem
                     onClick={(event) => handleMakeCopy(event, selectedResume)}
@@ -166,43 +215,48 @@ export default function Dashboard({ user, resumes, err }) {
                     <ListItemText primary='Share' />
                   </MenuItem>
                 </Menu>
+                <CardActionArea
 
-                <Paper
-                  elevation={10}
-                  style={{
-                    padding: '16px',
-                    marginLeft: '20px',
-                    marginRight: '20px',
-                    marginBottom: '30px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    minWidth: '230px',
-                    minHeight: '125px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
                 >
-                  <Typography gutterBottom variant='h6'>
-                    {resume.job_title}
-                  </Typography>
-                  <Typography variant='body2' color='text.secondary'>
-                    {resume.resume_description}
-                  </Typography>
-                </Paper>
 
-                <Typography variant='body2'>
-                  Edited{' '}
-                  {formatDistanceToNow(new Date(resume.last_modified_at), {
-                    addSuffix: true,
-                  }).replace('about ', '')}
-                </Typography>
+
+                  <Paper
+                    elevation={10}
+                    style={{
+                      padding: '16px',
+                      marginLeft: '20px',
+                      marginRight: '20px',
+                      marginBottom: '30px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      minWidth: '230px',
+                      minHeight: '125px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    <Typography gutterBottom variant='h6'>
+                      {resume.job_title}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      {resume.resume_description}
+                    </Typography>
+                  </Paper>
+
+                  <Typography variant='body2'>
+                    Edited{' '}
+                    {formatDistanceToNow(new Date(resume.last_modified_at), {
+                      addSuffix: true,
+                    }).replace('about ', '')}
+                  </Typography>
+                </CardActionArea>
               </CardContent>
-              {/* </CardActionArea> */}
+
             </Card>
           </div>
         ))}
       </div>
-    </div>
+    </div >
   );
 }
 

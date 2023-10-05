@@ -1,18 +1,18 @@
+import React, { useState } from 'react';
+import TextEditor from './TextEditor';
 import {
+  AccordionDetails,
+  Typography,
+  Box,
   Grid,
+  TextField,
+  Button,
+  Checkbox,
   Accordion,
   AccordionSummary,
-  AccordionDetails,
-  TextField,
-  Checkbox,
-  Box,
-  Button,
-  Typography,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
-import FormGroup from '@mui/material/FormGroup';
-import { useState } from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {
@@ -20,75 +20,72 @@ import {
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
-import TextEditor from './TextEditor';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CancelButton from './CancelButton';
 
-export default function EducationSectionItem({ educationNum }) {
-  const [data, setData] = useState([]);
+export default function ProfessionalExperienceSectionItem({ experienceNum }) {
+  const [summary, setSummary] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
-  // const [summary, setSummary] = useState('');
+  const generateEnhancedSummary = async (inputSummary) => {
+    // Check if the input summary is empty
+    if (!inputSummary.trim()) {
+      setSummaryError('Please enter your summary');
+      return;
+    }
 
-  // State managmenent for generates summary
-  // const [loading, setLoading] = useState(false);
-  // const [summaryError, setSummaryError] = useState('');
-  // const [generatedSummary, setGeneratedSummary] = useState('');
+    // Clear any previous error state
+    setSummaryError('');
 
-  // const generateEnhancedSummary = async (input) => {
-  //   // Check if the input summary is empty
-  //   if (!input.trim()) {
-  //     setSummaryError('Please enter your summary');
-  //     return;
-  //   }
+    // Set loading state while generating summary
+    setLoading(true);
 
-  //   // Clear any previous error state
-  //   setSummaryError('');
+    const userInput = `I'm writing a description for one of my work experiences for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences expressing to the employer what my role was at the company and the technologies I used along with the skills and expertise I used in the position. It should have max 485 characters: ${inputSummary}`;
 
-  //   // Set loading state while generating summary
-  //   setLoading(true);
+    try {
+      // Make an API request to the server with the summary content
+      const response = await fetch('/api/get-ai-response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ promptText: userInput }), // Sending the summary content to the server
+      });
 
-  //   const educationSummary = `you are a professional resume writer that is editing a clients resume, rewrite this section to be more professional. no longer than 4 sentences: ${summary}`;
-
-  //   try {
-  //     // Make an API request to the server with the summary content
-  //     const response = await fetch('/api/get-ai-response', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ promptText: educationSummary }), // Sending the summary content to the server
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       // Set the generated summary and clear loading state
-  //       setGeneratedSummary(data.completion);
-  //       setLoading(false);
-  //     } else {
-  //       // Handle error cases here
-  //       console.error('Failed to generate summary');
-  //       setLoading(false); // Clear loading state in case of error
-  //     }
-  //   } catch (error) {
-  //     // Handle network errors
-  //     console.error('Error occurred while generating summary:', error);
-  //     setLoading(false); // Clear loading state in case of error
-  //   }
-  // };
+      if (response.ok) {
+        const data = await response.json();
+        // Set the generated summary and clear loading state
+        setGeneratedSummary(data.completion);
+        setLoading(false);
+      } else {
+        // Handle error cases here
+        console.error('Failed to generate summary');
+        setLoading(false);
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error('Error occurred while generating summary:', error);
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Call generateEnhancedSummary to generate the enhanced summary
+    await generateEnhancedSummary(summary);
+
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
-    // const formData = new FormData(event.currentTarget);
-    // const data = {
-    //   degree: formData.get('degree'),
-    //   school: formData.get('school'),
-    //   gpa: formData.get('gpa'),
-    //   educationSummary: formData.get('educationSummary'),
-    // };
-
-    // console.log(data);
+    const data = new FormData(event.currentTarget);
+    console.log({
+      data,
+      summary,
+      generatedSummary, // You can access the generated summary here if needed
+    });
 
     // Add additional logic to handle form submission, if necessary
   };
@@ -108,7 +105,7 @@ export default function EducationSectionItem({ educationNum }) {
         id='panel1a-header'
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
-        <Typography variant='h8'>{educationNum}</Typography>
+        <Typography variant='h8'>{experienceNum}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Box component='form' sx={{ mt: 3 }}>
@@ -116,20 +113,20 @@ export default function EducationSectionItem({ educationNum }) {
             <Grid item xs={12}>
               <TextField
                 required
-                id='degree'
-                name='degree'
-                label='Degree'
+                id='employer'
+                name='employer'
+                label='Employer'
                 fullWidth
-                autoComplete='degree'
+                autoComplete='employer'
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id='school'
-                name='school'
-                label='School'
+                id='city'
+                name='city'
+                label='City'
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
@@ -137,9 +134,9 @@ export default function EducationSectionItem({ educationNum }) {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id='gpa'
-                name='gpa'
-                label='GPA'
+                id='country'
+                name='country'
+                label='Country'
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
@@ -151,6 +148,7 @@ export default function EducationSectionItem({ educationNum }) {
               spacing={1}
               justifyContent='space-evenly'
               columnSpacing={6}
+              sx={{ mb: 2 }}
             >
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -174,13 +172,15 @@ export default function EducationSectionItem({ educationNum }) {
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid container spacing={3}>
+          <Grid item xs={12}></Grid>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 required
-                id='educationSummary'
-                name='educationSummary'
+                id='experienceSummary'
+                name='experienceSummary'
                 label='Summary'
+                placeholder='Describe your work experience including what your role was and the technologies and skills you used.'
                 fullWidth
                 variant='filled'
                 InputProps={{
@@ -194,23 +194,25 @@ export default function EducationSectionItem({ educationNum }) {
                     backgroundColor: 'white',
                     height: '100px',
                     paddingTop: '10px',
+                    // overflowY: 'auto',
                   },
                 }}
                 multiline
                 value={summary}
-                onChange={(e) => setSummary(e.target.value)} // Update the summary state when the user types in the TextField
+                onChange={(e) => setSummary(e.target.value)}
                 error={!!summaryError}
                 helperText={summaryError}
               />
             </Grid>
-          </Grid> */}
-          {/* <div
+          </Grid>
+          <div
             style={{
               display: 'flex',
               justifyContent: 'center',
             }}
           >
             <Button
+              type='button' // Change type to "button"
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',
@@ -238,10 +240,10 @@ export default function EducationSectionItem({ educationNum }) {
 
           {generatedSummary && !loading && (
             <div style={{ marginTop: '20px' }}>
-              <Typography variant='h6'>Generated Summary:</Typography>
+              <Typography variant='h6'>Summary Suggestion:</Typography>
               <TextEditor generatedSummary={generatedSummary} />
             </div>
-          )} */}
+          )}
 
           <div
             style={{
@@ -251,8 +253,7 @@ export default function EducationSectionItem({ educationNum }) {
           >
             <CancelButton onClick={handleCancel} />
             <Button
-              type='submit'
-              onClick={handleSubmit}
+              type='submit' // Change type to "submit"
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',

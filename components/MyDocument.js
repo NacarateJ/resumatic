@@ -38,7 +38,7 @@ const MyDocument = ({ resumeData }) => {
 
   return (
     <Document >
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={styles.page} >
         <Header resumeData={resumeData} />
         {resumeData.profile_description && <View style={styles.summary}><Text>{resumeData.profile_description}</Text></View>}
         <PdfSkills skills={resumeData.skills} />

@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
-import SectionContainer from './SectionContainer';
 import TextEditor from './TextEditor';
-import CancelButton from './CancelButton';
 import {
-  Accordion,
-  AccordionSummary,
   AccordionDetails,
   Typography,
   Box,
   Grid,
   TextField,
   Button,
+  Checkbox,
+  Accordion,
+  AccordionSummary,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
+import {
+  AdapterDayjs,
+  LocalizationProvider,
+  DatePicker,
+} from '@mui/x-date-pickers';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import CancelButton from './CancelButton';
 
-export default function ProfileSection({ resumeData, fetchResumeData }) {
+export default function ProjectSectionItem({ projectNum }) {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState(resumeData.profile_description || '');
+  const [generatedSummary, setGeneratedSummary] = useState('');
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -37,7 +43,7 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm creating a summary for my resume, please rewrite it in a professional way. The summary should be written from the first-person point of view, it should be 2-3 short sentences expressing what I want to reflect to the employer, who I am, what the employer can expect from me, what's my specialization (BE/FE), why I am interested in this industry, my passions, interests, stack preferences, what type of products I like to create (intuitive, easy to use)... It should have max 485 characters: ${inputSummary}`;
+    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences expressing to the employer what my role was in the project and teh technologies I used along with what skills were necessary and demonstrate how I used my expertise. It should have max 485 characters: ${inputSummary}`;
 
     try {
       // Make an API request to the server with the summary content
@@ -69,49 +75,27 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Check if a generated summary exists
-    if (!summary.trim()) {
-      // Handle the case where no generated summary is available
-      setSummaryError('Please generate a new summary before saving');
-      return;
-    }
-   
-    // Create an object with the enhanced summary
-    const requestBody = {
-      enhancedSummary: generatedSummary,
-      resumeId: resumeData.resume_id,
-    };
+    // Call generateEnhancedSummary to generate the enhanced summary
+    await generateEnhancedSummary(summary);
 
-    try {
-      // Make an API request to save the enhanced summary
-      const response = await fetch('/api/profileSectionInsert', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
+    // Rest of your form submission logic goes here, if any
+    // For example, you can handle form data and make another API call if needed.
+    const data = new FormData(event.currentTarget);
+    console.log({
+      data,
+      summary,
+      generatedSummary, // You can access the generated summary here if needed
+    });
 
-      if (response.ok) {
-        fetchResumeData(resumeData.resume_id);
-        // Handle success, e.g., show a success message to the user
-        console.log('Enhanced summary saved successfully');
-      } else {
-        // Handle error cases here
-        console.error('Failed to save enhanced summary');
-      }
-    } catch (error) {
-      // Handle network errors
-      console.error('Error occurred while saving enhanced summary:', error);
-    }
+    // Add additional logic to handle form submission, if necessary
   };
 
-   const handleCancel = () => {
-     setIsAccordionOpen(false);
-   };
+  const handleCancel = () => {
+    setIsAccordionOpen(false);
+  };
 
   return (
-    <SectionContainer>
+    <>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
         expanded={isAccordionOpen}
@@ -122,21 +106,82 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
           id='panel1a-header'
           onClick={() => setIsAccordionOpen(!isAccordionOpen)}
         >
-          <Grid display='flex' alignItems='center'>
-            <AccountBoxIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
-            <Typography variant='h5'>Profile</Typography>
-          </Grid>
+          <Typography variant='h8'>{projectNum}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box component='form' noValidate sx={{ mt: 3 }}>
+          <Box component='form' sx={{ mt: 3 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
                   required
-                  id='profileSummary'
-                  name='profileSummary'
+                  id='projectName'
+                  name='projectName'
+                  label='Project Name'
+                  fullWidth
+                  autoComplete='project'
+                  variant='filled'
+                  inputProps={{ style: { backgroundColor: 'white' } }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id='projectLink'
+                  name='projectLink'
+                  label='Project Link'
+                  fullWidth
+                  autoComplete='project'
+                  variant='filled'
+                  inputProps={{ style: { backgroundColor: 'white' } }}
+                />
+              </Grid>
+              <Grid item xs={12}></Grid>
+              <Grid
+                container
+                spacing={1}
+                justifyContent='space-evenly'
+                columnSpacing={6}
+                sx={{ mb: 2 }}
+              >
+                <Grid justifyContent='flex-start' item xs={5}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label={'Start Date'}
+                      views={['month', 'year']}
+                    />
+                  </LocalizationProvider>
+                  {/* <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Don't Show"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label='Only Year'
+                    />
+                  </FormGroup> */}
+                </Grid>
+                <Grid justifyContent='flex-start' item xs={5}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker label={'End Date'} views={['month', 'year']} />
+                  </LocalizationProvider>
+                  {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
+                  <FormControlLabel control={<Checkbox />} label='Only Year' />
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label='Present (Current)'
+                  /> */}
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}></Grid>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  id='projectSummary'
+                  name='projectSummary'
                   label='Summary'
-                  placeholder='Briefly introduce yourself: what you want to reflect to the employer, why are you interested in this industry, your passions, interests, stack preferences...'
+                  placeholder='Describe your project including what your role was in the project and the technologies and skills you used.'
                   fullWidth
                   variant='filled'
                   InputProps={{
@@ -196,7 +241,7 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
 
             {generatedSummary && !loading && (
               <div style={{ marginTop: '20px' }}>
-                <Typography variant='h6'>Enhanced Summary:</Typography>
+                <Typography variant='h6'>Summary Suggestion:</Typography>
                 <TextEditor generatedSummary={generatedSummary} />
               </div>
             )}
@@ -210,19 +255,19 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
               <CancelButton onClick={handleCancel} />
               <Button
                 type='submit' // Change type to "submit"
+                onClick={(event) => handleSubmit(event)}
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
                 }}
                 sx={{ mt: 3, ml: 1 }}
-                onClick={handleSubmit}
               >
-                Save Enhanced Summary
+                Save
               </Button>
             </div>
           </Box>
         </AccordionDetails>
       </Accordion>
-    </SectionContainer>
+    </>
   );
 }
