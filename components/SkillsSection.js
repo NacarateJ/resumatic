@@ -12,7 +12,7 @@ import {
   AccordionDetails,
   Box,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
   const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || "");

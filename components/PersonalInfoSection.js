@@ -40,7 +40,7 @@ export default function PersonalInfoSection({ resumeData, fetchResumeData, resum
       github,
       resumeId, // Include resumeId if needed
     };
-
+    console.log(userData);
     try {
       const response = await fetch('/api/personalInfoInsert', {
         method: 'POST',
@@ -48,7 +48,6 @@ export default function PersonalInfoSection({ resumeData, fetchResumeData, resum
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          dataType: 'resume',
           data: userData,
         }),
       });
