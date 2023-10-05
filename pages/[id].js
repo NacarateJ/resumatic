@@ -73,6 +73,8 @@ export default function ResumeNew() {
         <div style={{ flex: 1, padding: '10px' }}>
           <ResumeSection resumeData={resumeData} resumeId={resumeId} />
           <PersonalInfoSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+          <ProfessionalExperienceSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
+
           <ProfileSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
           <SkillsSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />
           <LanguageSection resumeData={resumeData} fetchResumeData={fetchResumeData} resumeId={resumeId} />

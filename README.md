@@ -81,7 +81,7 @@ node prisma/seed.js
 ### Reset Database
 
 ```bash
-npx prisma migrate reset  
+npx prisma migrate reset
 ```
 
 ### Start Prisma Studio
