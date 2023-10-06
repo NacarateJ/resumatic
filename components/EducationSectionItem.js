@@ -96,8 +96,6 @@ export default function EducationSectionItem({
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log('Form State', formState);
-
     try {
       const response = await fetch('/api/educationSectionInsert', {
         method: 'POST',
@@ -209,8 +207,10 @@ export default function EducationSectionItem({
                 fullWidth
                 variant='filled'
                 autoComplete='GPA'
-                value={formState?.gpa || ''}
-                onChange={(event) => handleChange('gpa', event.target.value)}
+                value={formState?.gpa || 0.0}
+                onChange={(event) =>
+                  handleChange('gpa', Number.parseFloat(event.target.value))
+                }
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
