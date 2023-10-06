@@ -123,6 +123,17 @@ export default function ProjectSectionItem({ projectNum }) {
                   inputProps={{ style: { backgroundColor: 'white' } }}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id='projectLink'
+                  name='projectLink'
+                  label='Project Link'
+                  fullWidth
+                  autoComplete='project'
+                  variant='filled'
+                  inputProps={{ style: { backgroundColor: 'white' } }}
+                />
+              </Grid>
               <Grid item xs={12}></Grid>
               <Grid
                 container

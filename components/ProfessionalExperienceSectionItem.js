@@ -194,7 +194,7 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                     backgroundColor: 'white',
                     height: '100px',
                     paddingTop: '10px',
-                    overflowY: 'auto',
+                    // overflowY: 'auto',
                   },
                 }}
                 multiline

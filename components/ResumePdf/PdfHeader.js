@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 
 // Links component that displays email and social media links
 function Links({ email, website_link, linkedin_link, github_link }) {
+
   return (
     <View>
       <View style={styles.links}>
@@ -97,7 +98,15 @@ function Header({ resumeData }) {
     linkedin_link,
     github_link
   } = resumeData;
-
+  console.log(`resumeData: ${full_name,
+    job_title,
+    email,
+    phone_number,
+    address,
+    website_link,
+    linkedin_link,
+    github_link
+    }`);
   return (
     <View style={styles.header}>
       <View>
