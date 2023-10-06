@@ -39,8 +39,6 @@ export default function EducationSectionItem({
   const [formState, setFormState] = useState(educationData || null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
-  // const [summary, setSummary] = useState('');
-
   // State managmenent for generates summary
   // const [loading, setLoading] = useState(false);
   // const [summaryError, setSummaryError] = useState('');
