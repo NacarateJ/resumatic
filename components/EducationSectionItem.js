@@ -22,6 +22,11 @@ import {
 } from '@mui/x-date-pickers';
 // import TextEditor from './TextEditor';
 import CancelButton from './CancelButton';
+import {
+  fromStringToDate,
+  fromDateToString,
+  defaultDate,
+} from '../utils/dateParser';
 
 export default function EducationSectionItem({
   educationNum,
@@ -91,35 +96,35 @@ export default function EducationSectionItem({
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log('formState', formState);
+    console.log('Form State', formState);
 
-    // try {
-    //   const response = await fetch('/api/educationSectionInsert', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       data: formState,
-    //     }),
-    //   });
+    try {
+      const response = await fetch('/api/educationSectionInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: formState,
+        }),
+      });
 
-    //   if (response.ok) {
-    //     const responseData = await response.json();
-    //     fetchResumeData(educationData.resume_id);
-    //     // Handle the response data as needed, e.g., show a success message.
-    //   } else {
-    //     console.error('Error inserting resume data:', response.statusText);
-    //     // Handle error and display an error message to the user.
-    //   }
-    // } catch (error) {
-    //   console.error('Error inserting resume data:', error);
-    //   // Handle network errors or other exceptions.
-    // }
+      if (response.ok) {
+        const responseData = await response.json();
+        fetchResumeData(educationData.resume_id);
+        // Handle the response data as needed, e.g., show a success message.
+      } else {
+        console.error('Error inserting resume data:', response.statusText);
+        // Handle error and display an error message to the user.
+      }
+    } catch (error) {
+      console.error('Error inserting resume data:', error);
+      // Handle network errors or other exceptions.
+    }
   };
 
   const handleCancel = () => {
-    setFormState(...educState);
+    setFormState({ ...educState });
     setIsAccordionOpen(false);
   };
 
@@ -218,7 +223,16 @@ export default function EducationSectionItem({
             >
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'Start Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'Start Date'}
+                    views={['month', 'year']}
+                    value={
+                      fromStringToDate(formState?.start_date) || defaultDate()
+                    }
+                    onChange={(date) =>
+                      handleChange('start_date', fromDateToString(date))
+                    }
+                  />
                 </LocalizationProvider>
                 {/* <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Don't Show" />
@@ -227,7 +241,16 @@ export default function EducationSectionItem({
               </Grid>
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'End Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'End Date'}
+                    views={['month', 'year']}
+                    value={
+                      fromStringToDate(formState?.end_date) || defaultDate()
+                    }
+                    onChange={(date) =>
+                      handleChange('end_date', fromDateToString(date))
+                    }
+                  />
                 </LocalizationProvider>
                 {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                 <FormControlLabel control={<Checkbox />} label='Only Year' />

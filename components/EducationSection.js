@@ -12,10 +12,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EducationSectionItem from './EducationSectionItem';
 import { useState } from 'react';
 
-export default function EducationSection({
-  resumeData,
-  fetchResumeData,
-}) {
+export default function EducationSection({ resumeData, fetchResumeData }) {
+  console.log('resumeData', resumeData);
 
   return (
     <SectionContainer>
