@@ -4,14 +4,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import ProfessionalExperienceSectionItem from './ProfessionalExperienceSectionItem';
 import { Grid, Accordion, AccordionSummary, Typography } from '@mui/material';
 
-export default function ProfessionalExperienceSection() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
-  };
+export default function ProfessionalExperienceSection({ resumeData, fetchResumeData }) {
   return (
     <SectionContainer>
       <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
@@ -26,9 +19,21 @@ export default function ProfessionalExperienceSection() {
           </Grid>
         </AccordionSummary>
 
-        <ProfessionalExperienceSectionItem experienceNum='Professional Experience #1' />
-        <ProfessionalExperienceSectionItem experienceNum='Professional Experience #2' />
-        <ProfessionalExperienceSectionItem experienceNum='Professional Experience #3' />
+        <ProfessionalExperienceSectionItem
+          experienceNum='Professional Experience #1'
+          resumeData={resumeData}
+          fetchResumeData={fetchResumeData}
+        />
+        <ProfessionalExperienceSectionItem
+          experienceNum='Professional Experience #2'
+          resumeData={resumeData}
+          fetchResumeData={fetchResumeData}
+        />
+        <ProfessionalExperienceSectionItem
+          experienceNum='Professional Experience #3'
+          resumeData={resumeData}
+          fetchResumeData={fetchResumeData}
+        />
       </Accordion>
     </SectionContainer>
   );
