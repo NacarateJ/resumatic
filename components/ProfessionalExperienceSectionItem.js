@@ -7,10 +7,10 @@ import {
   Grid,
   TextField,
   Button,
-  // Checkbox,
+// Checkbox,
   Accordion,
   AccordionSummary,
-  // FormGroup,
+// FormGroup,
   // FormControlLabel,
 } from '@mui/material';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
@@ -104,8 +104,6 @@ export default function ProfessionalExperienceSectionItem({
       jobTitle,
       startDate: startDate ? startDate.format('MMMM, YYYY') : null,
     };
-
-    console.log('REQUEST BODY', requestBody);
 
     try {
       // Make an API request to save work exp
