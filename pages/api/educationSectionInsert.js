@@ -5,44 +5,60 @@ export default async function handler(req, res) {
     try {
       const { data } = req.body;
       const {
-        resumeId,
+        resume_id,
+        education_id,
         degree,
-        school,
+        school_name,
         country,
         city,
         gpa,
-        educationDescription,
-        startDate,
-        endDate,
+        education_description,
+        start_date,
+        end_date,
       } = data;
 
       //Check if the degree already exists for the provided resumeId
       const existingDegree = await prisma.educations.findFirst({
         where: {
-          resume_id: resumeId,
-          degree: degree,
-          school_name: school,
-          country: country,
-          city: city,
+          resume_id: resume_id,
+          education_id: education_id,
         },
       });
 
       if (existingDegree) {
+        const updateDegree = await prisma.educations.update({
+          where: {
+            resume_id: resume_id,
+            education_id: education_id,
+          },
+          data: {
+            resume_id: resume_id,
+            school_name: school_name,
+            city: city,
+            country: country,
+            degree: degree,
+            education_description: education_description,
+            start_date: start_date,
+            end_date: end_date,
+            gpa: gpa,
+          },
+        });
+
         res
-          .status(200)
-          .json({ message: 'Degree already exists', degree: existingDegree });
+          .status(202)
+          .json({ message: 'Degree has been updated', degree: updateDegree });
       } else {
         // Degree doesn't exist, create new one
         const newDegree = await prisma.educations.create({
           data: {
-            resume_id: resumeId,
-            school_name: school,
+            resume_id: resume_id,
+            school_name: school_name,
             city: city,
             country: country,
             degree: degree,
-            education_description: educationDescription,
-            start_date: startDate,
-            end_date: endDate,
+            education_description: education_description,
+            start_date: start_date,
+            end_date: end_date,
             gpa: gpa,
           },
         });

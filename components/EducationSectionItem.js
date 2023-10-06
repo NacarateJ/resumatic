@@ -28,7 +28,10 @@ export default function EducationSectionItem({
   educationData,
   fetchResumeData,
 }) {
-  const [educData, setEducData] = useState(educationData || null);
+  // State for education data if exists for given resume
+  const [educState, setEducState] = useState(educationData || null);
+  // State of form data for given resume
+  const [formState, setFormState] = useState(educationData || null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   // const [summary, setSummary] = useState('');
@@ -81,53 +84,42 @@ export default function EducationSectionItem({
   // };
 
   const handleChange = (fieldName, value) => {
-    setEducData({ ...educData, [fieldName]: value });
-    console.log('Education State:', educData);
+    setFormState({ ...formState, [fieldName]: value });
+    console.log('Form State:', formState);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch('/api/educationSectionInsert', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          data: educData,
-        }),
-      });
+    console.log('formState', formState);
 
-      if (response.ok) {
-        const responseData = await response.json();
-        fetchResumeData(educationData.resume_id);
-        // Handle the response data as needed, e.g., show a success message.
-      } else {
-        console.error('Error inserting resume data:', response.statusText);
-        // Handle error and display an error message to the user.
-      }
-    } catch (error) {
-      console.error('Error inserting resume data:', error);
-      // Handle network errors or other exceptions.
-    }
+    // try {
+    //   const response = await fetch('/api/educationSectionInsert', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       data: formState,
+    //     }),
+    //   });
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    // const formData = new FormData(event.currentTarget);
-    // const data = {
-    //   degree: formData.get('degree'),
-    //   school: formData.get('school'),
-    //   gpa: formData.get('gpa'),
-    //   educationSummary: formData.get('educationSummary'),
-    // };
-
-    // console.log(data);
-
-    // Add additional logic to handle form submission, if necessary
+    //   if (response.ok) {
+    //     const responseData = await response.json();
+    //     fetchResumeData(educationData.resume_id);
+    //     // Handle the response data as needed, e.g., show a success message.
+    //   } else {
+    //     console.error('Error inserting resume data:', response.statusText);
+    //     // Handle error and display an error message to the user.
+    //   }
+    // } catch (error) {
+    //   console.error('Error inserting resume data:', error);
+    //   // Handle network errors or other exceptions.
+    // }
   };
 
   const handleCancel = () => {
+    setFormState(...educState);
     setIsAccordionOpen(false);
   };
 
@@ -156,7 +148,7 @@ export default function EducationSectionItem({
                 fullWidth
                 autoComplete='degree'
                 variant='filled'
-                value={educData?.degree || ''}
+                value={formState?.degree || ''}
                 onChange={(event) => handleChange('degree', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
@@ -169,7 +161,7 @@ export default function EducationSectionItem({
                 fullWidth
                 variant='filled'
                 autoComplete='School Name'
-                value={educData?.school_name || ''}
+                value={formState?.school_name || ''}
                 onChange={(event) =>
                   handleChange('school_name', event.target.value)
                 }
@@ -184,7 +176,7 @@ export default function EducationSectionItem({
                 fullWidth
                 variant='filled'
                 autoComplete='City'
-                value={educData?.city || ''}
+                value={formState?.city || ''}
                 onChange={(event) => handleChange('city', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
@@ -197,7 +189,7 @@ export default function EducationSectionItem({
                 fullWidth
                 variant='filled'
                 autoComplete='Country'
-                value={educData?.country || ''}
+                value={formState?.country || ''}
                 onChange={(event) =>
                   handleChange('country', event.target.value)
                 }
@@ -212,7 +204,7 @@ export default function EducationSectionItem({
                 fullWidth
                 variant='filled'
                 autoComplete='GPA'
-                value={educData?.gpa || ''}
+                value={formState?.gpa || ''}
                 onChange={(event) => handleChange('gpa', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
@@ -269,7 +261,7 @@ export default function EducationSectionItem({
                 }}
                 multiline
                 autoComplete='Describe in few word your education'
-                value={educData?.education_description || ''}
+                value={formState?.education_description || ''}
                 onChange={(event) =>
                   handleChange('education_description', event.target.value)
                 }
@@ -324,7 +316,7 @@ export default function EducationSectionItem({
             <CancelButton onClick={handleCancel} />
             <Button
               type='submit'
-              onClick={handleSubmit}
+              onClick={(event) => handleSubmit(event)}
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',
