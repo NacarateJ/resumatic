@@ -9,22 +9,26 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import FormGroup from '@mui/material/FormGroup';
+//import FormGroup from '@mui/material/FormGroup';
 import { useState } from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
+//import FormControlLabel from '@mui/material/FormControlLabel';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+// import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {
   AdapterDayjs,
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
-import TextEditor from './TextEditor';
+// import TextEditor from './TextEditor';
 import CancelButton from './CancelButton';
 
-export default function EducationSectionItem({ educationNum }) {
-  const [data, setData] = useState([]);
+export default function EducationSectionItem({
+  educationNum,
+  educationData,
+  fetchResumeData,
+}) {
+  const [educData, setEducData] = useState(educationData || null);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   // const [summary, setSummary] = useState('');
@@ -76,8 +80,38 @@ export default function EducationSectionItem({ educationNum }) {
   //   }
   // };
 
+  const handleChange = (fieldName, value) => {
+    setEducData({ ...educData, [fieldName]: value });
+    console.log('Education State:', educData);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    try {
+      const response = await fetch('/api/educationSectionInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: educData,
+        }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        fetchResumeData(educationData.resume_id);
+        // Handle the response data as needed, e.g., show a success message.
+      } else {
+        console.error('Error inserting resume data:', response.statusText);
+        // Handle error and display an error message to the user.
+      }
+    } catch (error) {
+      console.error('Error inserting resume data:', error);
+      // Handle network errors or other exceptions.
+    }
+
     // Rest of your form submission logic goes here, if any
     // For example, you can handle form data and make another API call if needed.
     // const formData = new FormData(event.currentTarget);
@@ -122,6 +156,8 @@ export default function EducationSectionItem({ educationNum }) {
                 fullWidth
                 autoComplete='degree'
                 variant='filled'
+                value={educData?.degree || ''}
+                onChange={(event) => handleChange('degree', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -132,6 +168,11 @@ export default function EducationSectionItem({ educationNum }) {
                 label='School'
                 fullWidth
                 variant='filled'
+                autoComplete='School Name'
+                value={educData?.school_name || ''}
+                onChange={(event) =>
+                  handleChange('school_name', event.target.value)
+                }
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -142,6 +183,9 @@ export default function EducationSectionItem({ educationNum }) {
                 label='City'
                 fullWidth
                 variant='filled'
+                autoComplete='City'
+                value={educData?.city || ''}
+                onChange={(event) => handleChange('city', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -152,6 +196,11 @@ export default function EducationSectionItem({ educationNum }) {
                 label='Country'
                 fullWidth
                 variant='filled'
+                autoComplete='Country'
+                value={educData?.country || ''}
+                onChange={(event) =>
+                  handleChange('country', event.target.value)
+                }
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -162,6 +211,9 @@ export default function EducationSectionItem({ educationNum }) {
                 label='GPA'
                 fullWidth
                 variant='filled'
+                autoComplete='GPA'
+                value={educData?.gpa || ''}
+                onChange={(event) => handleChange('gpa', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -194,13 +246,12 @@ export default function EducationSectionItem({ educationNum }) {
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid container spacing={3}>
+          <Grid container spacing={3} sx={{ pt: 3 }}>
             <Grid item xs={12}>
               <TextField
-                required
-                id='educationSummary'
-                name='educationSummary'
-                label='Summary'
+                id='educationDescription'
+                name='educationDescription'
+                label='Education Description'
                 fullWidth
                 variant='filled'
                 InputProps={{
@@ -217,13 +268,14 @@ export default function EducationSectionItem({ educationNum }) {
                   },
                 }}
                 multiline
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)} // Update the summary state when the user types in the TextField
-                error={!!summaryError}
-                helperText={summaryError}
+                autoComplete='Describe in few word your education'
+                value={educData?.education_description || ''}
+                onChange={(event) =>
+                  handleChange('education_description', event.target.value)
+                }
               />
             </Grid>
-          </Grid> */}
+          </Grid>
           {/* <div
             style={{
               display: 'flex',
