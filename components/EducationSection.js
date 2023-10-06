@@ -13,8 +13,6 @@ import EducationSectionItem from './EducationSectionItem';
 import { useState } from 'react';
 
 export default function EducationSection({ resumeData, fetchResumeData }) {
-  console.log('resumeData', resumeData);
-
   return (
     <SectionContainer>
       <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>

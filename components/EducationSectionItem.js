@@ -88,7 +88,6 @@ export default function EducationSectionItem({
 
   const handleChange = (fieldName, value) => {
     setFormState({ ...formState, [fieldName]: value });
-    console.log('Form State:', formState);
   };
 
   const handleSubmit = async (event) => {
