@@ -4,7 +4,10 @@ import WorkIcon from '@mui/icons-material/Work';
 import ProfessionalExperienceSectionItem from './ProfessionalExperienceSectionItem';
 import { Grid, Accordion, AccordionSummary, Typography } from '@mui/material';
 
-export default function ProfessionalExperienceSection({ resumeData, fetchResumeData }) {
+export default function ProfessionalExperienceSection({
+  resumeData,
+  fetchResumeData,
+}) {
   return (
     <SectionContainer>
       <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
@@ -21,18 +24,21 @@ export default function ProfessionalExperienceSection({ resumeData, fetchResumeD
 
         <ProfessionalExperienceSectionItem
           experienceNum='Professional Experience #1'
-          resumeData={resumeData}
+          workExp={resumeData.work_experience?.[0]}
           fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
         />
         <ProfessionalExperienceSectionItem
           experienceNum='Professional Experience #2'
-          resumeData={resumeData}
+          workExp={resumeData.work_experience?.[1]}
           fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
         />
         <ProfessionalExperienceSectionItem
           experienceNum='Professional Experience #3'
-          resumeData={resumeData}
+          workExp={resumeData.work_experience?.[2]}
           fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
         />
       </Accordion>
     </SectionContainer>

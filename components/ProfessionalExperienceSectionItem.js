@@ -7,11 +7,11 @@ import {
   Grid,
   TextField,
   Button,
-  Checkbox,
+  // Checkbox,
   Accordion,
   AccordionSummary,
-  FormGroup,
-  FormControlLabel,
+  // FormGroup,
+  // FormControlLabel,
 } from '@mui/material';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
@@ -20,13 +20,31 @@ import {
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CancelButton from './CancelButton';
 
-export default function ProfessionalExperienceSectionItem({ experienceNum }) {
+export default function ProfessionalExperienceSectionItem({
+  experienceNum,
+  workExp,
+  fetchResumeData,
+  resumeId,
+}) {
+  const [jobTitle, setJobTitle] = useState(workExp?.job_title || '');
+  const [employer, setEmployer] = useState(workExp?.employer || '');
+  const [city, setCity] = useState(workExp?.city || '');
+  const [country, setCountry] = useState(workExp?.country || '');
+  const [startDate, setStartDate] = useState(
+    workExp?.start_date ? dayjs(workExp.start_date) : null
+  );
+  const [endDate, setEndDate] = useState(
+    workExp?.end_date ? dayjs(workExp.end_date) : null
+  );
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [generatedSummary, setGeneratedSummary] = useState(
+    workExp?.experience_description || ''
+  );
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -75,19 +93,42 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary(summary);
+    // Create an object with the enhanced summary
+    const requestBody = {
+      resumeId,
+      city,
+      country,
+      employer,
+      endDate: endDate ? endDate.format('MMMM, YYYY') : null,
+      enhancedSummary: generatedSummary,
+      jobTitle,
+      startDate: startDate ? startDate.format('MMMM, YYYY') : null,
+    };
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-      summary,
-      generatedSummary, // You can access the generated summary here if needed
-    });
+    console.log('REQUEST BODY', requestBody);
 
-    // Add additional logic to handle form submission, if necessary
+    try {
+      // Make an API request to save work exp
+      const response = await fetch('/api/professionalExpInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: requestBody }),
+      });
+
+      if (response.ok) {
+        fetchResumeData(resumeId);
+        // Handle success, e.g., show a success message to the user
+        console.log('Work experience saved successfully');
+      } else {
+        // Handle error cases here
+        console.error('Failed to save work experience');
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error('Error occurred while saving work experience:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -113,9 +154,25 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
             <Grid item xs={12}>
               <TextField
                 required
+                id='jobTitle'
+                name='jobTitle'
+                label='Job Title'
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                fullWidth
+                autoComplete='jobTitle'
+                variant='filled'
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
                 id='employer'
                 name='employer'
                 label='Employer'
+                value={employer}
+                onChange={(e) => setEmployer(e.target.value)}
                 fullWidth
                 autoComplete='employer'
                 variant='filled'
@@ -127,6 +184,8 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                 id='city'
                 name='city'
                 label='City'
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
@@ -137,6 +196,8 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                 id='country'
                 name='country'
                 label='Country'
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
@@ -152,7 +213,12 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
             >
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'Start Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'Start Date'}
+                    views={['month', 'year']}
+                    value={startDate}
+                    onChange={(date) => setStartDate(dayjs(date))}
+                  />
                 </LocalizationProvider>
                 {/* <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Don't Show" />
@@ -161,7 +227,12 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
               </Grid>
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'End Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'End Date'}
+                    views={['month', 'year']}
+                    value={endDate}
+                    onChange={(date) => setEndDate(dayjs(date))}
+                  />
                 </LocalizationProvider>
                 {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                 <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -259,6 +330,7 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                 backgroundColor: '#00B4D8',
               }}
               sx={{ mt: 3, ml: 1 }}
+              onClick={handleSubmit}
             >
               Save
             </Button>
