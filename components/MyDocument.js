@@ -26,7 +26,7 @@ import PdfLang from './ResumePdf/PdfLanguages';
 
 // Create Document Component
 const MyDocument = ({ resumeData }) => {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  // const [fontsLoaded, setFontsLoaded] = useState(false);
   useEffect(() => {
     // const loadFonts = async () => {
     //   await Font.register({
