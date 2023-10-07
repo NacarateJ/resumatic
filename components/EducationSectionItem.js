@@ -139,7 +139,11 @@ export default function EducationSectionItem({
         <Typography variant='h8'>{educationNum}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Box component='form' sx={{ mt: 3 }}>
+        <Box
+          component='form'
+          onSubmit={(event) => handleSubmit(event)}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
@@ -226,7 +230,9 @@ export default function EducationSectionItem({
                     label={'Start Date'}
                     views={['month', 'year']}
                     value={
-                      fromStringToDate(formState?.start_date) || defaultDate()
+                      formState?.start_date
+                        ? fromStringToDate(formState.start_date)
+                        : null
                     }
                     onChange={(date) =>
                       handleChange('start_date', fromDateToString(date))
@@ -244,7 +250,9 @@ export default function EducationSectionItem({
                     label={'End Date'}
                     views={['month', 'year']}
                     value={
-                      fromStringToDate(formState?.end_date) || defaultDate()
+                      formState?.end_date
+                        ? fromStringToDate(formState.end_date)
+                        : null
                     }
                     onChange={(date) =>
                       handleChange('end_date', fromDateToString(date))
@@ -338,7 +346,6 @@ export default function EducationSectionItem({
             <CancelButton onClick={handleCancel} />
             <Button
               type='submit'
-              onClick={(event) => handleSubmit(event)}
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',
