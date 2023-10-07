@@ -16,6 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Logo from './Logo';
 import Link from 'next/link';
 import { AccountCircle } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 const pages = ['Dashboard'];
 const settings = ['Account', 'Logout'];
@@ -23,6 +24,10 @@ const settings = ['Account', 'Logout'];
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+
+  const router = useRouter();
+  const isHomePage = router.pathname === '/';
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -84,57 +89,60 @@ export default function Navbar() {
               <Logo />
             </Link>
           </Box>
-          <Box sx={{ mr: 2, flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Link key={page} href={`/${page.toLowerCase()}`} passHref>
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 1,
-                    color: 'white',
-                    display: 'block',
-                    fontWeight: 500,
-                    fontSize: 16,
-                  }}
-                >
-                  {page}
-                </Button>
-              </Link>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircle sx={{ fontSize: 36, color: 'white' }} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <Link key={setting} href={`/${setting.toLowerCase()}`} passHref>
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign='center'>{setting}</Typography>
-                  </MenuItem>
+          {!isHomePage && (
+            <Box sx={{ mr: 2, flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+              {pages.map((page) => (
+                <Link key={page} href={`/${page.toLowerCase()}`} passHref>
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      my: 1,
+                      color: 'white',
+                      display: 'block',
+                      fontWeight: 500,
+                      fontSize: 16,
+                    }}
+                  >
+                    {page}
+                  </Button>
                 </Link>
               ))}
-            </Menu>
-          </Box>
+            </Box>
+          )}
+          {!isHomePage && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title='Open settings'>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <AccountCircle sx={{ fontSize: 36, color: 'white' }} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id='menu-appbar'
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <Link key={setting} href={`/${setting.toLowerCase()}`} passHref>
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign='center'>{setting}</Typography>
+                    </MenuItem>
+                  </Link>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
