@@ -11,13 +11,15 @@ import {
   Typography,
 } from '@mui/material';
 
-export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
+export default function LanguageSection({
+  resumeData,
+  fetchResumeData,
+  resumeId,
+}) {
   return (
     <>
       <SectionContainer>
-        <Accordion
-          sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        >
+        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
@@ -34,18 +36,21 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
             languageLevel={resumeData.languages?.[0]?.language_level}
             resumeId={resumeId}
             fetchResumeData={fetchResumeData}
+            languageNum={1}
           />
           <LanguageSectionItem
             languageName={resumeData.languages?.[1]?.language_name}
             languageLevel={resumeData.languages?.[1]?.language_level}
             resumeId={resumeId}
             fetchResumeData={fetchResumeData}
+            languageNum={2}
           />
           <LanguageSectionItem
             languageName={resumeData.languages?.[2]?.language_name}
             languageLevel={resumeData.languages?.[2]?.language_level}
             resumeId={resumeId}
             fetchResumeData={fetchResumeData}
+            languageNum={3}
           />
           <AccordionDetails>
             <Grid display='flex' justifyContent='center' alignItems='center'>
