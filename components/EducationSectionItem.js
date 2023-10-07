@@ -32,13 +32,15 @@ export default function EducationSectionItem({
   educationNum,
   educationData,
   fetchResumeData,
+  resumeId,
 }) {
   // State for education data if exists for given resume
   const [educState, setEducState] = useState(educationData || null);
   // State of form data for given resume
-  const [formState, setFormState] = useState(educationData || null);
+  const [formState, setFormState] = useState(
+    educationData ? educationData : { resume_id: resumeId }
+  );
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-
   // State managmenent for generates summary
   // const [loading, setLoading] = useState(false);
   // const [summaryError, setSummaryError] = useState('');
@@ -106,7 +108,7 @@ export default function EducationSectionItem({
 
       if (response.ok) {
         const responseData = await response.json();
-        fetchResumeData(educationData.resume_id);
+        fetchResumeData(resumeId);
         // Handle the response data as needed, e.g., show a success message.
       } else {
         console.error('Error inserting resume data:', response.statusText);
