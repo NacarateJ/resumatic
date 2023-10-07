@@ -22,14 +22,21 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  projectHeaderLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    fontSize: 12,
+    fontFamily: "Times-Roman"
+  },
 });
 
 function Project({ project }) {
   return (
     <>
-      <View style={{ ...commonStyles.workHeaderLine, fontFamily: "Times-BoldItalic" }}>
+      <View style={styles.projectHeaderLine}>
         <View>
-          <Text style={styles.projectTitle}>{project.project_title} </Text>
+          <Link src={project.project_link}><Text style={commonStyles.linksLine}>{project.project_title}</Text></Link>
           {project.project_subtitle && <Text style={{ fontFamily: 'Times-Italic' }}>- {project.project_subtitle}</Text>}
         </View>
         {project.is_current ? (
@@ -39,12 +46,12 @@ function Project({ project }) {
         )}
       </View >
       {project.project_description !== '' && <View style={{ ...commonStyles.normalTextLine }}><Text>{project.project_description}</Text></View>}
-      < View style={commonStyles.normalTextLine} >
+      {/* < View style={commonStyles.normalTextLine} >
         <View style={styles.linkItem}>
           <Text>Code: </Text>
           <Link src={project.project_link}><Text style={commonStyles.link}>{project.project_title}</Text></Link>
         </View>
-      </View >
+      </View > */}
     </>
   );
 }
