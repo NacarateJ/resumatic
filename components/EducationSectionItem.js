@@ -9,26 +9,38 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import FormGroup from '@mui/material/FormGroup';
+//import FormGroup from '@mui/material/FormGroup';
 import { useState } from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
+//import FormControlLabel from '@mui/material/FormControlLabel';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+// import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {
   AdapterDayjs,
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
-import TextEditor from './TextEditor';
+// import TextEditor from './TextEditor';
 import CancelButton from './CancelButton';
+import {
+  fromStringToDate,
+  fromDateToString,
+  defaultDate,
+} from '../utils/dateParser';
 
-export default function EducationSectionItem({ educationNum }) {
-  const [data, setData] = useState([]);
+export default function EducationSectionItem({
+  educationNum,
+  educationData,
+  fetchResumeData,
+  resumeId,
+}) {
+  // State for education data if exists for given resume
+  const [educState, setEducState] = useState(educationData || null);
+  // State of form data for given resume
+  const [formState, setFormState] = useState(
+    educationData ? educationData : { resume_id: resumeId }
+  );
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-
-  // const [summary, setSummary] = useState('');
-
   // State managmenent for generates summary
   // const [loading, setLoading] = useState(false);
   // const [summaryError, setSummaryError] = useState('');
@@ -76,24 +88,40 @@ export default function EducationSectionItem({ educationNum }) {
   //   }
   // };
 
+  const handleChange = (fieldName, value) => {
+    setFormState({ ...formState, [fieldName]: value });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    // const formData = new FormData(event.currentTarget);
-    // const data = {
-    //   degree: formData.get('degree'),
-    //   school: formData.get('school'),
-    //   gpa: formData.get('gpa'),
-    //   educationSummary: formData.get('educationSummary'),
-    // };
 
-    // console.log(data);
+    try {
+      const response = await fetch('/api/educationSectionInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: formState,
+        }),
+      });
 
-    // Add additional logic to handle form submission, if necessary
+      if (response.ok) {
+        const responseData = await response.json();
+        fetchResumeData(resumeId);
+        // Handle the response data as needed, e.g., show a success message.
+      } else {
+        console.error('Error inserting resume data:', response.statusText);
+        // Handle error and display an error message to the user.
+      }
+    } catch (error) {
+      console.error('Error inserting resume data:', error);
+      // Handle network errors or other exceptions.
+    }
   };
 
   const handleCancel = () => {
+    setFormState({ ...educState });
     setIsAccordionOpen(false);
   };
 
@@ -111,7 +139,11 @@ export default function EducationSectionItem({ educationNum }) {
         <Typography variant='h8'>{educationNum}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Box component='form' sx={{ mt: 3 }}>
+        <Box
+          component='form'
+          onSubmit={(event) => handleSubmit(event)}
+          sx={{ mt: 3 }}
+        >
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
@@ -122,6 +154,8 @@ export default function EducationSectionItem({ educationNum }) {
                 fullWidth
                 autoComplete='degree'
                 variant='filled'
+                value={formState?.degree || ''}
+                onChange={(event) => handleChange('degree', event.target.value)}
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -132,6 +166,39 @@ export default function EducationSectionItem({ educationNum }) {
                 label='School'
                 fullWidth
                 variant='filled'
+                autoComplete='School Name'
+                value={formState?.school_name || ''}
+                onChange={(event) =>
+                  handleChange('school_name', event.target.value)
+                }
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id='city'
+                name='city'
+                label='City'
+                fullWidth
+                variant='filled'
+                autoComplete='City'
+                value={formState?.city || ''}
+                onChange={(event) => handleChange('city', event.target.value)}
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id='country'
+                name='country'
+                label='Country'
+                fullWidth
+                variant='filled'
+                autoComplete='Country'
+                value={formState?.country || ''}
+                onChange={(event) =>
+                  handleChange('country', event.target.value)
+                }
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -142,6 +209,11 @@ export default function EducationSectionItem({ educationNum }) {
                 label='GPA'
                 fullWidth
                 variant='filled'
+                autoComplete='GPA'
+                value={formState?.gpa || 0.0}
+                onChange={(event) =>
+                  handleChange('gpa', Number.parseFloat(event.target.value))
+                }
                 inputProps={{ style: { backgroundColor: 'white' } }}
               />
             </Grid>
@@ -154,7 +226,18 @@ export default function EducationSectionItem({ educationNum }) {
             >
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'Start Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'Start Date'}
+                    views={['month', 'year']}
+                    value={
+                      formState?.start_date
+                        ? fromStringToDate(formState.start_date)
+                        : null
+                    }
+                    onChange={(date) =>
+                      handleChange('start_date', fromDateToString(date))
+                    }
+                  />
                 </LocalizationProvider>
                 {/* <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Don't Show" />
@@ -163,7 +246,18 @@ export default function EducationSectionItem({ educationNum }) {
               </Grid>
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'End Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'End Date'}
+                    views={['month', 'year']}
+                    value={
+                      formState?.end_date
+                        ? fromStringToDate(formState.end_date)
+                        : null
+                    }
+                    onChange={(date) =>
+                      handleChange('end_date', fromDateToString(date))
+                    }
+                  />
                 </LocalizationProvider>
                 {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                 <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -174,13 +268,12 @@ export default function EducationSectionItem({ educationNum }) {
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid container spacing={3}>
+          <Grid container spacing={3} sx={{ pt: 3 }}>
             <Grid item xs={12}>
               <TextField
-                required
-                id='educationSummary'
-                name='educationSummary'
-                label='Summary'
+                id='educationDescription'
+                name='educationDescription'
+                label='Education Description'
                 fullWidth
                 variant='filled'
                 InputProps={{
@@ -197,13 +290,14 @@ export default function EducationSectionItem({ educationNum }) {
                   },
                 }}
                 multiline
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)} // Update the summary state when the user types in the TextField
-                error={!!summaryError}
-                helperText={summaryError}
+                autoComplete='Describe in few word your education'
+                value={formState?.education_description || ''}
+                onChange={(event) =>
+                  handleChange('education_description', event.target.value)
+                }
               />
             </Grid>
-          </Grid> */}
+          </Grid>
           {/* <div
             style={{
               display: 'flex',
@@ -252,7 +346,6 @@ export default function EducationSectionItem({ educationNum }) {
             <CancelButton onClick={handleCancel} />
             <Button
               type='submit'
-              onClick={handleSubmit}
               variant='contained'
               style={{
                 backgroundColor: '#00B4D8',

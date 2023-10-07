@@ -27,7 +27,7 @@ const PDFViewerComponent = dynamic(
 export default function ResumeNew() {
   const [resumeData, setResumeData] = useState(null);
   const [resumeId, setResumeId] = useState(null);
-  const [dataDetch, setDataFetch] = useState(false);
+  const [dataFetch, setDataFetch] = useState(false);
   const router = useRouter();
 
   const fetchResumeData = (resId) => {
