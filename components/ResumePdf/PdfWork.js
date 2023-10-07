@@ -39,7 +39,7 @@ function PdfWork({ work_experience }) {
 
   return (
     <View>
-      <View style={commonStyles.heading}><Text>WORK EXPERIENCE</Text></View>
+      <View style={commonStyles.heading}><Text>PROFESSIONAL EXPERIENCE</Text></View>
       {work_experience.map((job) => (
         <WorkItem job={job} key={job.experience_id} />
       ))}
