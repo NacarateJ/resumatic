@@ -105,12 +105,12 @@ export default function ResumeNew() {
           />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
-          {/* <PdfMenu resumeData={resumeData} /> */}
+          <PdfMenu resumeData={resumeData} />
           <PDFViewerComponent
             showToolbar={false}
             style={{
-              width: '100vh',
-              height: '90vh',
+              width: '100%',
+              height: '100%',
             }}
           >
             <MyDocument
