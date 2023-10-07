@@ -62,7 +62,7 @@ export default function TextEditor({ generatedSummary }) {
         borderRadius: '5px',
       }}
     >
-      <Toolbar>
+      {/* <Toolbar>
         <IconButton>
           <FormatListBulletedIcon />
         </IconButton>
@@ -98,7 +98,7 @@ export default function TextEditor({ generatedSummary }) {
         <IconButton>
           <FormatAlignRightIcon />
         </IconButton>
-      </Toolbar>
+      </Toolbar> */}
       <Slate editor={editor} initialValue={initialState}>
         <Editable
           style={{ outline: 'none' }}
