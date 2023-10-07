@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 export const fromStringToDate = (dateStr) => {
-  return dayjs(dateStr, 'MMMM, YYYY');
+  return dayjs(dateStr);
 };
 
 export const fromDateToString = (date) => {
