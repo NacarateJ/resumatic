@@ -12,38 +12,37 @@ import PdfLang from './ResumePdf/PdfLanguages';
 
 
 
-Font.register({
-  family: 'Times-Roman',
-  fontStyle: "normal",
-  fontWeight: "normal",
-  fonts: [
-    { src: "Times-Roman" },
-    // { src: garamondItalic, fontStyle: 'italic' },
-    // { src: garamondBold, fontWeight: 700 },
-  ]
-});
+// Font.register({
+//   family: 'Times-Roman',
+//   fontStyle: "normal",
+//   fontWeight: "normal",
+//   fonts: [
+//     { src: "Times-Roman" },
+//     // { src: garamondItalic, fontStyle: 'italic' },
+//     // { src: garamondBold, fontWeight: 700 },
+//   ]
+// });
 
 
 // Create Document Component
 const MyDocument = ({ resumeData }) => {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  console.log(resumeData);
+  // const [fontsLoaded, setFontsLoaded] = useState(false);
   useEffect(() => {
-    const loadFonts = async () => {
-      await Font.register({
-        family: 'Times-Roman',
-        fontStyle: "normal",
-        fontWeight: "normal",
-        fonts: [
-          { src: "Times-Roman" },
-          { src: "Times-Italic" },
-          { src: "Times-Bold" },
-        ]
-      });
-      setFontsLoaded(true);
-    };
+    // const loadFonts = async () => {
+    //   await Font.register({
+    //     family: 'Times-Roman',
+    //     fontStyle: "normal",
+    //     fontWeight: "normal",
+    //     fonts: [
+    //       { src: "Times-Roman" },
+    //       { src: "Times-Italic" },
+    //       { src: "Times-Bold" },
+    //     ]
+    //   });
+    //   setFontsLoaded(true);
+    // };
 
-    loadFonts();
+    // loadFonts();
   }, []);
 
 

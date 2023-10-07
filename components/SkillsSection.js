@@ -15,9 +15,9 @@ import {
 import { useState } from 'react';
 
 export default function SkillsSection({ resumeData, fetchResumeData, resumeId, isOpen, onToggleAccordion }) {
-  const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || "");
-  const [frmwrkLibDb, setfrmwrkLibDb] = useState(resumeData.skills?.[1]?.skill_name || "");
-  const [toolsTech, settoolsTech] = useState(resumeData.skills?.[2]?.skill_name || "");
+  const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || '');
+  const [frmwrkLibDb, setfrmwrkLibDb] = useState(resumeData.skills?.[1]?.skill_name || '');
+  const [toolsTech, settoolsTech] = useState(resumeData.skills?.[2]?.skill_name || '');
 
   // Accordion states
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -32,12 +32,26 @@ export default function SkillsSection({ resumeData, fetchResumeData, resumeId, i
 
     try {
       let formData;
-      if (skillDescription === "Programming Languages") {
-        formData = { resumeId: resumeId, skill: progLang, skillDescription: "Programming Languages" };
-      } else if (skillDescription === "Frameworks, Libraries & Databases Description") {
-        formData = { resumeId: resumeId, skill: frmwrkLibDb, skillDescription: "Frameworks, Libraries & Databases Description" };
+      if (skillDescription === 'Programming Languages') {
+        formData = {
+          resumeId: resumeId,
+          skill: progLang,
+          skillDescription: 'Programming Languages',
+        };
+      } else if (
+        skillDescription === 'Frameworks, Libraries & Databases Description'
+      ) {
+        formData = {
+          resumeId: resumeId,
+          skill: frmwrkLibDb,
+          skillDescription: 'Frameworks, Libraries & Databases Description',
+        };
       } else if (skillDescription === 'Tools & Other Technologies') {
-        formData = { resumeId: resumeId, skill: toolsTech, skillDescription: 'Tools & Other Technologies' };
+        formData = {
+          resumeId: resumeId,
+          skill: toolsTech,
+          skillDescription: 'Tools & Other Technologies',
+        };
       }
 
       const response = await fetch('/api/skillSectionInsert', {
@@ -48,7 +62,6 @@ export default function SkillsSection({ resumeData, fetchResumeData, resumeId, i
         body: JSON.stringify({
           data: formData,
         }),
-
       });
 
       if (response.ok) {
@@ -98,7 +111,7 @@ export default function SkillsSection({ resumeData, fetchResumeData, resumeId, i
           >
             <Grid display='flex' alignItems='center'>
               <PsychologyIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
-              <Typography variant='h5'>Skills</Typography>
+              <Typography variant='h5'>Technical Skills</Typography>
             </Grid>
           </AccordionSummary>
 

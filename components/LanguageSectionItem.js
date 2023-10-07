@@ -13,17 +13,31 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LanguageLevel from './LanguageLevel';
 import CancelButton from './CancelButton';
 
-
-
-export default function LanguageSectionItem({ languageName, languageLevel, languageId, fetchResumeData, resumeId, isOpen, onToggleAccordion }) {
+export default function LanguageSectionItem({
+  languageName,
+  languageLevel,
+  fetchResumeData,
+  resumeId, 
+  isOpen, 
+  onToggleAccordion,
+  languageNum,
+}) {
   const [selectedLevel, setSelectedLevel] = useState(languageLevel || '');
-  const [langName, setLangName] = useState(languageName || "");
+  const [langName, setLangName] = useState(languageName || '');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-
 
   const handleLevelChange = (event) => {
     const selectedValue = event.target.value;
-    if (['', 'Beginner', 'Elementary', 'Limited', 'Professional', 'Native'].includes(selectedValue)) {
+    if (
+      [
+        '',
+        'Beginner',
+        'Elementary',
+        'Limited',
+        'Professional',
+        'Native',
+      ].includes(selectedValue)
+    ) {
       setSelectedLevel(selectedValue);
     }
   };
@@ -38,16 +52,14 @@ export default function LanguageSectionItem({ languageName, languageLevel, langu
       };
       console.log(formData);
       const response = await fetch('/api/languageSectionInsert', {
-        method: "Post",
+        method: 'Post',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
         },
         body: JSON.stringify({
           data: formData,
         }),
-
       });
-
 
       if (response.ok) {
         const responseData = await response.json();
@@ -79,9 +91,7 @@ export default function LanguageSectionItem({ languageName, languageLevel, langu
           id='panel1a-header'
           onClick={() => setIsAccordionOpen(!isAccordionOpen)}
         >
-          <Typography variant='h8'>
-            {languageName ? languageName : `New language:`}
-          </Typography>
+          <Typography variant='h8'>{`Language #${languageNum}`}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box component='form' sx={{ mt: 3 }}>
@@ -131,4 +141,4 @@ export default function LanguageSectionItem({ languageName, languageLevel, langu
       </Accordion>
     </>
   );
-};
+}

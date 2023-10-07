@@ -50,11 +50,12 @@ export default function Dashboard({ user, resumes, err }) {
     handleMenuClose();
   };
 
-  const handleView = (event, resume) => {
-
-    router.push(`/resumes/${resume.resume_id}`);
+  const handleView = (event, selectedResume) => {
+    router.push(`/resumes/${selectedResume.resume_id}`);
     handleMenuClose();
   };
+
+
 
 
   const handleShare = (event, resume) => {
@@ -202,9 +203,7 @@ export default function Dashboard({ user, resumes, err }) {
                   </MenuItem>
 
 
-                  <MenuItem
-                    onClick={(event) => handleView(event, resume)}
-                  >
+                  <MenuItem onClick={(event) => handleView(event, selectedResume)}>
 
 
                     <ListItemIcon>

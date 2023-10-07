@@ -23,7 +23,6 @@ export default function PdfMenu({ resumeData }) {
   };
   let resumeTitle = resumeData.resume_title;
 
-  console.log("Resume Title:", resumeTitle);
 
   const handleClickPdf = () => {
     router.push(`/resumes/${resumeData.resume_id}`);
