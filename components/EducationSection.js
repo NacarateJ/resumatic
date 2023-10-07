@@ -29,18 +29,21 @@ export default function EducationSection({ resumeData, fetchResumeData }) {
 
         <EducationSectionItem
           educationNum='Education #1'
-          educationData={resumeData.education?.[0] || null}
+          educationData={resumeData.education?.[0]}
           fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
         />
         <EducationSectionItem
           educationNum='Education #2'
-          educationData={resumeData.education?.[1] || null}
+          educationData={resumeData.education?.[1]}
           fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
         />
         <EducationSectionItem
           educationNum='Education #3'
-          educationData={resumeData.education?.[2] || null}
+          educationData={resumeData.education?.[2]}
           fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
         />
 
         {/* <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
