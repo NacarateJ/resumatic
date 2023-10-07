@@ -3,15 +3,10 @@ import SectionContainer from './SectionContainer';
 import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
 import ProjectSectionItem from './ProjectSectionItem';
 import { Grid, Accordion, AccordionSummary, Typography } from '@mui/material';
+import { useState } from 'react';
 
-export default function ProjectSection() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-    });
-  };
+export default function ProjectSection({ resumeData, fetchResumeData })
+{
   return (
     <>
       <SectionContainer>
@@ -29,10 +24,24 @@ export default function ProjectSection() {
               <Typography variant='h5'>Projects</Typography>
             </Grid>
           </AccordionSummary>
-
-          <ProjectSectionItem projectNum='Project #1' />
-          <ProjectSectionItem projectNum='Project #2' />
-          <ProjectSectionItem projectNum='Project #3' />
+          <ProjectSectionItem
+            projectNum='Project #1'
+            projectData={resumeData.project?.[0]}
+            fetchResumeData={fetchResumeData}
+            resumeId={resumeData.resume_id}
+          />
+          <ProjectSectionItem
+            projectNum='Project #2'
+            projectData={resumeData.project?.[1]}
+            fetchResumeData={fetchResumeData}
+            resumeId={resumeData.resume_id}
+          />
+          <ProjectSectionItem
+            projectNum='Project #3'
+            projectData={resumeData.project?.[2]}
+            fetchResumeData={fetchResumeData}
+            resumeId={resumeData.resume_id}
+          />
         </Accordion>
       </SectionContainer>
     </>
