@@ -38,7 +38,6 @@ export default function ResumeNew() {
       })
       .then((data) => {
         setResumeId(resId);
-        console.log('Resume data from ID page', data.resume);
         setResumeData(data.resume);
       })
       .catch((error) => {

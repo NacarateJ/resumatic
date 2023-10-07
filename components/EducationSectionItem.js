@@ -88,8 +88,6 @@ export default function EducationSectionItem({
   //   }
   // };
 
-  console.log('formState', formState);
-  console.log('educationData', educationData);
   const handleChange = (fieldName, value) => {
     setFormState({ ...formState, [fieldName]: value });
   };
