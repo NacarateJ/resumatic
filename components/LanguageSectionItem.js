@@ -15,7 +15,7 @@ import CancelButton from './CancelButton';
 
 
 
-export default function LanguageSectionItem({ languageName, languageLevel, languageId, fetchResumeData, resumeId }) {
+export default function LanguageSectionItem({ languageName, languageLevel, languageId, fetchResumeData, resumeId, isOpen, onToggleAccordion }) {
   const [selectedLevel, setSelectedLevel] = useState(languageLevel || '');
   const [langName, setLangName] = useState(languageName || "");
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -71,8 +71,8 @@ export default function LanguageSectionItem({ languageName, languageLevel, langu
     <>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        expanded={isAccordionOpen}
-      >
+        expanded={isOpen}
+        onChange={onToggleAccordion}      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'

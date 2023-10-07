@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
+export default function SkillsSection({ resumeData, fetchResumeData, resumeId, isOpen, onToggleAccordion }) {
   const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || "");
   const [frmwrkLibDb, setfrmwrkLibDb] = useState(resumeData.skills?.[1]?.skill_name || "");
   const [toolsTech, settoolsTech] = useState(resumeData.skills?.[2]?.skill_name || "");
-  
+
   // Accordion states
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isProgLangAccordionOpen, setIsProgLangAccordionOpen] = useState(false);
@@ -65,6 +65,12 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
     }
   };
 
+  const handleAccordionToggle = (accordionName) => {
+    setIsProgLangAccordionOpen(accordionName === "Programming Languages");
+    setIsFrmwrkLibDbAccordionOpen(accordionName === "Frameworks, Libraries & Databases Description");
+    setIsToolsTechAccordionOpen(accordionName === "Tools & Other Technologies");
+  };
+
   const handleCancel = (accordionName) => {
     if (accordionName === 'Programming Languages') {
       setIsProgLangAccordionOpen(false);
@@ -82,8 +88,8 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
       <SectionContainer>
         <Accordion
           sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-          expanded={isAccordionOpen}
-        >
+          expanded={isOpen}
+          onChange={onToggleAccordion}        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
@@ -99,6 +105,7 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
           <Accordion
             sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
             expanded={isProgLangAccordionOpen}
+            onChange={() => handleAccordionToggle("Programming Languages")}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -157,6 +164,7 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
           <Accordion
             sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
             expanded={isFrmwrkLibDbAccordionOpen}
+            onChange={() => handleAccordionToggle("Frameworks, Libraries & Databases Description")}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -224,6 +232,7 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
           <Accordion
             sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
             expanded={isToolsTechAccordionOpen}
+            onChange={() => handleAccordionToggle("Tools & Other Technologies")}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -283,4 +292,4 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
       </SectionContainer>
     </>
   );
-}
+};

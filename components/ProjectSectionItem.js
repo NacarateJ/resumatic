@@ -34,7 +34,9 @@ export default function ProjectSectionItem({
   fetchResumeData,
   projectNum,
   project,
-  resumeId }) {
+  resumeId,
+  isOpen, 
+  onToggleAccordion }) {
 
   const [projectTitle, setProjectTitle] = useState(project?.project_title || '');
   const [projectLink, setProjectLink] = useState(project?.project_link || '');
@@ -135,7 +137,8 @@ export default function ProjectSectionItem({
     <>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        expanded={isAccordionOpen}
+        expanded={isOpen}
+        onChange={onToggleAccordion}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
