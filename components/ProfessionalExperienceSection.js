@@ -3,14 +3,25 @@ import SectionContainer from './SectionContainer';
 import WorkIcon from '@mui/icons-material/Work';
 import ProfessionalExperienceSectionItem from './ProfessionalExperienceSectionItem';
 import { Grid, Accordion, AccordionSummary, Typography } from '@mui/material';
+import { useState } from 'react';
+
 
 export default function ProfessionalExperienceSection({
   resumeData,
   fetchResumeData,
+  isOpen,
+  onToggleAccordion
 }) {
+  const [openAccordion, setOpenAccordion] = useState(null);
+
+  const handleAccordionToggle = (panel) => (event, isExpanded) => {
+    setOpenAccordion(isExpanded ? panel : null);
+  };
   return (
     <SectionContainer>
-      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+        expanded={isOpen}
+        onChange={onToggleAccordion}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
@@ -27,18 +38,24 @@ export default function ProfessionalExperienceSection({
           workExp={resumeData.work_experience?.[0]}
           fetchResumeData={fetchResumeData}
           resumeId={resumeData.resume_id}
+          isOpen={openAccordion === 'profExp1'}
+          onToggleAccordion={handleAccordionToggle('profExp1')}
         />
         <ProfessionalExperienceSectionItem
           experienceNum='Professional Experience #2'
           workExp={resumeData.work_experience?.[1]}
           fetchResumeData={fetchResumeData}
           resumeId={resumeData.resume_id}
+          isOpen={openAccordion === 'profExp2'}
+          onToggleAccordion={handleAccordionToggle('profExp2')}
         />
         <ProfessionalExperienceSectionItem
           experienceNum='Professional Experience #3'
           workExp={resumeData.work_experience?.[2]}
           fetchResumeData={fetchResumeData}
           resumeId={resumeData.resume_id}
+          isOpen={openAccordion === 'profExp3'}
+          onToggleAccordion={handleAccordionToggle('profExp3')}
         />
       </Accordion>
     </SectionContainer>

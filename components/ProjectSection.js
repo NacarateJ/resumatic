@@ -5,12 +5,18 @@ import ProjectSectionItem from './ProjectSectionItem';
 import { Grid, Accordion, AccordionSummary, Typography } from '@mui/material';
 import { useState } from 'react';
 
-export default function ProjectSection({ resumeData, fetchResumeData })
-{
+export default function ProjectSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
+  const [openAccordion, setOpenAccordion] = useState(null);
+
+  const handleAccordionToggle = (panel) => (event, isExpanded) => {
+    setOpenAccordion(isExpanded ? panel : null);
+  };
   return (
     <>
       <SectionContainer>
-        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+        <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+          expanded={isOpen}
+          onChange={onToggleAccordion}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
@@ -29,18 +35,24 @@ export default function ProjectSection({ resumeData, fetchResumeData })
             projectData={resumeData.project?.[0]}
             fetchResumeData={fetchResumeData}
             resumeId={resumeData.resume_id}
+            isOpen={openAccordion === 'project1'}
+            onToggleAccordion={handleAccordionToggle('project1')}
           />
           <ProjectSectionItem
             projectNum='Project #2'
             projectData={resumeData.project?.[1]}
             fetchResumeData={fetchResumeData}
             resumeId={resumeData.resume_id}
+            isOpen={openAccordion === 'project2'}
+            onToggleAccordion={handleAccordionToggle('project2')}
           />
           <ProjectSectionItem
             projectNum='Project #3'
             projectData={resumeData.project?.[2]}
             fetchResumeData={fetchResumeData}
             resumeId={resumeData.resume_id}
+            isOpen={openAccordion === 'project3'}
+            onToggleAccordion={handleAccordionToggle('project3')}
           />
         </Accordion>
       </SectionContainer>

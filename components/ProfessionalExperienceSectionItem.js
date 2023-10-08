@@ -29,6 +29,8 @@ export default function ProfessionalExperienceSectionItem({
   workExp,
   fetchResumeData,
   resumeId,
+  isOpen,
+  onToggleAccordion
 }) {
   const [jobTitle, setJobTitle] = useState(workExp?.job_title || '');
   const [employer, setEmployer] = useState(workExp?.employer || '');
@@ -138,7 +140,8 @@ export default function ProfessionalExperienceSectionItem({
   return (
     <Accordion
       sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-      expanded={isAccordionOpen}
+      expanded={isOpen}
+      onChange={onToggleAccordion}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
