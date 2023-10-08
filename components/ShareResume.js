@@ -1,13 +1,5 @@
 import React, { useRef } from 'react';
-import SectionContainer from './SectionContainer';
-import {
-  Box,
-  Grid,
-  Button,
-  Typography,
-  Modal,
-  IconButton,
-} from '@mui/material';
+import { Box, Button, Typography, Modal, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
@@ -16,14 +8,7 @@ export default function ShareResume({ open, onClose, linkProp }) {
 
   const handleCopyToClipboard = () => {
     const text = linkRef.current.textContent;
-    navigator.clipboard.writeText(text).then(
-      () => {
-        console.log('Text copied to clipboard');
-      },
-      (err) => {
-        console.error('Could not copy text: ', err);
-      }
-    );
+    navigator.clipboard.writeText(text);
   };
 
   return (
@@ -34,8 +19,8 @@ export default function ShareResume({ open, onClose, linkProp }) {
       aria-describedby='modal-description'
       sx={{
         '& > .MuiBackdrop-root': {
-          backdropFilter: 'blur(1px)',
-          bgcolor: 'rgb(255,255,255, 0.05)',
+          backdropFilter: 'blur(2px)',
+          bgcolor: 'rgb(255,255,255,0.05)',
         },
       }}
     >
@@ -46,7 +31,7 @@ export default function ShareResume({ open, onClose, linkProp }) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           borderRadius: '10px',
-          boxShadow: 1,
+          boxShadow: 2,
           bgcolor: 'white',
           padding: 2,
           display: 'grid',

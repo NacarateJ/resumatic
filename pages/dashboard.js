@@ -30,6 +30,7 @@ export default function Dashboard({ user, resumes, err }) {
   const [menuOpen, setMenuOpen] = useState(null);
   const [selectedResume, setSelectedResume] = useState(null);
   const menuRef = useRef(null);
+  console.log('selected resume', selectedResume);
 
   //state and params for ShareResume Modal
   const [shareOpen, setShareOpen] = useState(false);
@@ -151,6 +152,11 @@ export default function Dashboard({ user, resumes, err }) {
       >
         Create New Resume
       </Button>
+      <ShareResume
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        linkProp={`https://${domain}/resumes/${selectedResume?.resume_id}`}
+      />
 
       <div
         style={{
@@ -250,11 +256,6 @@ export default function Dashboard({ user, resumes, err }) {
                 </CardActionArea>
               </CardContent>
             </Card>
-            <ShareResume
-              open={shareOpen}
-              onClose={() => setShareOpen(false)}
-              linkProp={`https://${domain}/resumes/${resume.resume_id}`}
-            />
           </div>
         ))}
       </div>
