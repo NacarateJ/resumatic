@@ -17,7 +17,9 @@ export default function LanguageSectionItem({
   languageName,
   languageLevel,
   fetchResumeData,
-  resumeId,
+  resumeId, 
+  isOpen, 
+  onToggleAccordion,
   languageNum,
 }) {
   const [selectedLevel, setSelectedLevel] = useState(languageLevel || '');
@@ -81,8 +83,8 @@ export default function LanguageSectionItem({
     <>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        expanded={isAccordionOpen}
-      >
+        expanded={isOpen}
+        onChange={onToggleAccordion}      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'

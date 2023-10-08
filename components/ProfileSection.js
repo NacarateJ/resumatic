@@ -19,7 +19,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-export default function ProfileSection({ resumeData, fetchResumeData }) {
+export default function ProfileSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
   const [summary, setSummary] = useState(resumeData.profile_description || '');
   const [userInput, setUserInput] = useState('')
   const [loading, setLoading] = useState(false);
@@ -129,7 +129,8 @@ export default function ProfileSection({ resumeData, fetchResumeData }) {
     <SectionContainer>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        expanded={isAccordionOpen}
+        expanded={isOpen}
+        onChange={onToggleAccordion}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

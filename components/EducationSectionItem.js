@@ -33,6 +33,8 @@ export default function EducationSectionItem({
   educationData,
   fetchResumeData,
   resumeId,
+  isOpen,
+  onToggleAccordion
 }) {
   // State for education data if exists for given resume
   const [educState, setEducState] = useState(educationData || null);
@@ -128,7 +130,8 @@ export default function EducationSectionItem({
   return (
     <Accordion
       sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-      expanded={isAccordionOpen}
+      expanded={isOpen}
+      onChange={onToggleAccordion}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
