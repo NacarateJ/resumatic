@@ -7,7 +7,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/logout');
+    router.push('/login');
   };
 
   const pantoneOrange = '#FF8C00';

@@ -48,14 +48,16 @@ const index = ({ resumeId }) => {
   }, [router.query]); // Call the async function inside useEffect
 
   return resumeData ? (
-    <PDFViewerComponent showToolbar={false}
-      style={{
-        width: "100%",
-        height: "1000px"
-      }}
-    >
-      <MyDocument resumeData={resumeData} />
-    </PDFViewerComponent>
+    <div >
+      <PDFViewerComponent showToolbar={false}
+        style={{
+          width: "100%",
+          height: "100vh"
+        }}
+      >
+        <MyDocument resumeData={resumeData} />
+      </PDFViewerComponent>
+    </div>
   ) : null; // Return null if resumeData is not available yet
 };
 

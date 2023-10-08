@@ -18,9 +18,12 @@ import {
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import ShareIcon from '@mui/icons-material/Share';
 import { formatDistanceToNow } from 'date-fns';
+import { PictureAsPdf } from '@mui/icons-material';
+
+
+
 
 const user_Id = 3;
 export default function Dashboard({ user, resumes, err }) {
@@ -47,19 +50,21 @@ export default function Dashboard({ user, resumes, err }) {
     handleMenuClose();
   };
 
-  const handleDownload = (event, resume) => {
-    // TO DO: Implement logic to download the resume
-    // event.stopPropagation();
-    console.log('Download clicked for resume:', resume);
+  const handleView = (event, selectedResume) => {
+    router.push(`/resumes/${selectedResume.resume_id}`);
     handleMenuClose();
   };
+
+
+
 
   const handleShare = (event, resume) => {
     // TO DO: Implement logic to share the resume
     // event.stopPropagation();
     console.log('Share clicked for resume:', resume);
     handleMenuClose();
-  }; const handleCreateResume = async () => {
+  };
+  const handleCreateResume = async () => {
     try {
       // Prepare the request body with hardcoded user data
 
@@ -197,14 +202,19 @@ export default function Dashboard({ user, resumes, err }) {
                     <ListItemText primary='Make a copy' />
                   </MenuItem>
 
-                  <MenuItem
-                    onClick={(event) => handleDownload(event, selectedResume)}
-                  >
+
+                  <MenuItem onClick={(event) => handleView(event, selectedResume)}>
+
+
                     <ListItemIcon>
-                      <SimCardDownloadIcon fontSize='small' />
+
+                      <PictureAsPdf fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText primary='Download' />
+
+                    <ListItemText primary='View' />
                   </MenuItem>
+
+
 
                   <MenuItem
                     onClick={(event) => handleShare(event, selectedResume)}
@@ -249,9 +259,9 @@ export default function Dashboard({ user, resumes, err }) {
                       addSuffix: true,
                     }).replace('about ', '')}
                   </Typography>
+
                 </CardActionArea>
               </CardContent>
-
             </Card>
           </div>
         ))}

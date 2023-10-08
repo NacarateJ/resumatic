@@ -1,8 +1,9 @@
-import dynamic from 'next/dynamic';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import ResumeSection from '@/components/ResumeSection';
 import PersonalInfoSection from '@/components/PersonalInfoSection';
@@ -13,6 +14,7 @@ import EducationSection from '@/components/EducationSection';
 import LanguageSection from '@/components/LanguageSection';
 import SkillsSection from '@/components/SkillsSection';
 import MyDocument from '@/components/MyDocument';
+import PdfMenu from '@/components/ResumePdf/PdfMenu';
 
 const PDFViewerComponent = dynamic(
   () => import('@react-pdf/renderer').then((module) => module.PDFViewer),
@@ -103,14 +105,16 @@ export default function ResumeNew() {
           />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>
+          <PdfMenu resumeData={resumeData} />
           <PDFViewerComponent
-            showToolbar={true}
+            showToolbar={false}
             style={{
               width: '100%',
-              height: '1000px',
+              height: '100%',
             }}
           >
-            <MyDocument resumeData={resumeData} />
+            <MyDocument
+              resumeData={resumeData} />
           </PDFViewerComponent>
         </div>
       </div>

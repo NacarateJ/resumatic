@@ -22,11 +22,33 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import CancelButton from './CancelButton';
+import {
+  fromStringToDate,
+  fromDateToString,
+  defaultDate,
+} from '../utils/dateParser';
+import dayjs from 'dayjs';
 
-export default function ProjectSectionItem({ projectNum }) {
+
+export default function ProjectSectionItem({
+  fetchResumeData,
+  projectNum,
+  project,
+  resumeId }) {
+
+  const [projectTitle, setProjectTitle] = useState(project?.project_title || '');
+  const [projectLink, setProjectLink] = useState(project?.project_link || '');
+  const [startDate, setStartDate] = useState(
+    project?.start_date ? dayjs(project.start_date) : null
+  );
+  const [endDate, setEndDate] = useState(
+    project?.end_date ? dayjs(project.end_date) : null
+  );
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [generatedSummary, setGeneratedSummary] = useState(
+    project?.project_description || ''
+  );
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -43,7 +65,7 @@ export default function ProjectSectionItem({ projectNum }) {
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences expressing to the employer what my role was in the project and teh technologies I used along with what skills were necessary and demonstrate how I used my expertise. It should have max 485 characters: ${inputSummary}`;
+    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences in bullet point form expressing to the employer what my role was in the project and the technologies I used along with what skills were necessary and how I demonstrated my expertise: ${inputSummary}`;
 
     try {
       // Make an API request to the server with the summary content
@@ -75,25 +97,40 @@ export default function ProjectSectionItem({ projectNum }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary(summary);
+    const requestBody = {
+      resumeId,
+      projectTitle,
+      projectLink,
+      endDate: endDate ? endDate.format('MMMM, YYYY') : null,
+      enhancedSummary: generatedSummary,
+      startDate: startDate ? startDate.format('MMMM, YYYY') : null,
+    };
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-      summary,
-      generatedSummary, // You can access the generated summary here if needed
-    });
+    console.log('REQUEST BODY', requestBody);
 
-    // Add additional logic to handle form submission, if necessary
+    try {
+      const response = await fetch('/api/projectSectionInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: requestBody }),
+      });
+
+      if (response.ok) {
+        fetchResumeData(resumeId);
+        console.log('Project saved successfully');
+      } else {
+        console.error('Failed to save project');
+      }
+    } catch (error) {
+      console.error('Error occurred while saving project:', error);
+    }
   };
 
   const handleCancel = () => {
     setIsAccordionOpen(false);
   };
-
   return (
     <>
       <Accordion
@@ -114,11 +151,13 @@ export default function ProjectSectionItem({ projectNum }) {
               <Grid item xs={12}>
                 <TextField
                   required
-                  id='projectName'
-                  name='projectName'
+                  id='projectTitle'
+                  name='projectTitle'
                   label='Project Name'
+                  value={projectTitle}
+                  onChange={(e) => setProjectTitle(e.target.value)}
                   fullWidth
-                  autoComplete='project'
+                  autoComplete='projectTitle'
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
                 />
@@ -128,10 +167,12 @@ export default function ProjectSectionItem({ projectNum }) {
                   id='projectLink'
                   name='projectLink'
                   label='Project Link'
-                  fullWidth
-                  autoComplete='project'
-                  variant='filled'
-                  inputProps={{ style: { backgroundColor: 'white' } }}
+                  value={projectLink}
+                onChange={(e) => setProjectLink(e.target.value)}
+                fullWidth
+                autoComplete='projectLink'
+                variant='filled'
+                inputProps={{ style: { backgroundColor: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}></Grid>
@@ -147,6 +188,8 @@ export default function ProjectSectionItem({ projectNum }) {
                     <DatePicker
                       label={'Start Date'}
                       views={['month', 'year']}
+                      value={startDate}
+                    onChange={(date) => setStartDate(dayjs(date))}
                     />
                   </LocalizationProvider>
                   {/* <FormGroup>
@@ -162,7 +205,12 @@ export default function ProjectSectionItem({ projectNum }) {
                 </Grid>
                 <Grid justifyContent='flex-start' item xs={5}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label={'End Date'} views={['month', 'year']} />
+                    <DatePicker 
+                    label={'End Date'} 
+                    views={['month', 'year']} 
+                    value={endDate}
+                    onChange={(date) => setEndDate(dayjs(date))}
+                  />
                   </LocalizationProvider>
                   {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                   <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -213,7 +261,7 @@ export default function ProjectSectionItem({ projectNum }) {
               }}
             >
               <Button
-                type='button' // Change type to "button"
+                type='button'
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
@@ -254,8 +302,8 @@ export default function ProjectSectionItem({ projectNum }) {
             >
               <CancelButton onClick={handleCancel} />
               <Button
-                type='submit' // Change type to "submit"
-                onClick={(event) => handleSubmit(event)}
+                type='submit'
+                onClick={handleSubmit}
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
