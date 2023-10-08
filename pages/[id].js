@@ -29,6 +29,10 @@ export default function ResumeNew() {
   const [resumeId, setResumeId] = useState(null);
   const [dataFetch, setDataFetch] = useState(false);
   const router = useRouter();
+  const [openAccordion, setOpenAccordion] = useState(null);
+  const handleAccordionToggle = (panel) => (event, isExpanded) => {
+    setOpenAccordion(isExpanded ? panel : null);
+  };
 
   const fetchResumeData = (resId) => {
     fetch(`/api/resumes/${resId}`) //
@@ -67,41 +71,60 @@ export default function ResumeNew() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, padding: '2em' }}>
-          <ResumeSection resumeData={resumeData} resumeId={resumeId} />
+          <ResumeSection
+            resumeData={resumeData}
+            resumeId={resumeId}
+            isOpen={openAccordion === 'resume'}
+            onToggleAccordion={handleAccordionToggle('resume')}
+          />
           <PersonalInfoSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'personalInfo'}
+            onToggleAccordion={handleAccordionToggle('personalInfo')}
           />
           <ProfileSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'profile'}
+            onToggleAccordion={handleAccordionToggle('profile')}
           />
           <SkillsSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'skills'}
+            onToggleAccordion={handleAccordionToggle('skills')}
           />
           <ProfessionalExperienceSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'professionalExperience'}
+            onToggleAccordion={handleAccordionToggle('professionalExperience')}
           />
           <EducationSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'education'}
+            onToggleAccordion={handleAccordionToggle('education')}
           />
           <ProjectSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'project'}
+            onToggleAccordion={handleAccordionToggle('project')}
           />
           <LanguageSection
             resumeData={resumeData}
             fetchResumeData={fetchResumeData}
             resumeId={resumeId}
+            isOpen={openAccordion === 'language'}
+            onToggleAccordion={handleAccordionToggle('language')}
           />
         </div>
         <div style={{ width: '50%', padding: '10px' }}>

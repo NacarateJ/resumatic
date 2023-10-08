@@ -13,7 +13,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
 
-export default function ResumeSection({ resumeData, resumeId, }) {
+export default function ResumeSection({ resumeData, resumeId, isOpen, onToggleAccordion}) {
 
 
   const [resumeTitle, setResumeTitle] = useState(resumeData.resume_title || '');
@@ -64,7 +64,8 @@ export default function ResumeSection({ resumeData, resumeId, }) {
     <SectionContainer>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        expanded={isAccordionOpen}
+        expanded={isOpen}
+        onChange={onToggleAccordion}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
