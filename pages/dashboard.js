@@ -21,9 +21,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ShareIcon from '@mui/icons-material/Share';
 import { formatDistanceToNow } from 'date-fns';
 import { PictureAsPdf } from '@mui/icons-material';
-
-
-
+import ShareResume from '@/components/ShareResume';
 
 const user_Id = 3;
 export default function Dashboard({ user, resumes, err }) {
@@ -32,6 +30,14 @@ export default function Dashboard({ user, resumes, err }) {
   const [menuOpen, setMenuOpen] = useState(null);
   const [selectedResume, setSelectedResume] = useState(null);
   const menuRef = useRef(null);
+  console.log('selected resume', selectedResume);
+
+  //state and params for ShareResume Modal
+  const [shareOpen, setShareOpen] = useState(false);
+  const domain =
+    typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+      ? window.location.hostname
+      : 'resumatic.com';
 
   const handleMenuOpen = (event, resume) => {
     event.stopPropagation(); // Prevent card click when kebab menu is clicked
@@ -55,13 +61,8 @@ export default function Dashboard({ user, resumes, err }) {
     handleMenuClose();
   };
 
-
-
-
-  const handleShare = (event, resume) => {
-    // TO DO: Implement logic to share the resume
-    // event.stopPropagation();
-    console.log('Share clicked for resume:', resume);
+  const handleShare = () => {
+    setShareOpen(true);
     handleMenuClose();
   };
   const handleCreateResume = async () => {
@@ -73,7 +74,6 @@ export default function Dashboard({ user, resumes, err }) {
           userId: user_Id, // Use user_Id here, not userId
         },
       };
-
 
       // Make a POST request to the API endpoint to create a new blank resume
       const response = await fetch('/api/create-resume', {
@@ -101,8 +101,6 @@ export default function Dashboard({ user, resumes, err }) {
       // Optionally, show an error message to the user
     }
   };
-
-
 
   const handleCardClick = (resumeId, event) => {
     if (menuRef.current && menuRef.current.contains(event.target)) {
@@ -154,6 +152,11 @@ export default function Dashboard({ user, resumes, err }) {
       >
         Create New Resume
       </Button>
+      <ShareResume
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        linkProp={`https://${domain}/resumes/${selectedResume?.resume_id}`}
+      />
 
       <div
         style={{
@@ -171,7 +174,6 @@ export default function Dashboard({ user, resumes, err }) {
             >
               <CardHeader
                 title={resume.resume_title}
-
                 action={
                   <IconButton
                     aria-label='menu'
@@ -202,19 +204,15 @@ export default function Dashboard({ user, resumes, err }) {
                     <ListItemText primary='Make a copy' />
                   </MenuItem>
 
-
-                  <MenuItem onClick={(event) => handleView(event, selectedResume)}>
-
-
+                  <MenuItem
+                    onClick={(event) => handleView(event, selectedResume)}
+                  >
                     <ListItemIcon>
-
                       <PictureAsPdf fontSize='small' />
                     </ListItemIcon>
 
                     <ListItemText primary='View' />
                   </MenuItem>
-
-
 
                   <MenuItem
                     onClick={(event) => handleShare(event, selectedResume)}
@@ -225,11 +223,7 @@ export default function Dashboard({ user, resumes, err }) {
                     <ListItemText primary='Share' />
                   </MenuItem>
                 </Menu>
-                <CardActionArea
-
-                >
-
-
+                <CardActionArea>
                   <Paper
                     elevation={10}
                     style={{
@@ -259,14 +253,13 @@ export default function Dashboard({ user, resumes, err }) {
                       addSuffix: true,
                     }).replace('about ', '')}
                   </Typography>
-
                 </CardActionArea>
               </CardContent>
             </Card>
           </div>
         ))}
       </div>
-    </div >
+    </div>
   );
 }
 
