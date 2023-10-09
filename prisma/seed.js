@@ -33,7 +33,7 @@ const seedDatabase = async () => {
 
     const resumesData = [
       {
-        resume_title: 'Software Engineer Resume (John Doe)',
+        resume_title: 'Software Engineer Resume',
         resume_description: 'Experienced software engineer with a strong background in web development.',
         full_name: 'John Doe',
         email: 'john@example.com',
@@ -47,31 +47,31 @@ const seedDatabase = async () => {
         user_id: 1, // Use the ID of the corresponding user
       },
       {
-        resume_title: 'Frontend Developer Resume (Liz Erd)',
+        resume_title: 'Data Scientist and Web Developer Resume',
         resume_description: 'Passionate frontend developer with expertise in UI/UX design.',
         full_name: 'Liz Erd',
-        email: 'liz@example.com',
-        job_title: 'Frontend Developer',
+        email: 'liz@google.com',
+        job_title: 'Data Scientist and Web Developer',
         phone_number: '987-654-3210',
-        address: '456 Elm St, Another City, Another Country',
+        address: 'Toronto, Onatio',
         website_link: 'https://www.example.com/liz_erd',
         linkedin_link: 'https://www.linkedin.com/in/lizerd',
         github_link: 'https://github.com/lizerd',
-        profile_description: 'Versatile web developer with expertise in both front-end and back-end technologies. Experienced in crafting visually appealing and responsive websites using the latest tools and frameworks. Dedicated to delivering seamless user experiences and optimizing website performance. Strong collaborator and problem solver, committed to meeting project goals and deadlines.',
+        profile_description: 'I am a versatile professional with a passion for both data science and web development. As a data scientist, I have a strong background in machine learning algorithms and statistical analysis, enabling me to extract meaningful insights from complex data sets. On the web development front, I am proficient in HTML, CSS, JavaScript, and various web frameworks. I have a keen eye for design and usability, allowing me to create visually appealing and user-friendly websites.',
         user_id: 3, // Use the ID of the corresponding user
       },
       {
-        resume_title: 'Data Scientist Resume (Liz Erd)',
-        resume_description: 'Data scientist specializing in machine learning and data analysis.',
+        resume_title: 'Data Scientist and Web Developer Resume',
+        resume_description: 'Experienced data scientist specializing in machine learning and data analysis. Skilled web developer with expertise in front-end and back-end technologies.',
         full_name: 'Liz Erd',
-        email: 'liz@example.com',
-        job_title: 'Web Developer',
+        email: 'liz.erd@google.com',
+        job_title: 'Data Scientist and Web Developer',
         phone_number: '555-123-4567',
         address: 'Toronto, Ontario',
-        website_link: 'https://www.example.com/liz_erd',
+        website_link: 'https://www.lizerd-data.com',
         linkedin_link: 'https://www.linkedin.com/in/lizerd',
         github_link: 'https://github.com/lizerd',
-        profile_description: 'Versatile web developer with expertise in both front-end and back-end technologies. Experienced in crafting visually appealing and responsive websites using the latest tools and frameworks. Dedicated to delivering seamless user experiences and optimizing website performance. Strong collaborator and problem solver, committed to meeting project goals and deadlines.',
+        profile_description: 'I am a versatile professional with a passion for both data science and web development. As a data scientist, I have a strong background in machine learning algorithms and statistical analysis, enabling me to extract meaningful insights from complex data sets. On the web development front, I am proficient in HTML, CSS, JavaScript, and various web frameworks. I have a keen eye for design and usability, allowing me to create visually appealing and user-friendly websites.',
         user_id: 3, // Use the ID of the corresponding user
       },
     ];
@@ -79,7 +79,6 @@ const seedDatabase = async () => {
     const projectsData = [
       {
         project_title: 'Web Application Development',
-        project_subtitle: 'E-commerce Platform',
         project_description: 'Developed a full-fledged e-commerce platform using React and Node.js.',
         start_date: 'February, 2020',
         end_date: 'February, 2020',
@@ -89,7 +88,6 @@ const seedDatabase = async () => {
       },
       {
         project_title: 'Responsive Web Design',
-        project_subtitle: 'Portfolio Website',
         project_description: 'Designed and built a responsive portfolio website using HTML and CSS.',
         start_date: 'February, 2020',
         end_date: 'February, 2020',
@@ -99,8 +97,7 @@ const seedDatabase = async () => {
       },
       {
         project_title: 'Predictive Analytics',
-        project_subtitle: 'Customer Churn Prediction',
-        project_description: 'Developed a machine learning model to predict customer churn in a telecom company.',
+        project_description: '- Conducted in-depth exploratory data analysis to identify key factors influencing customer churn.\n- Engineered customer behavior metrics, enabling the model to capture nuanced patterns in user interactions.\n- Implemented A/B testing strategies based on model predictions, leading to a 15% increase in customer engagement during promotional campaigns.',
         start_date: 'September, 2018',
         end_date: 'February, 2020',
         project_link: 'https://www.example.com/project3',
@@ -109,14 +106,13 @@ const seedDatabase = async () => {
       },
       {
         project_title: 'Web Scraper',
-        project_subtitle: 'Google Inc.',
-        project_description: 'Developed a Web Scraper that identifies lawyers by area code.',
+        project_description: '- Developed a custom web scraping algorithm that efficiently collected lawyer profiles from various websites.\n- Implemented a real-time data validation system to ensure accuracy in lawyer information.\n- Utilized sentiment analysis to assess lawyer reviews and ratings, enhancing the quality of recommendations in the legal directory.',
         start_date: 'June, 2011',
         end_date: 'January, 2015',
         project_link: 'https://www.example.com/project2',
         is_current: false,
         resume_id: 3,
-      },
+      }
     ];
     const educationData = [
       {
@@ -148,11 +144,10 @@ const seedDatabase = async () => {
         city: 'Toronto',
         country: 'Canada',
         degree: 'Diploma',
-        education_description: 'Built a full-stack web application that generates resumes based on user data. Resumes can then be enhanced with ChatGPT.',
         start_date: 'March, 2023',
-        end_date: 'Octover, 2023',
+        end_date: 'October, 2023',
         gpa: 4.0,
-        is_current: true,
+        is_current: false,
         resume_id: 3,
       },
     ];
@@ -181,7 +176,7 @@ const seedDatabase = async () => {
         resume_id: 3,
       },
       {
-        skill_name: 'Tools & Other Technologies',
+        skill_name: 'Github, Sublime Text, Figma',
         skill_description: "Tools & Other Technologies",
         resume_id: 3,
       },
@@ -189,10 +184,10 @@ const seedDatabase = async () => {
     const workExperienceData = [
       {
         job_title: 'Software Engineer Intern',
-        employer: 'Tech Company',
-        city: 'Tech City',
-        country: 'Tech Country',
-        start_date: 'February, 2020',
+        employer: 'Google Inc.',
+        city: 'Toronto',
+        country: 'Canada',
+        start_date: 'February, 2018',
         end_date: 'February, 2020',
         is_current: false,
         experience_description: 'Worked on various software development projects.',
@@ -211,14 +206,25 @@ const seedDatabase = async () => {
       },
       {
         job_title: 'Data Analyst',
-        employer: 'Data Analytics Inc.',
-        city: 'Analytics City',
-        country: 'Analytics Country',
+        employer: 'Lululemon',
+        city: 'Vancouver',
+        country: 'Canada',
         start_date: 'February, 2020',
         end_date: 'February, 2020',
         is_current: false,
-        experience_description: 'Analyzed data and generated insights for clients.',
+        experience_description: '- Analyzed data at Data Analytics Inc., identifying trends and patterns in large datasets using statistical methods.\n- Created interactive dashboards with Tableau for clear data visualization and presented findings to diverse stakeholders.',
         resume_id: 3,
+      },
+      {
+        "job_title": "Machine Learning Engineer",
+        "employer": "AI Innovations Co.",
+        "city": "Toronto",
+        "country": "Canada",
+        "start_date": "March, 2021",
+        "end_date": "June, 2023",
+        "is_current": false,
+        "experience_description": "- Developed and implemented machine learning algorithms for predictive analytics, resulting in a 20% improvement in customer engagement.\n- Collaborated with cross-functional teams to integrate AI solutions into existing products and services.\n- Conducted A/B testing and fine-tuned models for optimal performance, leading to a 15% increase in conversion rates.",
+        "resume_id": 3,
       },
     ];
 

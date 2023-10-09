@@ -1,24 +1,38 @@
-import { View, Text } from "@react-pdf/renderer";
+import { View, Text, StyleSheet } from "@react-pdf/renderer";
 import commonStyles from "./commonStyles";
 import Bullet from "./Bullet";
+
+const styles = StyleSheet.create({
+  workHeaderLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    fontSize: 12,
+    fontFamily: 'Times-Italic'
+  },
+});
 
 function WorkItem({ job }) {
   const bullets = Array.isArray(job.bullets)
     ? job.bullets.map((bullet) => <Bullet bullet={bullet} key={bullet.id} />)
     : [];
 
+
+
   return (
     <>
       <View style={{ ...commonStyles.workHeaderLine, fontWeight: 700 }}>
-        <Text>{job.employer}</Text>
+        <View style={{ display: 'flex', flexDirection: 'row', }}>
+          <Text>{job.job_title} | </Text>
+          <Text style={{ fontFamily: "Times-Italic" }} >{job.employer}</Text>
+        </View>
         {job.is_current ? (
           <Text>{job.start_date} - Present</Text>
         ) : (
           <Text>{job.start_date} - {job.end_date}</Text>
         )}
-      </View>
-      <View style={{ ...commonStyles.workHeaderLine, fontFamily: 'Times-Italic' }}>
-        <Text>{job.job_title}</Text>
+      </View >
+      <View style={styles.workHeaderLine}>
         <Text>{job.city}, {job.country}</Text>
       </View>
 

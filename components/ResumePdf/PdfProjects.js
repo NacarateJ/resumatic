@@ -27,7 +27,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     fontSize: 12,
-    fontFamily: "Times-Roman"
+
+    // fontFamily: "Times-Roman"
+  },
+  normalTextLine: {
+    fontSize: 12,
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 2,
   },
 });
 
@@ -36,16 +43,16 @@ function Project({ project }) {
     <>
       <View style={styles.projectHeaderLine}>
         <View>
-          <Link src={project.project_link}><Text style={commonStyles.linksLine}>{project.project_title}</Text></Link>
+          <Link src={project.project_link}><Text style={commonStyles.link}>{project.project_title}</Text></Link>
           {project.project_subtitle && <Text style={{ fontFamily: 'Times-Italic' }}>- {project.project_subtitle}</Text>}
         </View>
         {project.is_current ? (
-          <Text>{project.start_date} - Present</Text>
+          <Text style={{ fontFamily: "Times-BoldItalic" }} >{project.start_date} - Present</Text>
         ) : (
-          <Text>{project.start_date} - {project.end_date}</Text>
+          <Text style={{ fontFamily: "Times-BoldItalic" }} >{project.start_date} - {project.end_date}</Text>
         )}
       </View >
-      {project.project_description !== '' && <View style={{ ...commonStyles.normalTextLine }}><Text>{project.project_description}</Text></View>}
+      {project.project_description !== '' && <View style={styles.normalTextLine}><Text>{project.project_description}</Text></View>}
       {/* < View style={commonStyles.normalTextLine} >
         <View style={styles.linkItem}>
           <Text>Code: </Text>

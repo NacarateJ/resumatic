@@ -32,7 +32,7 @@ function Education({ education }) {
       </View>
       <View style={{ ...commonStyles.workHeaderLine, fontFamily: 'Times-Italic' }}>
         {education.gpa ? (
-          <Text>{education.degree} GPA: {education.gpa}</Text>
+          <Text>{education.degree} | GPA: {education.gpa}</Text>
         ) : (
           <Text>{education.degree}</Text>
         )}
