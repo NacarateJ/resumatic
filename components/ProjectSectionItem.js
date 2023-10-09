@@ -47,11 +47,14 @@ export default function ProjectSectionItem({
     projectData?.end_date ? dayjs(projectData.end_date) : null
   );
   const [summary, setSummary] = useState('');
+  const [userInput, setUserInput] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState(
     projectData?.project_description || ''
   );
   const [summaryError, setSummaryError] = useState('');
+  const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const generateEnhancedSummary = async (inputSummary) => {
@@ -83,6 +86,7 @@ export default function ProjectSectionItem({
         const data = await response.json();
         // Set the generated summary and clear loading state
         setGeneratedSummary(data.completion);
+        setEditorContent(data.completion);
         setLoading(false);
       } else {
         // Handle error cases here
@@ -96,19 +100,46 @@ export default function ProjectSectionItem({
     }
   };
 
+  const handleSummaryChange = (event) => {
+    // Update the summary text based on user input
+    const newUserInput = event.target.value;
+    setSummary(newUserInput);
+    setUserInput(newUserInput);
+  };
+
+  const handleUseEnhancedSummaryChange = () => {
+    // Toggle the useEnhancedSummary state
+    setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
+
+    // If switching to enhanced summary, set the summary text to the generated summary
+    if (!isEnhancedSummaryUsed && generatedSummary) {
+      setSummary(generatedSummary);
+      setEditorContent('');
+    } else {
+      // If switching back to original summary, reset the summary text to the original value
+      setSummary(userInput || resumeData.profile_description);
+      setEditorContent(generatedSummary);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!summary.trim()) {
+      setSummaryError('Please generate a new summary before saving');
+      return;
+    }
+
+    const finalSummary = isEnhancedSummaryUsed ? generatedSummary : summary;
 
     const requestBody = {
       resumeId,
       projectTitle,
       projectLink,
       endDate: endDate ? endDate.format('MMMM, YYYY') : null,
-      enhancedSummary: generatedSummary,
+      enhancedSummary: finalSummary,
       startDate: startDate ? startDate.format('MMMM, YYYY') : null,
     };
-
-    console.log('REQUEST BODY', requestBody);
 
     try {
       const response = await fetch('/api/projectSectionInsert', {
@@ -171,11 +202,11 @@ export default function ProjectSectionItem({
                   name='projectLink'
                   label='Project Link'
                   value={projectLink}
-                onChange={(e) => setProjectLink(e.target.value)}
-                fullWidth
-                autoComplete='projectLink'
-                variant='filled'
-                inputProps={{ style: { backgroundColor: 'white' } }}
+                  onChange={(e) => setProjectLink(e.target.value)}
+                  fullWidth
+                  autoComplete='projectLink'
+                  variant='filled'
+                  inputProps={{ style: { backgroundColor: 'white' } }}
                 />
               </Grid>
               <Grid item xs={12}></Grid>
@@ -192,7 +223,7 @@ export default function ProjectSectionItem({
                       label={'Start Date'}
                       views={['month', 'year']}
                       value={startDate}
-                    onChange={(date) => setStartDate(dayjs(date))}
+                      onChange={(date) => setStartDate(dayjs(date))}
                     />
                   </LocalizationProvider>
                   {/* <FormGroup>
@@ -208,12 +239,12 @@ export default function ProjectSectionItem({
                 </Grid>
                 <Grid justifyContent='flex-start' item xs={5}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker 
-                    label={'End Date'} 
-                    views={['month', 'year']} 
-                    value={endDate}
-                    onChange={(date) => setEndDate(dayjs(date))}
-                  />
+                    <DatePicker
+                      label={'End Date'}
+                      views={['month', 'year']}
+                      value={endDate}
+                      onChange={(date) => setEndDate(dayjs(date))}
+                    />
                   </LocalizationProvider>
                   {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                   <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -250,8 +281,8 @@ export default function ProjectSectionItem({
                     },
                   }}
                   multiline
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
+                  value={isEnhancedSummaryUsed ? generatedSummary : summary}
+                  onChange={handleSummaryChange}
                   error={!!summaryError}
                   helperText={summaryError}
                 />
@@ -293,7 +324,28 @@ export default function ProjectSectionItem({
             {generatedSummary && !loading && (
               <div style={{ marginTop: '20px' }}>
                 <Typography variant='h6'>Summary Suggestion:</Typography>
-                <TextEditor generatedSummary={generatedSummary} />
+                <TextEditor
+                  editorContent={editorContent}
+                  useEnhancedSummary={isEnhancedSummaryUsed}
+                />
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isEnhancedSummaryUsed}
+                        onChange={handleUseEnhancedSummaryChange}
+                        sx={{
+                          color: 'default',
+                          '&.Mui-checked': {
+                            color: '#00B4D8',
+                          },
+                        }}
+                      />
+                    }
+                    label='Use Enhanced Summary'
+                    sx={{ mt: 1 }}
+                  />
+                </FormGroup>
               </div>
             )}
 

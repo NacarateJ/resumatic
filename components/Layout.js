@@ -3,12 +3,12 @@ import Footer from './Footer';
 
 export default function Layout({ children }) {
   return (
-    <>
-      <Navbar />
-      <main style={{ minHeight: 'calc(100vh - 150px)'}}>
+    <div id='layout-wrap'>
+      <Navbar id='navbar' />
+      <main id='main' style={{ minHeight: 'calc(100vh - 150px)' }}>
         {children}
       </main>
-      <Footer />
-    </>
+      <Footer id='footer' />
+    </div>
   );
 }

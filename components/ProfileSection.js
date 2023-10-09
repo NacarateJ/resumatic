@@ -11,30 +11,32 @@ import {
   Grid,
   TextField,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
-import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function ProfileSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
-  const [summary, setSummary] = useState('');
+  const [summary, setSummary] = useState(resumeData.profile_description || '');
+  const [userInput, setUserInput] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState(resumeData.profile_description || '');
+  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const generateEnhancedSummary = async (inputSummary) => {
-    // Check if the input summary is empty
     if (!inputSummary.trim()) {
       setSummaryError('Please enter your summary');
       return;
     }
 
-    // Clear any previous error state
     setSummaryError('');
 
-    // Set loading state while generating summary
     setLoading(true);
 
     const userInput = `I'm creating a summary for my resume, please rewrite it in a professional way. The summary should be written from the first-person point of view, it should be 2-3 short sentences expressing what I want to reflect to the employer, who I am, what the employer can expect from me, what's my specialization (BE/FE), why I am interested in this industry, my passions, interests, stack preferences, what type of products I like to create (intuitive, easy to use)... It should have max 485 characters: ${inputSummary}`;
@@ -53,32 +55,52 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
         const data = await response.json();
         // Set the generated summary and clear loading state
         setGeneratedSummary(data.completion);
+        setEditorContent(data.completion);
         setLoading(false);
       } else {
-        // Handle error cases here
         console.error('Failed to generate summary');
         setLoading(false);
       }
     } catch (error) {
-      // Handle network errors
       console.error('Error occurred while generating summary:', error);
       setLoading(false);
+    }
+  };
+
+  const handleSummaryChange = (event) => {
+    // Update the summary text based on user input
+    const newUserInput = event.target.value;
+    setSummary(newUserInput);
+    setUserInput(newUserInput);
+  };
+  
+  const handleUseEnhancedSummaryChange = () => {
+    // Toggle the useEnhancedSummary state
+    setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
+
+    // If switching to enhanced summary, set the summary text to the generated summary
+    if (!isEnhancedSummaryUsed && generatedSummary) {
+      setSummary(generatedSummary);
+      setEditorContent('');
+    } else {
+      // If switching back to original summary, reset the summary text to the original value
+      setSummary(userInput || resumeData.profile_description);
+      setEditorContent(generatedSummary);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Check if a generated summary exists
     if (!summary.trim()) {
-      // Handle the case where no generated summary is available
       setSummaryError('Please generate a new summary before saving');
       return;
     }
    
-    // Create an object with the enhanced summary
+    const finalSummary = isEnhancedSummaryUsed ? generatedSummary : summary;
+
     const requestBody = {
-      enhancedSummary: generatedSummary,
+      enhancedSummary: finalSummary,
       resumeId: resumeData.resume_id,
     };
 
@@ -94,14 +116,11 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
 
       if (response.ok) {
         fetchResumeData(resumeData.resume_id);
-        // Handle success, e.g., show a success message to the user
         console.log('Enhanced summary saved successfully');
       } else {
-        // Handle error cases here
         console.error('Failed to save enhanced summary');
       }
     } catch (error) {
-      // Handle network errors
       console.error('Error occurred while saving enhanced summary:', error);
     }
   };
@@ -144,19 +163,16 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
                     style: {
                       backgroundColor: 'white',
                     },
-                    inputComponent: ScrollableInput,
                   }}
                   inputProps={{
                     style: {
                       backgroundColor: 'white',
-                      height: '100px',
                       paddingTop: '10px',
-                      // overflowY: 'auto',
                     },
                   }}
                   multiline
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
+                  value={isEnhancedSummaryUsed ? generatedSummary : summary}
+                  onChange={handleSummaryChange}
                   error={!!summaryError}
                   helperText={summaryError}
                 />
@@ -169,7 +185,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
               }}
             >
               <Button
-                type='button' // Change type to "button"
+                type='button'
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
@@ -197,11 +213,33 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
 
             {generatedSummary && !loading && (
               <div style={{ marginTop: '20px' }}>
-                <Typography variant='h6'>Enhanced Summary:</Typography>
-                <TextEditor generatedSummary={generatedSummary} />
+                <Typography variant='h6' sx={{ mb: 1 }}>
+                  Enhanced Summary:
+                </Typography>
+                <TextEditor
+                  editorContent={editorContent}
+                  useEnhancedSummary={isEnhancedSummaryUsed}
+                />
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isEnhancedSummaryUsed}
+                        onChange={handleUseEnhancedSummaryChange}
+                        sx={{
+                          color: 'default',
+                          '&.Mui-checked': {
+                            color: '#00B4D8',
+                          },
+                        }}
+                      />
+                    }
+                    label='Use Enhanced Summary'
+                    sx={{ mt: 1 }}
+                  />
+                </FormGroup>
               </div>
             )}
-
             <div
               style={{
                 display: 'flex',
@@ -210,7 +248,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
             >
               <CancelButton onClick={handleCancel} />
               <Button
-                type='submit' // Change type to "submit"
+                type='submit'
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
@@ -218,7 +256,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
                 sx={{ mt: 3, ml: 1 }}
                 onClick={handleSubmit}
               >
-                Save Enhanced Summary
+                Save
               </Button>
             </div>
           </Box>
