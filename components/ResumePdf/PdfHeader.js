@@ -100,7 +100,7 @@ function HeaderSecondLine({ phone_number, address }) {
 
 // Header component that displays personal information and links
 function Header({ resumeData }) {
-  if (!resumeData || resumeData.length === 0) {
+  if (!resumeData || !resumeData.resume_title && !resumeData.full_name) {
     return null; // If there are no languages, don't render anything
   }
 

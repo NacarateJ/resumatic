@@ -133,7 +133,7 @@ export default function ResumeNew() {
             showToolbar={false}
             style={{
               width: '100%',
-              height: '100%',
+              height: '120vh',
             }}
           >
             <MyDocument
