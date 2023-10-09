@@ -28,7 +28,7 @@ export default function Navbar() {
 
   const router = useRouter();
   const isHomePage = router.pathname === '/';
-
+  const isLogin = router.pathname === '/login';
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -89,7 +89,7 @@ export default function Navbar() {
               <Logo />
             </Link>
           </Box>
-          {!isHomePage && (
+          {!isHomePage && !isLogin && (
             <Box sx={{ mr: 2, flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
                 <Link key={page} href={`/${page.toLowerCase()}`} passHref>
@@ -110,7 +110,7 @@ export default function Navbar() {
               ))}
             </Box>
           )}
-          {!isHomePage && (
+          {!isHomePage && !isLogin && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
