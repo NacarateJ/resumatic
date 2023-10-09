@@ -22,16 +22,6 @@ export default function HomepageImage() {
         minHeight: 'calc(100vh - 175px)',
       }}
     >
-      {/* <Box
-        id='box-homepage'
-        sx={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-        }}
-      > */}
       <Grid container id='grid-container-homepage'>
         <Grid item lg={12}>
           <Box
@@ -39,7 +29,7 @@ export default function HomepageImage() {
             sx={{
               position: 'relative',
               p: { xs: 3, md: 6, lg: 12 },
-              mt: 40,
+              mt: '15%',
             }}
           >
             <Typography
@@ -58,7 +48,7 @@ export default function HomepageImage() {
               style={{
                 backgroundColor: '#FF8500',
                 color: 'white',
-                marginTop: '20em',
+                marginTop: '20vh',
               }}
               size='large'
               onClick={handleButtonClick}
@@ -68,7 +58,6 @@ export default function HomepageImage() {
           </Box>
         </Grid>
       </Grid>
-      {/* </Box> */}
     </Paper>
   );
 }
