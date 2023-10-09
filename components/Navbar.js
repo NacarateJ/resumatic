@@ -25,7 +25,6 @@ export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-
   const router = useRouter();
   const isHomePage = router.pathname === '/';
   const isLogin = router.pathname === '/login';
@@ -45,7 +44,7 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position='static' sx={{ backgroundColor: '#0077B6' }}>
+    <AppBar id='navbar' position='static' sx={{ backgroundColor: '#0077B6' }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -90,7 +89,9 @@ export default function Navbar() {
             </Link>
           </Box>
           {!isHomePage && !isLogin && (
-            <Box sx={{ mr: 2, flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+            <Box
+              sx={{ mr: 2, flexGrow: 0, display: { xs: 'none', md: 'flex' } }}
+            >
               {pages.map((page) => (
                 <Link key={page} href={`/${page.toLowerCase()}`} passHref>
                   <Button
@@ -134,7 +135,11 @@ export default function Navbar() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <Link key={setting} href={`/${setting.toLowerCase()}`} passHref>
+                  <Link
+                    key={setting}
+                    href={`/${setting.toLowerCase()}`}
+                    passHref
+                  >
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
                       <Typography textAlign='center'>{setting}</Typography>
                     </MenuItem>

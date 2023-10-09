@@ -12,26 +12,27 @@ export default function HomepageImage() {
 
   return (
     <Paper
+      id='paper-homepage'
       sx={{
         position: 'relative',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundImage: `url(${localImage})`,
-        'min-height': 'calc(100vh - 175px)',
+        minHeight: 'calc(100vh - 175px)',
       }}
     >
-      <Box
+      {/* <Box
+        id='box-homepage'
         sx={{
           position: 'absolute',
           top: 0,
           bottom: 0,
           right: 0,
           left: 0,
-          m: 10,
         }}
-      />
-      <Grid container>
+      > */}
+      <Grid container id='grid-container-homepage'>
         <Grid item lg={12}>
           <Box
             id='box-grid'
@@ -57,7 +58,7 @@ export default function HomepageImage() {
               style={{
                 backgroundColor: '#FF8500',
                 color: 'white',
-                marginTop: '350px',
+                marginTop: '20em',
               }}
               size='large'
               onClick={handleButtonClick}
@@ -67,6 +68,7 @@ export default function HomepageImage() {
           </Box>
         </Grid>
       </Grid>
+      {/* </Box> */}
     </Paper>
   );
 }
