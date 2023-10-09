@@ -22,12 +22,39 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import CancelButton from './CancelButton';
+import {
+  fromStringToDate,
+  fromDateToString,
+  defaultDate,
+} from '../utils/dateParser';
+import dayjs from 'dayjs';
 
-export default function ProjectSectionItem({ projectNum }) {
+
+export default function ProjectSectionItem({
+  fetchResumeData,
+  projectNum,
+  projectData,
+  resumeId,
+  isOpen, 
+  onToggleAccordion }) {
+
+  const [projectTitle, setProjectTitle] = useState(projectData?.project_title || '');
+  const [projectLink, setProjectLink] = useState(projectData?.project_link || '');
+  const [startDate, setStartDate] = useState(
+    projectData?.start_date ? dayjs(projectData.start_date) : null
+  );
+  const [endDate, setEndDate] = useState(
+    projectData?.end_date ? dayjs(projectData.end_date) : null
+  );
   const [summary, setSummary] = useState('');
+  const [userInput, setUserInput] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [generatedSummary, setGeneratedSummary] = useState(
+    projectData?.project_description || ''
+  );
   const [summaryError, setSummaryError] = useState('');
+  const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const generateEnhancedSummary = async (inputSummary) => {
@@ -43,7 +70,7 @@ export default function ProjectSectionItem({ projectNum }) {
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences expressing to the employer what my role was in the project and teh technologies I used along with what skills were necessary and demonstrate how I used my expertise. It should have max 485 characters: ${inputSummary}`;
+    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences in bullet point form expressing to the employer what my role was in the project and the technologies I used along with what skills were necessary and how I demonstrated my expertise: ${inputSummary}`;
 
     try {
       // Make an API request to the server with the summary content
@@ -59,6 +86,7 @@ export default function ProjectSectionItem({ projectNum }) {
         const data = await response.json();
         // Set the generated summary and clear loading state
         setGeneratedSummary(data.completion);
+        setEditorContent(data.completion);
         setLoading(false);
       } else {
         // Handle error cases here
@@ -72,33 +100,76 @@ export default function ProjectSectionItem({ projectNum }) {
     }
   };
 
+  const handleSummaryChange = (event) => {
+    // Update the summary text based on user input
+    const newUserInput = event.target.value;
+    setSummary(newUserInput);
+    setUserInput(newUserInput);
+  };
+
+  const handleUseEnhancedSummaryChange = () => {
+    // Toggle the useEnhancedSummary state
+    setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
+
+    // If switching to enhanced summary, set the summary text to the generated summary
+    if (!isEnhancedSummaryUsed && generatedSummary) {
+      setSummary(generatedSummary);
+      setEditorContent('');
+    } else {
+      // If switching back to original summary, reset the summary text to the original value
+      setSummary(userInput || resumeData.profile_description);
+      setEditorContent(generatedSummary);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary(summary);
+    if (!summary.trim()) {
+      setSummaryError('Please generate a new summary before saving');
+      return;
+    }
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-      summary,
-      generatedSummary, // You can access the generated summary here if needed
-    });
+    const finalSummary = isEnhancedSummaryUsed ? generatedSummary : summary;
 
-    // Add additional logic to handle form submission, if necessary
+    const requestBody = {
+      resumeId,
+      projectTitle,
+      projectLink,
+      endDate: endDate ? endDate.format('MMMM, YYYY') : null,
+      enhancedSummary: finalSummary,
+      startDate: startDate ? startDate.format('MMMM, YYYY') : null,
+    };
+
+    try {
+      const response = await fetch('/api/projectSectionInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: requestBody }),
+      });
+
+      if (response.ok) {
+        fetchResumeData(resumeId);
+        console.log('Project saved successfully');
+      } else {
+        console.error('Failed to save project');
+      }
+    } catch (error) {
+      console.error('Error occurred while saving project:', error);
+    }
   };
 
   const handleCancel = () => {
     setIsAccordionOpen(false);
   };
-
   return (
     <>
       <Accordion
         sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-        expanded={isAccordionOpen}
+        expanded={isOpen}
+        onChange={onToggleAccordion}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -114,11 +185,13 @@ export default function ProjectSectionItem({ projectNum }) {
               <Grid item xs={12}>
                 <TextField
                   required
-                  id='projectName'
-                  name='projectName'
+                  id='projectTitle'
+                  name='projectTitle'
                   label='Project Name'
+                  value={projectTitle}
+                  onChange={(e) => setProjectTitle(e.target.value)}
                   fullWidth
-                  autoComplete='project'
+                  autoComplete='projectTitle'
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
                 />
@@ -128,8 +201,10 @@ export default function ProjectSectionItem({ projectNum }) {
                   id='projectLink'
                   name='projectLink'
                   label='Project Link'
+                  value={projectLink}
+                  onChange={(e) => setProjectLink(e.target.value)}
                   fullWidth
-                  autoComplete='project'
+                  autoComplete='projectLink'
                   variant='filled'
                   inputProps={{ style: { backgroundColor: 'white' } }}
                 />
@@ -147,6 +222,8 @@ export default function ProjectSectionItem({ projectNum }) {
                     <DatePicker
                       label={'Start Date'}
                       views={['month', 'year']}
+                      value={startDate}
+                      onChange={(date) => setStartDate(dayjs(date))}
                     />
                   </LocalizationProvider>
                   {/* <FormGroup>
@@ -162,7 +239,12 @@ export default function ProjectSectionItem({ projectNum }) {
                 </Grid>
                 <Grid justifyContent='flex-start' item xs={5}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label={'End Date'} views={['month', 'year']} />
+                    <DatePicker
+                      label={'End Date'}
+                      views={['month', 'year']}
+                      value={endDate}
+                      onChange={(date) => setEndDate(dayjs(date))}
+                    />
                   </LocalizationProvider>
                   {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                   <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -199,8 +281,8 @@ export default function ProjectSectionItem({ projectNum }) {
                     },
                   }}
                   multiline
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
+                  value={isEnhancedSummaryUsed ? generatedSummary : summary}
+                  onChange={handleSummaryChange}
                   error={!!summaryError}
                   helperText={summaryError}
                 />
@@ -213,7 +295,7 @@ export default function ProjectSectionItem({ projectNum }) {
               }}
             >
               <Button
-                type='button' // Change type to "button"
+                type='button'
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',
@@ -242,7 +324,28 @@ export default function ProjectSectionItem({ projectNum }) {
             {generatedSummary && !loading && (
               <div style={{ marginTop: '20px' }}>
                 <Typography variant='h6'>Summary Suggestion:</Typography>
-                <TextEditor generatedSummary={generatedSummary} />
+                <TextEditor
+                  editorContent={editorContent}
+                  useEnhancedSummary={isEnhancedSummaryUsed}
+                />
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isEnhancedSummaryUsed}
+                        onChange={handleUseEnhancedSummaryChange}
+                        sx={{
+                          color: 'default',
+                          '&.Mui-checked': {
+                            color: '#00B4D8',
+                          },
+                        }}
+                      />
+                    }
+                    label='Use Enhanced Summary'
+                    sx={{ mt: 1 }}
+                  />
+                </FormGroup>
               </div>
             )}
 
@@ -254,8 +357,8 @@ export default function ProjectSectionItem({ projectNum }) {
             >
               <CancelButton onClick={handleCancel} />
               <Button
-                type='submit' // Change type to "submit"
-                onClick={(event) => handleSubmit(event)}
+                type='submit'
+                onClick={handleSubmit}
                 variant='contained'
                 style={{
                   backgroundColor: '#00B4D8',

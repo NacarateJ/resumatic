@@ -18,9 +18,10 @@ import {
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import ShareIcon from '@mui/icons-material/Share';
 import { formatDistanceToNow } from 'date-fns';
+import { PictureAsPdf } from '@mui/icons-material';
+import ShareResume from '@/components/ShareResume';
 
 const user_Id = 3;
 export default function Dashboard({ user, resumes, err }) {
@@ -29,6 +30,14 @@ export default function Dashboard({ user, resumes, err }) {
   const [menuOpen, setMenuOpen] = useState(null);
   const [selectedResume, setSelectedResume] = useState(null);
   const menuRef = useRef(null);
+  console.log('selected resume', selectedResume);
+
+  //state and params for ShareResume Modal
+  const [shareOpen, setShareOpen] = useState(false);
+  const domain =
+    typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+      ? window.location.hostname
+      : 'resumatic.com';
 
   const handleMenuOpen = (event, resume) => {
     event.stopPropagation(); // Prevent card click when kebab menu is clicked
@@ -47,19 +56,16 @@ export default function Dashboard({ user, resumes, err }) {
     handleMenuClose();
   };
 
-  const handleDownload = (event, resume) => {
-    // TO DO: Implement logic to download the resume
-    // event.stopPropagation();
-    console.log('Download clicked for resume:', resume);
+  const handleView = (event, selectedResume) => {
+    router.push(`/resumes/${selectedResume.resume_id}`);
     handleMenuClose();
   };
 
-  const handleShare = (event, resume) => {
-    // TO DO: Implement logic to share the resume
-    // event.stopPropagation();
-    console.log('Share clicked for resume:', resume);
+  const handleShare = () => {
+    setShareOpen(true);
     handleMenuClose();
-  }; const handleCreateResume = async () => {
+  };
+  const handleCreateResume = async () => {
     try {
       // Prepare the request body with hardcoded user data
 
@@ -68,7 +74,6 @@ export default function Dashboard({ user, resumes, err }) {
           userId: user_Id, // Use user_Id here, not userId
         },
       };
-
 
       // Make a POST request to the API endpoint to create a new blank resume
       const response = await fetch('/api/create-resume', {
@@ -96,8 +101,6 @@ export default function Dashboard({ user, resumes, err }) {
       // Optionally, show an error message to the user
     }
   };
-
-
 
   const handleCardClick = (resumeId, event) => {
     if (menuRef.current && menuRef.current.contains(event.target)) {
@@ -149,6 +152,11 @@ export default function Dashboard({ user, resumes, err }) {
       >
         Create New Resume
       </Button>
+      <ShareResume
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        linkProp={`https://${domain}/resumes/${selectedResume?.resume_id}`}
+      />
 
       <div
         style={{
@@ -166,7 +174,6 @@ export default function Dashboard({ user, resumes, err }) {
             >
               <CardHeader
                 title={resume.resume_title}
-
                 action={
                   <IconButton
                     aria-label='menu'
@@ -198,12 +205,13 @@ export default function Dashboard({ user, resumes, err }) {
                   </MenuItem>
 
                   <MenuItem
-                    onClick={(event) => handleDownload(event, selectedResume)}
+                    onClick={(event) => handleView(event, selectedResume)}
                   >
                     <ListItemIcon>
-                      <SimCardDownloadIcon fontSize='small' />
+                      <PictureAsPdf fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText primary='Download' />
+
+                    <ListItemText primary='View' />
                   </MenuItem>
 
                   <MenuItem
@@ -215,11 +223,7 @@ export default function Dashboard({ user, resumes, err }) {
                     <ListItemText primary='Share' />
                   </MenuItem>
                 </Menu>
-                <CardActionArea
-
-                >
-
-
+                <CardActionArea>
                   <Paper
                     elevation={10}
                     style={{
@@ -251,12 +255,11 @@ export default function Dashboard({ user, resumes, err }) {
                   </Typography>
                 </CardActionArea>
               </CardContent>
-
             </Card>
           </div>
         ))}
       </div>
-    </div >
+    </div>
   );
 }
 

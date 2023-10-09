@@ -1,10 +1,21 @@
-// import { Inter } from 'next/font/google';
-// const inter = Inter({ subsets: ['latin'] });
+import React from 'react';
+
+import HomepageImage from '../components/HomepageImage';
 
 export default function Home() {
   return (
-    <main>
-      <h1>Welcome to Resumatic, your go-to resume builder app 🚀</h1>
-    </main>
+    <div
+      id='homepage'
+      style={{
+        position: 'absolute',
+        top: '49.5%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        textAlign: 'center',
+        width: '100%',
+      }}
+    >
+      <HomepageImage />
+    </div>
   );
 }

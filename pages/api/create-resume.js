@@ -22,7 +22,6 @@ export default async function handler(req, res) {
       // Create a new resume in the database using Prisma, including the fetched user data
       const createdResume = await prisma.resumes.create({
         data: {
-          resume_title: 'Resume', // Set default title or any other default data
           user: {
             connect: { user_id: userId }, // Connect the resume to the existing user
           },

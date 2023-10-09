@@ -9,7 +9,6 @@ const commonStyles = StyleSheet.create({
   },
   heading: {
     fontSize: 12,
-    fontWeight: 700,
     borderBottom: '0.5 solid #000',
     marginBottom: 5,
   },
@@ -18,10 +17,19 @@ const commonStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     fontSize: 12,
+    fontFamily: "Times-BoldItalic",
+    paddingBottom: 2,
+  },
+  subHeadingLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    fontSize: 12,
+    fontFamily: "Times-Italix"
   },
   boldText: {
     fontSize: 12,
-    fontWeight: 700,
+    fontFamily: 'Times-Bold',
   },
   normalTextLine: {
     fontSize: 12,

@@ -1,6 +1,5 @@
 import { Link, StyleSheet, Text, View } from "@react-pdf/renderer";
 import commonStyles from "./commonStyles";
-import Bullet from "./Bullet";
 
 const styles = StyleSheet.create({
   projectHeader: {
@@ -10,7 +9,7 @@ const styles = StyleSheet.create({
   },
   projectTitle: {
     fontSize: 12,
-    fontWeight: 700,
+    fontFamily: 'Times-Bold'
   },
   linksLine: {
     display: 'flex',
@@ -23,34 +22,51 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  projectHeaderLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    fontSize: 12,
+
+    // fontFamily: "Times-Roman"
+  },
+  normalTextLine: {
+    fontSize: 12,
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 2,
+  },
 });
 
 function Project({ project }) {
   return (
     <>
-      <View style={{ ...commonStyles.workHeaderLine, fontWeight: 700 }}>
+      <View style={styles.projectHeaderLine}>
         <View>
-          <Text style={styles.projectTitle}>{project.project_title} </Text>
-          <Text>- {project.project_subtitle}</Text>
+          <Link src={project.project_link}><Text style={commonStyles.link}>{project.project_title}</Text></Link>
+          {project.project_subtitle && <Text style={{ fontFamily: 'Times-Italic' }}>- {project.project_subtitle}</Text>}
         </View>
         {project.is_current ? (
-          <Text>{project.start_date} - Present</Text>
+          <Text style={{ fontFamily: "Times-BoldItalic" }} >{project.start_date} - Present</Text>
         ) : (
-          <Text>{project.start_date} - {project.end_date}</Text>
+          <Text style={{ fontFamily: "Times-BoldItalic" }} >{project.start_date} - {project.end_date}</Text>
         )}
-      </View>
-      {project.project_description !== '' && <View style={styles.summary}><Text>{project.project_description}</Text></View>}
-      <View style={styles.linksLine}>
+      </View >
+      {project.project_description !== '' && <View style={styles.normalTextLine}><Text>{project.project_description}</Text></View>}
+      {/* < View style={commonStyles.normalTextLine} >
         <View style={styles.linkItem}>
           <Text>Code: </Text>
           <Link src={project.project_link}><Text style={commonStyles.link}>{project.project_title}</Text></Link>
         </View>
-      </View>
+      </View > */}
     </>
   );
 }
 
 function PdfProjects({ projects }) {
+  if (!projects || projects.length === 0) {
+    return null; // If there are no languages, don't render anything
+  }
   const projectsRenderer = projects.map((project, index) => (<Project project={project} key={index} />));
 
   return (

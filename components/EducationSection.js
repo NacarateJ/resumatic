@@ -10,11 +10,19 @@ import {
 import SchoolIcon from '@mui/icons-material/School';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EducationSectionItem from './EducationSectionItem';
+import { useState } from 'react';
 
-export default function EducationSection() {
+export default function EducationSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
+  const [openAccordion, setOpenAccordion] = useState(null);
+
+  const handleAccordionToggle = (panel) => (event, isExpanded) => {
+    setOpenAccordion(isExpanded ? panel : null);
+  };
   return (
     <SectionContainer>
-      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
+      <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+        expanded={isOpen}
+        onChange={onToggleAccordion}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
@@ -26,9 +34,30 @@ export default function EducationSection() {
           </Grid>
         </AccordionSummary>
 
-        <EducationSectionItem educationNum='Education #1' />
-        <EducationSectionItem educationNum='Education #2' />
-        <EducationSectionItem educationNum='Education #3' />
+        <EducationSectionItem
+          educationNum='Education #1'
+          educationData={resumeData.education?.[0]}
+          fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
+          isOpen={openAccordion === 'education1'}
+          onToggleAccordion={handleAccordionToggle('education1')}
+        />
+        <EducationSectionItem
+          educationNum='Education #2'
+          educationData={resumeData.education?.[1]}
+          fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
+          isOpen={openAccordion === 'education2'}
+          onToggleAccordion={handleAccordionToggle('education2')}
+        />
+        <EducationSectionItem
+          educationNum='Education #3'
+          educationData={resumeData.education?.[2]}
+          fetchResumeData={fetchResumeData}
+          resumeId={resumeData.resume_id}
+          isOpen={openAccordion === 'education3'}
+          onToggleAccordion={handleAccordionToggle('education3')}
+        />
 
         {/* <Accordion sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}>
           <AccordionSummary

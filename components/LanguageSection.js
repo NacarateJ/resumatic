@@ -10,13 +10,27 @@ import {
   Button,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
 
-export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
+export default function LanguageSection({
+  resumeData,
+  fetchResumeData,
+  resumeId, isOpen, onToggleAccordion,
+}) {
+
+  const [openAccordion, setOpenAccordion] = useState(null);
+
+  const handleAccordionToggle = (panel) => (event, isExpanded) => {
+    setOpenAccordion(isExpanded ? panel : null);
+  };
+
   return (
     <>
       <SectionContainer>
         <Accordion
           sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
+          expanded={isOpen}
+          onChange={onToggleAccordion}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -34,18 +48,27 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
             languageLevel={resumeData.languages?.[0]?.language_level}
             resumeId={resumeId}
             fetchResumeData={fetchResumeData}
+            isOpen={openAccordion === 'language1'}
+            onToggleAccordion={handleAccordionToggle('language1')}
+            languageNum={1}
           />
           <LanguageSectionItem
             languageName={resumeData.languages?.[1]?.language_name}
             languageLevel={resumeData.languages?.[1]?.language_level}
             resumeId={resumeId}
             fetchResumeData={fetchResumeData}
+            isOpen={openAccordion === 'language2'}
+            onToggleAccordion={handleAccordionToggle('language2')}
+            languageNum={2}
           />
           <LanguageSectionItem
             languageName={resumeData.languages?.[2]?.language_name}
             languageLevel={resumeData.languages?.[2]?.language_level}
             resumeId={resumeId}
             fetchResumeData={fetchResumeData}
+            isOpen={openAccordion === 'language3'}
+            onToggleAccordion={handleAccordionToggle('language3')}
+            languageNum={3}
           />
           <AccordionDetails>
             <Grid display='flex' justifyContent='center' alignItems='center'>

@@ -14,7 +14,7 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function PersonalInfoSection({ resumeData, fetchResumeData, resumeId }) {
+export default function PersonalInfoSection({ resumeData, fetchResumeData, resumeId, isOpen, onToggleAccordion }) {
   const [error, setError] = useState(null);
   const [fullName, setFullName] = useState(resumeData.full_name || "");
   const [jobTitle, setJobTitle] = useState(resumeData.job_title || "");
@@ -75,7 +75,8 @@ export default function PersonalInfoSection({ resumeData, fetchResumeData, resum
       <SectionContainer>
         <Accordion
           sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-          expanded={isAccordionOpen}
+          expanded={isOpen}
+          onChange={onToggleAccordion}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

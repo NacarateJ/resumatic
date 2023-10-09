@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-export default function LanguageSection({ resumeData, fetchResumeData, resumeId }) {
-  const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || "");
-  const [frmwrkLibDb, setfrmwrkLibDb] = useState(resumeData.skills?.[1]?.skill_name || "");
-  const [toolsTech, settoolsTech] = useState(resumeData.skills?.[2]?.skill_name || "");
-  
+export default function SkillsSection({ resumeData, fetchResumeData, resumeId, isOpen, onToggleAccordion }) {
+  const [progLang, setProgLang] = useState(resumeData.skills?.[0]?.skill_name || '');
+  const [frmwrkLibDb, setfrmwrkLibDb] = useState(resumeData.skills?.[1]?.skill_name || '');
+  const [toolsTech, settoolsTech] = useState(resumeData.skills?.[2]?.skill_name || '');
+
   // Accordion states
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [isProgLangAccordionOpen, setIsProgLangAccordionOpen] = useState(false);
@@ -32,12 +32,26 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
 
     try {
       let formData;
-      if (skillDescription === "Programming Languages") {
-        formData = { resumeId: resumeId, skill: progLang, skillDescription: "Programming Languages" };
-      } else if (skillDescription === "Frameworks, Libraries & Databases Description") {
-        formData = { resumeId: resumeId, skill: frmwrkLibDb, skillDescription: "Frameworks, Libraries & Databases Description" };
+      if (skillDescription === 'Programming Languages') {
+        formData = {
+          resumeId: resumeId,
+          skill: progLang,
+          skillDescription: 'Programming Languages',
+        };
+      } else if (
+        skillDescription === 'Frameworks, Libraries & Databases Description'
+      ) {
+        formData = {
+          resumeId: resumeId,
+          skill: frmwrkLibDb,
+          skillDescription: 'Frameworks, Libraries & Databases Description',
+        };
       } else if (skillDescription === 'Tools & Other Technologies') {
-        formData = { resumeId: resumeId, skill: toolsTech, skillDescription: 'Tools & Other Technologies' };
+        formData = {
+          resumeId: resumeId,
+          skill: toolsTech,
+          skillDescription: 'Tools & Other Technologies',
+        };
       }
 
       const response = await fetch('/api/skillSectionInsert', {
@@ -48,7 +62,6 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
         body: JSON.stringify({
           data: formData,
         }),
-
       });
 
       if (response.ok) {
@@ -63,6 +76,12 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
       console.error('Error inserting resume data:', error);
       // Handle network errors or other exceptions.
     }
+  };
+
+  const handleAccordionToggle = (accordionName) => {
+    setIsProgLangAccordionOpen(accordionName === "Programming Languages");
+    setIsFrmwrkLibDbAccordionOpen(accordionName === "Frameworks, Libraries & Databases Description");
+    setIsToolsTechAccordionOpen(accordionName === "Tools & Other Technologies");
   };
 
   const handleCancel = (accordionName) => {
@@ -82,8 +101,8 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
       <SectionContainer>
         <Accordion
           sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-          expanded={isAccordionOpen}
-        >
+          expanded={isOpen}
+          onChange={onToggleAccordion}        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
@@ -92,13 +111,14 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
           >
             <Grid display='flex' alignItems='center'>
               <PsychologyIcon style={{ fontSize: '2.25em' }} sx={{ pr: 1 }} />
-              <Typography variant='h5'>Skills</Typography>
+              <Typography variant='h5'>Technical Skills</Typography>
             </Grid>
           </AccordionSummary>
 
           <Accordion
             sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
             expanded={isProgLangAccordionOpen}
+            onChange={() => handleAccordionToggle("Programming Languages")}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -157,6 +177,7 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
           <Accordion
             sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
             expanded={isFrmwrkLibDbAccordionOpen}
+            onChange={() => handleAccordionToggle("Frameworks, Libraries & Databases Description")}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -224,6 +245,7 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
           <Accordion
             sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
             expanded={isToolsTechAccordionOpen}
+            onChange={() => handleAccordionToggle("Tools & Other Technologies")}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -283,4 +305,4 @@ export default function LanguageSection({ resumeData, fetchResumeData, resumeId 
       </SectionContainer>
     </>
   );
-}
+};

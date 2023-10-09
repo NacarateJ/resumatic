@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import MyDocument from '@/components/MyDocument';
+import PdfDownload from '@/components/ResumePdf/PdfDownload';
 
 const PDFViewerComponent = dynamic(() => import('@react-pdf/renderer').then(module => module.PDFViewer), {
   loading: () => <p>Loading PDF Viewer...</p>,
@@ -48,14 +49,19 @@ const index = ({ resumeId }) => {
   }, [router.query]); // Call the async function inside useEffect
 
   return resumeData ? (
-    <PDFViewerComponent showToolbar={false}
-      style={{
-        width: "100%",
-        height: "1000px"
-      }}
-    >
-      <MyDocument resumeData={resumeData} />
-    </PDFViewerComponent>
+    <div >
+      <PdfDownload resumeData={resumeData} />
+      <PDFViewerComponent showToolbar={false}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          width: "100%",
+          height: "100vh"
+        }}
+      >
+        <MyDocument resumeData={resumeData} />
+      </PDFViewerComponent>
+    </div>
   ) : null; // Return null if resumeData is not available yet
 };
 

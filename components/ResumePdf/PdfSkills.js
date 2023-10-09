@@ -11,6 +11,10 @@ function SkillItem({ skill }) {
 }
 
 function PdfSkills({ skills }) {
+  if (!skills || skills.length === 0) {
+    return null; // If there are no languages, don't render anything
+  }
+
   const SkillsMap = skills.map((skill, index) => (
     <SkillItem skill={skill} key={index} />
   ));

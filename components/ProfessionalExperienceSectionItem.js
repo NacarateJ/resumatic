@@ -7,7 +7,7 @@ import {
   Grid,
   TextField,
   Button,
-  Checkbox,
+  Checkbox, 
   Accordion,
   AccordionSummary,
   FormGroup,
@@ -20,13 +20,36 @@ import {
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CancelButton from './CancelButton';
 
-export default function ProfessionalExperienceSectionItem({ experienceNum }) {
+export default function ProfessionalExperienceSectionItem({
+  experienceNum,
+  workExp,
+  fetchResumeData,
+  resumeId,
+  isOpen,
+  onToggleAccordion
+}) {
+  const [jobTitle, setJobTitle] = useState(workExp?.job_title || '');
+  const [employer, setEmployer] = useState(workExp?.employer || '');
+  const [city, setCity] = useState(workExp?.city || '');
+  const [country, setCountry] = useState(workExp?.country || '');
+  const [startDate, setStartDate] = useState(
+    workExp?.start_date ? dayjs(workExp.start_date) : null
+  );
+  const [endDate, setEndDate] = useState(
+    workExp?.end_date ? dayjs(workExp.end_date) : null
+  );
   const [summary, setSummary] = useState('');
+  const [userInput, setUserInput] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [generatedSummary, setGeneratedSummary] = useState(
+    workExp?.experience_description || ''
+  );
+   const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -43,7 +66,7 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm writing a description for one of my work experiences for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences expressing to the employer what my role was at the company and the technologies I used along with the skills and expertise I used in the position. It should have max 485 characters: ${inputSummary}`;
+    const userInput = `I'm writing a description for one of my work experiences for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view based on the provided infoirmation: ${inputSummary}. It should be 2-3 short sentences in bullet point form expressing to the employer what my role was at the company and the technologies I used along with the skills and expertise I used in the position. It should have max 485 characters.`;
 
     try {
       // Make an API request to the server with the summary content
@@ -59,6 +82,7 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
         const data = await response.json();
         // Set the generated summary and clear loading state
         setGeneratedSummary(data.completion);
+        setEditorContent(data.completion);
         setLoading(false);
       } else {
         // Handle error cases here
@@ -72,22 +96,72 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
     }
   };
 
+  const handleSummaryChange = (event) => {
+    // Update the summary text based on user input
+    const newUserInput = event.target.value;
+    setSummary(newUserInput);
+    setUserInput(newUserInput);
+  };
+
+  const handleUseEnhancedSummaryChange = () => {
+    // Toggle the useEnhancedSummary state
+    setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
+
+    // If switching to enhanced summary, set the summary text to the generated summary
+    if (!isEnhancedSummaryUsed && generatedSummary) {
+      setSummary(generatedSummary);
+      setEditorContent('');
+    } else {
+      // If switching back to original summary, reset the summary text to the original value
+      setSummary(userInput || resumeData.profile_description);
+      setEditorContent(generatedSummary);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call generateEnhancedSummary to generate the enhanced summary
-    await generateEnhancedSummary(summary);
+    if (!summary.trim()) {
+      setSummaryError('Please generate a new summary before saving');
+      return;
+    }
 
-    // Rest of your form submission logic goes here, if any
-    // For example, you can handle form data and make another API call if needed.
-    const data = new FormData(event.currentTarget);
-    console.log({
-      data,
-      summary,
-      generatedSummary, // You can access the generated summary here if needed
-    });
+    const finalSummary = isEnhancedSummaryUsed ? generatedSummary : summary;
 
-    // Add additional logic to handle form submission, if necessary
+    // Create an object with the enhanced summary
+    const requestBody = {
+      resumeId,
+      city,
+      country,
+      employer,
+      endDate: endDate ? endDate.format('MMMM, YYYY') : null,
+      enhancedSummary: finalSummary,
+      jobTitle,
+      startDate: startDate ? startDate.format('MMMM, YYYY') : null,
+    };
+
+    try {
+      // Make an API request to save work exp
+      const response = await fetch('/api/professionalExpInsert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: requestBody }),
+      });
+
+      if (response.ok) {
+        fetchResumeData(resumeId);
+        // Handle success, e.g., show a success message to the user
+        console.log('Work experience saved successfully');
+      } else {
+        // Handle error cases here
+        console.error('Failed to save work experience');
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error('Error occurred while saving work experience:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -97,7 +171,8 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
   return (
     <Accordion
       sx={{ backgroundColor: 'WhiteSmoke', boxShadow: 'none' }}
-      expanded={isAccordionOpen}
+      expanded={isOpen}
+      onChange={onToggleAccordion}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -113,9 +188,25 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
             <Grid item xs={12}>
               <TextField
                 required
+                id='jobTitle'
+                name='jobTitle'
+                label='Job Title'
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                fullWidth
+                autoComplete='jobTitle'
+                variant='filled'
+                inputProps={{ style: { backgroundColor: 'white' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
                 id='employer'
                 name='employer'
                 label='Employer'
+                value={employer}
+                onChange={(e) => setEmployer(e.target.value)}
                 fullWidth
                 autoComplete='employer'
                 variant='filled'
@@ -127,6 +218,8 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                 id='city'
                 name='city'
                 label='City'
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
@@ -137,6 +230,8 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                 id='country'
                 name='country'
                 label='Country'
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
                 fullWidth
                 variant='filled'
                 inputProps={{ style: { backgroundColor: 'white' } }}
@@ -152,7 +247,12 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
             >
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'Start Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'Start Date'}
+                    views={['month', 'year']}
+                    value={startDate}
+                    onChange={(date) => setStartDate(dayjs(date))}
+                  />
                 </LocalizationProvider>
                 {/* <FormGroup>
                   <FormControlLabel control={<Checkbox />} label="Don't Show" />
@@ -161,7 +261,12 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
               </Grid>
               <Grid justifyContent='flex-start' item xs={5}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label={'End Date'} views={['month', 'year']} />
+                  <DatePicker
+                    label={'End Date'}
+                    views={['month', 'year']}
+                    value={endDate}
+                    onChange={(date) => setEndDate(dayjs(date))}
+                  />
                 </LocalizationProvider>
                 {/* <FormControlLabel control={<Checkbox />} label="Don't Show" />
                 <FormControlLabel control={<Checkbox />} label='Only Year' />
@@ -198,8 +303,8 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                   },
                 }}
                 multiline
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)}
+                value={isEnhancedSummaryUsed ? generatedSummary : summary}
+                onChange={handleSummaryChange}
                 error={!!summaryError}
                 helperText={summaryError}
               />
@@ -240,8 +345,29 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
 
           {generatedSummary && !loading && (
             <div style={{ marginTop: '20px' }}>
-              <Typography variant='h6'>Summary Suggestion:</Typography>
-              <TextEditor generatedSummary={generatedSummary} />
+              <Typography variant='h6'>Enhanced Summary:</Typography>
+              <TextEditor
+                editorContent={editorContent}
+                useEnhancedSummary={isEnhancedSummaryUsed}
+              />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isEnhancedSummaryUsed}
+                      onChange={handleUseEnhancedSummaryChange}
+                      sx={{
+                        color: 'default',
+                        '&.Mui-checked': {
+                          color: '#00B4D8',
+                        },
+                      }}
+                    />
+                  }
+                  label='Use Enhanced Summary'
+                  sx={{ mt: 1 }}
+                />
+              </FormGroup>
             </div>
           )}
 
@@ -259,6 +385,7 @@ export default function ProfessionalExperienceSectionItem({ experienceNum }) {
                 backgroundColor: '#00B4D8',
               }}
               sx={{ mt: 3, ml: 1 }}
+              onClick={handleSubmit}
             >
               Save
             </Button>

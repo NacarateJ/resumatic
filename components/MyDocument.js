@@ -1,5 +1,5 @@
-import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { useEffect } from 'react';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import Header from './ResumePdf/PdfHeader';
 import PdfSkills from './ResumePdf/PdfSkills';
 import PdfWork from './ResumePdf/PdfWork';
@@ -7,34 +7,52 @@ import PdfEdu from './ResumePdf/PdfEdu';
 import PdfProjects from './ResumePdf/PdfProjects';
 import PdfLang from './ResumePdf/PdfLanguages';
 
-// Create styles
-const styles = StyleSheet.create({
-  // Define styles for PDF elements using react-pdf
-  page: {
-    padding: 30,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 5,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
-  },
-  summary: {
-    fontSize: 12,
-  }
-});
+
 
 // Create Document Component
 const MyDocument = ({ resumeData }) => {
-  if (resumeData === null) {
-    return <p>Loading...</p>;
-  }
+
+  useEffect(() => {
+
+  }, []);
+
+
 
   if (!resumeData) {
     return null;
   }
+
+  // Create styles
+  const styles = StyleSheet.create({
+    // Define styles for PDF elements using react-pdf
+    page: {
+      padding: 30,
+      display: 'flex',
+      fontWeight: "bold",
+      fontFamily: 'Times-Roman',
+      flexDirection: 'column',
+      gap: 5,
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    },
+    summary: {
+      fontSize: 12,
+      fontWeight: 'Bold',
+    },
+    normal: {
+      fontFamily: 'Times-Roman',
+    },
+    bold: {
+      fontFamily: 'Times-Bold',
+    },
+    italic: {
+      fontFamily: 'Times-Italic',
+    },
+  });
+
 
   return (
     <Document >
