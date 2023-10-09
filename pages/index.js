@@ -7,10 +7,9 @@ export default function Home() {
     <div
       id='homepage'
       style={{
-        position: 'absolute',
-        top: '49.5%',
+        position: 'static',
+        top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)',
         textAlign: 'center',
         width: '100%',
       }}
