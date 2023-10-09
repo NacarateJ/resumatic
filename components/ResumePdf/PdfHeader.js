@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     gap: 20, // Spacing between items
     fontSize: 12, // Font size for the links
     paddingBottom: 2,
+    fontFamily: "Times-Roman",
   },
   // Styles for individual link items
   linksItem: {
@@ -39,12 +40,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // Arrange items in a row
     alignItems: 'center', // Align items to the center vertically
     gap: 4, // Spacing between items
+    fontFamily: "Times-Roman",
   },
   // Styles for icons used in links
   icons: {
     color: '#0a52cf', // Icon color
     height: 10, // Icon height
     width: 10, // Icon width
+
   }
 });
 
@@ -97,7 +100,7 @@ function HeaderSecondLine({ phone_number, address }) {
 
 // Header component that displays personal information and links
 function Header({ resumeData }) {
-  if (!resumeData.full_name || resumeData.length === 1) {
+  if (!resumeData || !resumeData.resume_title && !resumeData.full_name) {
     return null; // If there are no languages, don't render anything
   }
 
