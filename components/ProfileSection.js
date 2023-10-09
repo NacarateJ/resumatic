@@ -21,7 +21,8 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function ProfileSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
   const [summary, setSummary] = useState(resumeData.profile_description || '');
-  const [userInput, setUserInput] = useState('')
+  const [userInput, setUserInput] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState('');
   const [useEnhancedSummary, setUseEnhancedSummary] = useState(false);
@@ -54,6 +55,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
         const data = await response.json();
         // Set the generated summary and clear loading state
         setGeneratedSummary(data.completion);
+        setEditorContent(data.completion);
         setLoading(false);
       } else {
         console.error('Failed to generate summary');
@@ -79,9 +81,11 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
     // If switching to enhanced summary, set the summary text to the generated summary
     if (!useEnhancedSummary && generatedSummary) {
       setSummary(generatedSummary);
+      setEditorContent('');
     } else {
       // If switching back to original summary, reset the summary text to the original value
       setSummary(userInput || resumeData.profile_description);
+      setEditorContent(generatedSummary);
     }
   };
 
@@ -213,7 +217,8 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
                   Enhanced Summary:
                 </Typography>
                 <TextEditor
-                  generatedSummary={useEnhancedSummary ? ' ' : generatedSummary}
+                  editorContent={editorContent}
+                  useEnhancedSummary={useEnhancedSummary}
                 />
                 <FormGroup>
                   <FormControlLabel
