@@ -7,11 +7,11 @@ import {
   Grid,
   TextField,
   Button,
-// Checkbox,
+  Checkbox, 
   Accordion,
   AccordionSummary,
-// FormGroup,
-  // FormControlLabel,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
@@ -43,10 +43,13 @@ export default function ProfessionalExperienceSectionItem({
     workExp?.end_date ? dayjs(workExp.end_date) : null
   );
   const [summary, setSummary] = useState('');
+  const [userInput, setUserInput] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState(
     workExp?.experience_description || ''
   );
+   const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -79,6 +82,7 @@ export default function ProfessionalExperienceSectionItem({
         const data = await response.json();
         // Set the generated summary and clear loading state
         setGeneratedSummary(data.completion);
+        setEditorContent(data.completion);
         setLoading(false);
       } else {
         // Handle error cases here
@@ -92,8 +96,37 @@ export default function ProfessionalExperienceSectionItem({
     }
   };
 
+  const handleSummaryChange = (event) => {
+    // Update the summary text based on user input
+    const newUserInput = event.target.value;
+    setSummary(newUserInput);
+    setUserInput(newUserInput);
+  };
+
+  const handleUseEnhancedSummaryChange = () => {
+    // Toggle the useEnhancedSummary state
+    setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
+
+    // If switching to enhanced summary, set the summary text to the generated summary
+    if (!isEnhancedSummaryUsed && generatedSummary) {
+      setSummary(generatedSummary);
+      setEditorContent('');
+    } else {
+      // If switching back to original summary, reset the summary text to the original value
+      setSummary(userInput || resumeData.profile_description);
+      setEditorContent(generatedSummary);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!summary.trim()) {
+      setSummaryError('Please generate a new summary before saving');
+      return;
+    }
+
+    const finalSummary = isEnhancedSummaryUsed ? generatedSummary : summary;
 
     // Create an object with the enhanced summary
     const requestBody = {
@@ -102,7 +135,7 @@ export default function ProfessionalExperienceSectionItem({
       country,
       employer,
       endDate: endDate ? endDate.format('MMMM, YYYY') : null,
-      enhancedSummary: generatedSummary,
+      enhancedSummary: finalSummary,
       jobTitle,
       startDate: startDate ? startDate.format('MMMM, YYYY') : null,
     };
@@ -270,8 +303,8 @@ export default function ProfessionalExperienceSectionItem({
                   },
                 }}
                 multiline
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)}
+                value={isEnhancedSummaryUsed ? generatedSummary : summary}
+                onChange={handleSummaryChange}
                 error={!!summaryError}
                 helperText={summaryError}
               />
@@ -312,8 +345,29 @@ export default function ProfessionalExperienceSectionItem({
 
           {generatedSummary && !loading && (
             <div style={{ marginTop: '20px' }}>
-              <Typography variant='h6'>Summary Suggestion:</Typography>
-              <TextEditor generatedSummary={generatedSummary} />
+              <Typography variant='h6'>Enhanced Summary:</Typography>
+              <TextEditor
+                editorContent={editorContent}
+                useEnhancedSummary={isEnhancedSummaryUsed}
+              />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isEnhancedSummaryUsed}
+                      onChange={handleUseEnhancedSummaryChange}
+                      sx={{
+                        color: 'default',
+                        '&.Mui-checked': {
+                          color: '#00B4D8',
+                        },
+                      }}
+                    />
+                  }
+                  label='Use Enhanced Summary'
+                  sx={{ mt: 1 }}
+                />
+              </FormGroup>
             </div>
           )}
 
