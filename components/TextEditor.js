@@ -17,12 +17,12 @@ import DefaultElement from '@/utils/DefaultElement';
 import CodeElement from '@/utils/CodeElement';
 
 
-export default function TextEditor({ editorContent, useEnhancedSummary }) {
+export default function TextEditor({ editorContent, isEnhancedSummaryUsed }) {
   // Create a Slate editor object that won't change across renders.
   const [editor] = useState(() => withReact(createEditor()));
 
   let initialState = useMemo(() => {
-    return useEnhancedSummary
+    return isEnhancedSummaryUsed
       ? [
           {
             type: 'paragraph',
@@ -35,7 +35,7 @@ export default function TextEditor({ editorContent, useEnhancedSummary }) {
             children: [{ text: editorContent }],
           },
         ];
-  }, [useEnhancedSummary, editorContent]);
+  }, [isEnhancedSummaryUsed, editorContent]);
 
   // Use useEffect to update the editor's content based on the props
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function TextEditor({ editorContent, useEnhancedSummary }) {
     editor.children = initialState;
     editor.selection = null;
     editor.onChange();
-  }, [editor, useEnhancedSummary, editorContent, initialState]);
+  }, [editor, isEnhancedSummaryUsed, editorContent, initialState]);
 
   // Define a rendering function based on the element passed to `props`. We use
   // `useCallback` here to memoize the function for subsequent renders.

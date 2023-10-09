@@ -25,7 +25,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
   const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState('');
-  const [useEnhancedSummary, setUseEnhancedSummary] = useState(false);
+  const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -76,10 +76,10 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
   
   const handleUseEnhancedSummaryChange = () => {
     // Toggle the useEnhancedSummary state
-    setUseEnhancedSummary(!useEnhancedSummary);
+    setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
 
     // If switching to enhanced summary, set the summary text to the generated summary
-    if (!useEnhancedSummary && generatedSummary) {
+    if (!isEnhancedSummaryUsed && generatedSummary) {
       setSummary(generatedSummary);
       setEditorContent('');
     } else {
@@ -97,7 +97,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
       return;
     }
    
-    const finalSummary = useEnhancedSummary ? generatedSummary : summary;
+    const finalSummary = isEnhancedSummaryUsed ? generatedSummary : summary;
 
     const requestBody = {
       enhancedSummary: finalSummary,
@@ -171,7 +171,7 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
                     },
                   }}
                   multiline
-                  value={useEnhancedSummary ? generatedSummary : summary}
+                  value={isEnhancedSummaryUsed ? generatedSummary : summary}
                   onChange={handleSummaryChange}
                   error={!!summaryError}
                   helperText={summaryError}
@@ -218,13 +218,13 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
                 </Typography>
                 <TextEditor
                   editorContent={editorContent}
-                  useEnhancedSummary={useEnhancedSummary}
+                  useEnhancedSummary={isEnhancedSummaryUsed}
                 />
                 <FormGroup>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={useEnhancedSummary}
+                        checked={isEnhancedSummaryUsed}
                         onChange={handleUseEnhancedSummaryChange}
                         sx={{
                           color: 'default',
