@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 export default function ProjectSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
   const [openAccordion, setOpenAccordion] = useState(null);
-
   const handleAccordionToggle = (panel) => (event, isExpanded) => {
     setOpenAccordion(isExpanded ? panel : null);
   };
@@ -32,7 +31,7 @@ export default function ProjectSection({ resumeData, fetchResumeData, isOpen, on
           </AccordionSummary>
           <ProjectSectionItem
             projectNum='Project #1'
-            projectData={resumeData.project?.[0]}
+            projectData={resumeData.projects?.[0]}
             fetchResumeData={fetchResumeData}
             resumeId={resumeData.resume_id}
             isOpen={openAccordion === 'project1'}
@@ -40,7 +39,7 @@ export default function ProjectSection({ resumeData, fetchResumeData, isOpen, on
           />
           <ProjectSectionItem
             projectNum='Project #2'
-            projectData={resumeData.project?.[1]}
+            projectData={resumeData.projects?.[1]}
             fetchResumeData={fetchResumeData}
             resumeId={resumeData.resume_id}
             isOpen={openAccordion === 'project2'}
@@ -48,7 +47,7 @@ export default function ProjectSection({ resumeData, fetchResumeData, isOpen, on
           />
           <ProjectSectionItem
             projectNum='Project #3'
-            projectData={resumeData.project?.[2]}
+            projectData={resumeData.projects?.[2]}
             fetchResumeData={fetchResumeData}
             resumeId={resumeData.resume_id}
             isOpen={openAccordion === 'project3'}

@@ -33,23 +33,23 @@ import dayjs from 'dayjs';
 export default function ProjectSectionItem({
   fetchResumeData,
   projectNum,
-  project,
+  projectData,
   resumeId,
   isOpen, 
   onToggleAccordion }) {
 
-  const [projectTitle, setProjectTitle] = useState(project?.project_title || '');
-  const [projectLink, setProjectLink] = useState(project?.project_link || '');
+  const [projectTitle, setProjectTitle] = useState(projectData?.project_title || '');
+  const [projectLink, setProjectLink] = useState(projectData?.project_link || '');
   const [startDate, setStartDate] = useState(
-    project?.start_date ? dayjs(project.start_date) : null
+    projectData?.start_date ? dayjs(projectData.start_date) : null
   );
   const [endDate, setEndDate] = useState(
-    project?.end_date ? dayjs(project.end_date) : null
+    projectData?.end_date ? dayjs(projectData.end_date) : null
   );
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [generatedSummary, setGeneratedSummary] = useState(
-    project?.project_description || ''
+    projectData?.project_description || ''
   );
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
