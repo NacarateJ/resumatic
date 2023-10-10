@@ -18,7 +18,6 @@ const commonStyles = StyleSheet.create({
     justifyContent: 'space-between',
     fontSize: 12,
     fontFamily: "Times-BoldItalic",
-    paddingBottom: 2,
   },
   subHeadingLine: {
     display: 'flex',

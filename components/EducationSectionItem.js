@@ -38,6 +38,7 @@ export default function EducationSectionItem({
 }) {
   // State for education data if exists for given resume
   const [educState, setEducState] = useState(educationData || null);
+
   // State of form data for given resume
   const [formState, setFormState] = useState(
     educationData ? educationData : { resume_id: resumeId }

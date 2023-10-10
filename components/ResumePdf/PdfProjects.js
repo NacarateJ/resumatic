@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: 2,
+    marginBottom: 8,
   },
 });
 
@@ -46,7 +46,7 @@ function Project({ project }) {
           <Link src={project.project_link}><Text style={commonStyles.link}>{project.project_title}</Text></Link>
           {project.project_subtitle && <Text style={{ fontFamily: 'Times-Italic' }}>- {project.project_subtitle}</Text>}
         </View>
-        {project.is_current ? (
+        {!project.end_date ? (
           <Text style={{ fontFamily: "Times-BoldItalic" }} >{project.start_date} - Present</Text>
         ) : (
           <Text style={{ fontFamily: "Times-BoldItalic" }} >{project.start_date} - {project.end_date}</Text>

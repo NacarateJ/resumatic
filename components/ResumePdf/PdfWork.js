@@ -26,7 +26,7 @@ function WorkItem({ job }) {
           <Text>{job.job_title} | </Text>
           <Text style={{ fontFamily: "Times-Italic" }} >{job.employer}</Text>
         </View>
-        {job.is_current ? (
+        {!job.end_date ? (
           <Text>{job.start_date} - Present</Text>
         ) : (
           <Text>{job.start_date} - {job.end_date}</Text>
@@ -36,7 +36,7 @@ function WorkItem({ job }) {
         <Text>{job.city}, {job.country}</Text>
       </View>
 
-      <View style={commonStyles.normalTextLine}>
+      <View style={{ ...commonStyles.normalTextLine, paddingBottom: 4 }}>
         <Text>{job.experience_description}</Text>
       </View>
     </>
