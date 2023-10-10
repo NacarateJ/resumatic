@@ -117,7 +117,7 @@ export default function ProjectSectionItem({
       setEditorContent('');
     } else {
       // If switching back to original summary, reset the summary text to the original value
-      setSummary(userInput || resumeData.profile_description);
+      setSummary(userInput || projectData.profile_description);
       setEditorContent(generatedSummary);
     }
   };
