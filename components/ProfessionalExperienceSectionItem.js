@@ -42,14 +42,12 @@ export default function ProfessionalExperienceSectionItem({
   const [endDate, setEndDate] = useState(
     workExp?.end_date ? dayjs(workExp.end_date) : null
   );
-  const [summary, setSummary] = useState('');
+  const [summary, setSummary] = useState(workExp?.experience_description || '');
   const [userInput, setUserInput] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState(
-    workExp?.experience_description || ''
-  );
-   const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
+  const [generatedSummary, setGeneratedSummary] = useState('');
+  const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [summaryError, setSummaryError] = useState('');
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
@@ -66,7 +64,7 @@ export default function ProfessionalExperienceSectionItem({
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm writing a description for one of my work experiences for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view based on the provided infoirmation: ${inputSummary}. It should be 2-3 short sentences in bullet point form expressing to the employer what my role was at the company and the technologies I used along with the skills and expertise I used in the position. It should have max 485 characters.`;
+    const userInput = `I'm writing a description for one of my work experiences for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view based on the provided infoirmation: ${inputSummary}. It should be 2-3 short sentences in a rounded bullet point form expressing to the employer what my role was at the company and the technologies I used along with the skills and expertise I used in the position. It should have max 485 characters.`;
 
     try {
       // Make an API request to the server with the summary content

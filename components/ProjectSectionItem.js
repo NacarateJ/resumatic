@@ -46,13 +46,13 @@ export default function ProjectSectionItem({
   const [endDate, setEndDate] = useState(
     projectData?.end_date ? dayjs(projectData.end_date) : null
   );
-  const [summary, setSummary] = useState('');
+  const [summary, setSummary] = useState(
+    projectData?.project_description || ''
+  );
   const [userInput, setUserInput] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState(
-    projectData?.project_description || ''
-  );
+  const [generatedSummary, setGeneratedSummary] = useState('');
   const [summaryError, setSummaryError] = useState('');
   const [isEnhancedSummaryUsed, setIsEnhancedSummaryUsed] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -70,7 +70,7 @@ export default function ProjectSectionItem({
     // Set loading state while generating summary
     setLoading(true);
 
-    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences in bullet point form expressing to the employer what my role was in the project and the technologies I used along with what skills were necessary and how I demonstrated my expertise: ${inputSummary}`;
+    const userInput = `I'm creating a description for a project that I worked on for my resume, please rewrite it in a professional way. The description should be written from the first-person point of view, it should be 2-3 short sentences in a rounded bullet point form expressing to the employer what my role was in the project and the technologies I used along with what skills were necessary and how I demonstrated my expertise: ${inputSummary}`;
 
     try {
       // Make an API request to the server with the summary content
