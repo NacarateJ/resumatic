@@ -13,7 +13,6 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import {
   AdapterDayjs,
   LocalizationProvider,
@@ -22,24 +21,22 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import CancelButton from './CancelButton';
-import {
-  fromStringToDate,
-  fromDateToString,
-  defaultDate,
-} from '../utils/dateParser';
 import dayjs from 'dayjs';
-
 
 export default function ProjectSectionItem({
   fetchResumeData,
   projectNum,
   projectData,
   resumeId,
-  isOpen, 
-  onToggleAccordion }) {
-
-  const [projectTitle, setProjectTitle] = useState(projectData?.project_title || '');
-  const [projectLink, setProjectLink] = useState(projectData?.project_link || '');
+  isOpen,
+  onToggleAccordion,
+}) {
+  const [projectTitle, setProjectTitle] = useState(
+    projectData?.project_title || ''
+  );
+  const [projectLink, setProjectLink] = useState(
+    projectData?.project_link || ''
+  );
   const [startDate, setStartDate] = useState(
     projectData?.start_date ? dayjs(projectData.start_date) : null
   );
@@ -270,17 +267,15 @@ export default function ProjectSectionItem({
                     style: {
                       backgroundColor: 'white',
                     },
-                    inputComponent: ScrollableInput,
                   }}
                   inputProps={{
                     style: {
                       backgroundColor: 'white',
-                      height: '100px',
                       paddingTop: '10px',
-                      // overflowY: 'auto',
                     },
                   }}
-                  multiline
+                  multiline={true}
+                  rows={10}
                   value={isEnhancedSummaryUsed ? generatedSummary : summary}
                   onChange={handleSummaryChange}
                   error={!!summaryError}
