@@ -35,7 +35,6 @@ export default function PdfMenu({ resumeData }) {
   const handleClickShare = () => {
     setOpen(true);
   };
-  const handleClickDownload = () => {};
 
   return (
     <div style={divStyle}>
