@@ -35,7 +35,7 @@ export default function ProjectSectionItem({
   projectNum,
   projectData,
   resumeId,
-  isOpen, 
+  isOpen,
   onToggleAccordion }) {
 
   const [projectTitle, setProjectTitle] = useState(projectData?.project_title || '');
@@ -59,6 +59,7 @@ export default function ProjectSectionItem({
 
   const generateEnhancedSummary = async (inputSummary) => {
     // Check if the input summary is empty
+    console.log("Generating enhanced summary with input:", inputSummary);
     if (!inputSummary.trim()) {
       setSummaryError('Please enter your summary');
       return;
@@ -108,12 +109,14 @@ export default function ProjectSectionItem({
   };
 
   const handleUseEnhancedSummaryChange = () => {
+    console.log("Use enhanced summary checkbox changed");
     // Toggle the useEnhancedSummary state
     setIsEnhancedSummaryUsed(!isEnhancedSummaryUsed);
 
     // If switching to enhanced summary, set the summary text to the generated summary
     if (!isEnhancedSummaryUsed && generatedSummary) {
       setSummary(generatedSummary);
+      console.log(`generated summary: ${generatedSummary}, summary: ${summary}`);
       setEditorContent('');
     } else {
       // If switching back to original summary, reset the summary text to the original value
@@ -123,6 +126,7 @@ export default function ProjectSectionItem({
   };
 
   const handleSubmit = async (event) => {
+    console.log("Form submitted");
     event.preventDefault();
 
     if (!summary.trim()) {
