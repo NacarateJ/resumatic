@@ -8,12 +8,10 @@ import { useState } from 'react';
 export default function ProjectSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
   const [openAccordion, setOpenAccordion] = useState('null');
   const handleAccordionToggle = (panel) => (event, isExpanded) => {
-    console.log(`Panel: ${panel}, isExpanded: ${isExpanded}`);
     setOpenAccordion(isExpanded ? panel : null);
   };
 
-  console.log("isOpen prop:", isOpen);
-  console.log("openAccordion state:", openAccordion);
+
   return (
     <>
       <SectionContainer>
