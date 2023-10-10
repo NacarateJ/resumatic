@@ -4,28 +4,21 @@ import {
   AccordionSummary,
   AccordionDetails,
   TextField,
-  Checkbox,
   Box,
   Button,
   Typography,
 } from '@mui/material';
-//import FormGroup from '@mui/material/FormGroup';
 import { useState } from 'react';
-//import FormControlLabel from '@mui/material/FormControlLabel';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ScrollableInput } from '@mui/material/TextareaAutosize';
-// import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {
   AdapterDayjs,
   LocalizationProvider,
   DatePicker,
 } from '@mui/x-date-pickers';
-// import TextEditor from './TextEditor';
 import CancelButton from './CancelButton';
 import {
   fromStringToDate,
   fromDateToString,
-  defaultDate,
 } from '../utils/dateParser';
 
 export default function EducationSectionItem({
@@ -283,16 +276,15 @@ export default function EducationSectionItem({
                   style: {
                     backgroundColor: 'white',
                   },
-                  inputComponent: ScrollableInput,
                 }}
                 inputProps={{
                   style: {
                     backgroundColor: 'white',
-                    height: '100px',
                     paddingTop: '10px',
                   },
                 }}
-                multiline
+                multiline={true}
+                rows={10}
                 autoComplete='Describe in few word your education'
                 value={formState?.education_description || ''}
                 onChange={(event) =>

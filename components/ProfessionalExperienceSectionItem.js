@@ -13,7 +13,6 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import { ScrollableInput } from '@mui/material/TextareaAutosize';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import {
   AdapterDayjs,
@@ -111,7 +110,7 @@ export default function ProfessionalExperienceSectionItem({
       setEditorContent('');
     } else {
       // If switching back to original summary, reset the summary text to the original value
-      setSummary(userInput || resumeData.profile_description);
+      setSummary(userInput || workExp.profile_description);
       setEditorContent(generatedSummary);
     }
   };
@@ -290,17 +289,15 @@ export default function ProfessionalExperienceSectionItem({
                   style: {
                     backgroundColor: 'white',
                   },
-                  inputComponent: ScrollableInput,
                 }}
                 inputProps={{
                   style: {
                     backgroundColor: 'white',
-                    height: '100px',
                     paddingTop: '10px',
-                    // overflowY: 'auto',
                   },
                 }}
-                multiline
+                multiline={true}
+                rows={10}
                 value={isEnhancedSummaryUsed ? generatedSummary : summary}
                 onChange={handleSummaryChange}
                 error={!!summaryError}
