@@ -170,7 +170,8 @@ export default function ProfileSection({ resumeData, fetchResumeData, isOpen, on
                       paddingTop: '10px',
                     },
                   }}
-                  multiline
+                  multiline={true}
+                  rows={10}
                   value={isEnhancedSummaryUsed ? generatedSummary : summary}
                   onChange={handleSummaryChange}
                   error={!!summaryError}
