@@ -1,18 +1,21 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import MyDocument from '@/components/MyDocument';
 import PdfDownload from '@/components/ResumePdf/PdfDownload';
 
-const PDFViewerComponent = dynamic(() => import('@react-pdf/renderer').then(module => module.PDFViewer), {
-  loading: () => <p>Loading PDF Viewer...</p>,
-  ssr: false // This ensures that the component is not loaded on the server side
-});
+const PDFViewerComponent = dynamic(
+  () => import('@react-pdf/renderer').then((module) => module.PDFViewer),
+  {
+    loading: () => <p>Loading PDF Viewer...</p>,
+    ssr: false, // This ensures that the component is not loaded on the server side
+  }
+);
 
 const index = ({ resumeId }) => {
   const [resumeData, setResumeData] = useState(null);
   const router = useRouter();
-
 
   useEffect(() => {
     // Get the id parameter from the URL
@@ -28,17 +31,17 @@ const index = ({ resumeId }) => {
 
       // Make a request to your API endpoint with the parsed resumeId
       fetch(`/api/resumes/${resumeId}`)
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           // Update state with the retrieved resume data
           setResumeData(data.resume);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error fetching resume data:', error);
           // Handle error, e.g., show an error message to the user or redirect to an error page
         });
@@ -49,14 +52,15 @@ const index = ({ resumeId }) => {
   }, [router.query]); // Call the async function inside useEffect
 
   return resumeData ? (
-    <div >
+    <div>
       <PdfDownload resumeData={resumeData} />
-      <PDFViewerComponent showToolbar={false}
+      <PDFViewerComponent
+        showToolbar={false}
         style={{
           display: 'flex',
           justifyContent: 'center',
-          width: "100%",
-          height: "100vh"
+          width: '100%',
+          height: '100vh',
         }}
       >
         <MyDocument resumeData={resumeData} />
