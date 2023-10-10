@@ -24,7 +24,7 @@ function Education({ education }) {
     <>
       <View style={...commonStyles.workHeaderLine} >
         <Text>{education.school_name}</Text>
-        {education.is_current ? (
+        {!education.end_date ? (
           <Text>{education.start_date} - Present</Text>
         ) : (
           <Text>{education.start_date} - {education.end_date}</Text>
