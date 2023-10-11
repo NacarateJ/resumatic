@@ -1,5 +1,3 @@
-
-https://github.com/NacarateJ/resumatic/assets/114256348/a343d7b3-91ef-4c15-b767-1c8d44537ef5
 # Resumatic
 
 Job applications can be time-consuming, and creating a well-crafted resume can be challenging. ***Resumatic*** solves this problem by using ***AI*** and a powerful tech stack to help users generate professional and appealing resumes quickly.
