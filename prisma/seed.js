@@ -65,7 +65,7 @@ const seedDatabase = async () => {
         resume_description: 'Front End Web Developer',
         full_name: 'Liz Erd',
         email: 'liz.erd@google.com',
-        job_title: 'Data Scientist and Web Developer',
+        job_title: 'Web Developer',
         phone_number: '555-123-4567',
         address: 'Toronto, Ontario',
         website_link: 'https://www.lizerd-data.com',
