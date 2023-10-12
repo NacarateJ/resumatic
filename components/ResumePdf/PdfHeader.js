@@ -1,12 +1,6 @@
 // Import necessary components and styles from external files and libraries
 import { Image, Link, StyleSheet, Text, View } from "@react-pdf/renderer";
 import commonStyles from "./commonStyles"; // Importing common styles from a separate file
-import githubIcon from "../../assets/link-icons/github.png"; // Importing GitHub icon image
-import linkedinIcon from "../../assets/link-icons/linkedin.png"; // Importing LinkedIn icon image
-import mailIcon from "../../assets/link-icons/envelope-regular.png"; // Importing Mail icon image
-import webIcon from "../../assets/link-icons/laptop-solid.png"; // Importing Web icon image
-
-let constGithubIcon = githubIcon;
 
 // Define styles for the components using StyleSheet.create() method
 const styles = StyleSheet.create({
