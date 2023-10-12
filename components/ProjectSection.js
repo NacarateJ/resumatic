@@ -6,10 +6,12 @@ import { Grid, Accordion, AccordionSummary, Typography } from '@mui/material';
 import { useState } from 'react';
 
 export default function ProjectSection({ resumeData, fetchResumeData, isOpen, onToggleAccordion }) {
-  const [openAccordion, setOpenAccordion] = useState(null);
+  const [openAccordion, setOpenAccordion] = useState('null');
   const handleAccordionToggle = (panel) => (event, isExpanded) => {
     setOpenAccordion(isExpanded ? panel : null);
   };
+
+
   return (
     <>
       <SectionContainer>

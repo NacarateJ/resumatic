@@ -30,7 +30,7 @@ export default function Dashboard({ user, resumes, err }) {
   const [menuOpen, setMenuOpen] = useState(null);
   const [selectedResume, setSelectedResume] = useState(null);
   const menuRef = useRef(null);
-  console.log('selected resume', selectedResume);
+
 
   //state and params for ShareResume Modal
   const [shareOpen, setShareOpen] = useState(false);
