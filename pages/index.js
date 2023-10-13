@@ -1,13 +1,20 @@
-import { Inter } from 'next/font/google'
+import React from 'react';
 
-const inter = Inter({ subsets: ['latin'] })
+import HomepageImage from '../components/HomepageImage';
 
 export default function Home() {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+    <div
+      id='homepage'
+      style={{
+        position: 'static',
+        top: '50%',
+        left: '50%',
+        textAlign: 'center',
+        width: '100%',
+      }}
     >
-      <h1>Welcome to Resumatic, your go-to resume builder app 🚀</h1>
-    </main>
+      <HomepageImage />
+    </div>
   );
 }
